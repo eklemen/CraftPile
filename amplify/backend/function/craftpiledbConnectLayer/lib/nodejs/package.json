@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "mongodb": "^4.9.1",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.1214.0"
+  }
+}

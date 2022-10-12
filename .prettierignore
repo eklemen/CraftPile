@@ -1,0 +1,9 @@
+./amplify/#current-cloud-backend
+
+./amplify/.config
+./amplify/backend/awscloudformation
+./amplify/backend/types
+./amplify/**/build
+**/generated/**/*
+**/build/
+**/dist/

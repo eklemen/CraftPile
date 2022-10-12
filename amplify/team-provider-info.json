@@ -1,0 +1,47 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-craftpile-dev-214433-authRole",
+      "UnauthRoleArn": "arn:aws:iam::466107528484:role/amplify-craftpile-dev-214433-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::466107528484:role/amplify-craftpile-dev-214433-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-craftpile-dev-214433-deployment",
+      "UnauthRoleName": "amplify-craftpile-dev-214433-unauthRole",
+      "StackName": "amplify-craftpile-dev-214433",
+      "StackId": "arn:aws:cloudformation:us-east-1:466107528484:stack/amplify-craftpile-dev-214433/2304c6b0-273c-11ed-b042-12e38aff531d",
+      "AmplifyAppId": "d11bjp4lxch0p2",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-craftpile-dev-214433-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "auth": {
+        "craftpile7a76396a": {},
+        "true": {}
+      },
+      "function": {
+        "craftpilePhotos": {
+          "deploymentBucketName": "amplify-craftpile-dev-214433-deployment",
+          "s3Key": "amplify-builds/craftpilePhotos-77634935473963394d34-build.zip",
+          "secretsPathAmplifyAppId": "d11bjp4lxch0p2"
+        },
+        "S3Trigger42c71366": {
+          "deploymentBucketName": "amplify-craftpile-dev-214433-deployment",
+          "s3Key": "amplify-builds/S3Trigger42c71366-7555504c6c5a7a754868-build.zip",
+          "secretsPathAmplifyAppId": "d11bjp4lxch0p2"
+        },
+        "craftpile7a76396aPostConfirmation": {
+          "deploymentBucketName": "amplify-craftpile-dev-214433-deployment",
+          "s3Key": "amplify-builds/craftpile7a76396aPostConfirmation-673473646877396d5347-build.zip",
+          "secretsPathAmplifyAppId": "d11bjp4lxch0p2"
+        },
+        "craftpiledbConnectLayer": {
+          "deploymentBucketName": "amplify-craftpile-dev-214433-deployment",
+          "s3Key": "amplify-builds/craftpiledbConnectLayer-LambdaLayerVersion231e11f7-build.zip"
+        },
+        "craftpileV3ClientSDK": {
+          "deploymentBucketName": "amplify-craftpile-dev-214433-deployment",
+          "s3Key": "amplify-builds/craftpileV3ClientSDK-LambdaLayerVersion6655c901-build.zip"
+        }
+      }
+    }
+  }
+}

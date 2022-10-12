@@ -1,0 +1,14 @@
+{
+  "resourceName": "CraftPilePhotoStorage",
+  "policyUUID": "8198bda5",
+  "bucketName": "craftpile-photos",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "groupAccess": {},
+  "triggerFunction": "S3Trigger42c71366"
+}

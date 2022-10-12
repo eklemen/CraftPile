@@ -1,0 +1,15 @@
+projects:
+  craftpile:
+    schemaPath: amplify/backend/api/craftpile/build/schema.graphql
+    includes:
+      - src/graphql/**/*.ts
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: typescript
+        generatedFileName: src/generated/API.ts
+        docsFilePath: src/graphql
+extensions:
+  amplify:
+    version: 3
