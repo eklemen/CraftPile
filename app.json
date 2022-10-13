@@ -3,7 +3,7 @@
     "name": "CraftPile",
     "slug": "CraftPile",
     "version": "1.0.0",
-    "entryPoint": "./src/App.js",
+    "entryPoint": "App.js",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -29,6 +29,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "77da38c4-0ac6-4dc4-9da2-db5b4c000156"
+      }
     }
   }
 }

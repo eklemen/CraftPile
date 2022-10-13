@@ -37,6 +37,7 @@ function ManageChildren({ navigation }: Props) {
   //     graphqlOperation(addChild, { input: { name: 'test', age: 1 } })
   //   )
   // }, []);
+  console.log('authCompData-------->', authCompData);
 
   const formHandler = async (values: { childName: string; age: any }) => {
     const res = (await API.graphql(

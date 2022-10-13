@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
+import { registerRootComponent } from 'expo';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function App() {
+function BackupApp() {
   return (
     <View style={styles.container}>
       <Text>Open up App.tsx to start working on your app!</Text>
@@ -18,3 +19,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default registerRootComponent(BackupApp);

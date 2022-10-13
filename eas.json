@@ -3,7 +3,11 @@
     "version": ">= 2.3.0"
   },
   "build": {
+    "production": {
+      "node": "16.13.2"
+    },
     "development": {
+      "extends": "production",
       "distribution": "internal",
       "android": {
         "gradleCommand": ":app:assembleDebug"
@@ -14,15 +18,17 @@
       }
     },
     "preview": {
+      "extends": "production",
       "distribution": "internal",
       "ios": {
         "simulator": true,
         "image": "latest"
       }
-    },
-    "production": {}
+    }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "node": "16.13.2"
+    }
   }
 }

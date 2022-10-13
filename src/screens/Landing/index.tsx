@@ -25,6 +25,7 @@ function Landing({ navigation }: Props) {
       const userData = (await API.graphql(
         graphqlOperation(getUser)
       )) as GraphQLResult<GetUserQuery>;
+      console.log('userData.data-------->', userData.data);
       if (userData?.data?.getUser) {
         setAuthData({
           user: userData.data.getUser,
@@ -37,7 +38,7 @@ function Landing({ navigation }: Props) {
 
   useEffect(() => {
     if (!loading) {
-      if (authCompData?.children?.length) {
+      if (authCompData?.user?.children?.length) {
         navigation.replace('Camera');
       } else {
         navigation.replace('ManageChildren');
