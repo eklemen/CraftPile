@@ -25,7 +25,6 @@ function Landing({ navigation }: Props) {
       const userData = (await API.graphql(
         graphqlOperation(getUser)
       )) as GraphQLResult<GetUserQuery>;
-      console.log('userData.data-------->', userData.data);
       if (userData?.data?.getUser) {
         setAuthData({
           user: userData.data.getUser,

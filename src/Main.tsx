@@ -1,22 +1,12 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Amplify, { Auth } from 'aws-amplify';
 // @ts-ignore
 import { withAuthenticator } from 'aws-amplify-react-native';
-import { registerRootComponent } from 'expo';
-// @ts-ignore
-import { NativeBaseProvider, Box } from 'native-base';
+import * as Linking from 'expo-linking';
+import { NativeBaseProvider, Text } from 'native-base';
 
 import config from '../aws-exports';
-import { SCREENS } from './common/constants';
 import { CompDataProvider } from './context/compData/compDataStore';
-import AlbumPhotosScreen from './screens/AlbumPhotos';
-import AlbumScreen from './screens/Albums';
-import CameraScreen from './screens/Camera';
-import Landing from './screens/Landing';
-import ManageChildren from './screens/ManageChildren';
-import { RootStackParamList } from './types/routes';
-import { View } from 'react-native';
 import { AppNavs } from './navStacks/HomeStack';
 // import RCTAsyncStorage from '@react-native-async-storage/async-storage';
 //
@@ -35,6 +25,7 @@ Amplify.configure({
     disabled: true,
   },
 });
+const prefix = Linking.createURL('/');
 
 const signUpConfig = {
   // header: 'Sign Upppp',
@@ -66,30 +57,19 @@ const signUpConfig = {
   ],
 };
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+// const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const Main = (props: Record<string, any>) => {
-  // useEffect(() => {
-  //   async function fetchTodos() {
-  //     try {
-  //       const todoData = await API.graphql(graphqlOperation(listTodos)) as any;
-  //       const todos = todoData.data.listTodos.items
-  //
-  //       setTodos(todos)
-  //     } catch (err) { console.log('error fetching todos', err) }
-  //   }
-  //
-  //   fetchTodos();
-  // })
-
-  const signOut = async () => {
-    await Amplify.Auth.signOut();
-    props.onStateChange('signedOut', null);
+  const linking = {
+    prefixes: [prefix],
   };
   return (
     <CompDataProvider>
       <NativeBaseProvider>
-        <NavigationContainer>
+        <NavigationContainer
+          linking={linking}
+          fallback={<Text>Loading...</Text>}
+        >
           <AppNavs />
         </NavigationContainer>
       </NativeBaseProvider>

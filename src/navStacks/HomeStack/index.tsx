@@ -5,8 +5,9 @@ import Camera from '../../screens/Camera';
 import Landing from '../../screens/Landing';
 import ManageChildren from '../../screens/ManageChildren';
 import AlbumScreen from '../../screens/Albums';
+import { RootStackParamList } from '../../types/routes';
 
-const AppStack = createNativeStackNavigator();
+const AppStack = createNativeStackNavigator<RootStackParamList>();
 const MainBottomNav = createBottomTabNavigator();
 
 function MainBottomNavScreens() {
