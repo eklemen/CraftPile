@@ -39,7 +39,7 @@ function Landing({ navigation }: Props) {
   useEffect(() => {
     if (!loading) {
       if (authCompData?.user?.children?.length) {
-        navigation.replace('Camera');
+        navigation.replace('MainStack');
       } else {
         navigation.replace('ManageChildren');
       }

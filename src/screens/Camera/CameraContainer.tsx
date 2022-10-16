@@ -203,7 +203,7 @@ function CameraContainer() {
           <View>
             <Button
               variant="ghost"
-              onPress={() => navigation.navigate('Albums')}
+              onPress={() => navigation.navigate('ManageChildren')}
             >
               <Text style={styles.text}>Albums</Text>
             </Button>

@@ -17,6 +17,7 @@ import Landing from './screens/Landing';
 import ManageChildren from './screens/ManageChildren';
 import { RootStackParamList } from './types/routes';
 import { View } from 'react-native';
+import { AppNavs } from './navStacks/HomeStack';
 // import RCTAsyncStorage from '@react-native-async-storage/async-storage';
 //
 // Promise.resolve(RCTAsyncStorage.clear()).then(() => {
@@ -89,13 +90,7 @@ const Main = (props: Record<string, any>) => {
     <CompDataProvider>
       <NativeBaseProvider>
         <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen name="Landing" component={Landing} />
-            <Stack.Screen name="ManageChildren" component={ManageChildren} />
-            <Stack.Screen name="Camera" component={CameraScreen} />
-            <Stack.Screen name="Albums" component={AlbumScreen} />
-            <Stack.Screen name="AlbumPhotos" component={AlbumPhotosScreen} />
-          </Stack.Navigator>
+          <AppNavs />
         </NavigationContainer>
       </NativeBaseProvider>
     </CompDataProvider>
