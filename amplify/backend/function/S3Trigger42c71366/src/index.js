@@ -39,6 +39,9 @@ exports.handler = async function (event, context) {
     }
     const { photoCollection } = await connectToDatabase();
     const accountId = event.Records[0].s3.object.key.split('/')[1];
+    const albums = Metadata?.albums && Array.isArray(Metadata?.albums)
+      ? Metadata?.albums
+      : [];
     await photoCollection.insertOne({
       bucketName: event.Records[0].s3.bucket.name,
       objectKey: event.Records[0].s3.object.key,
@@ -46,7 +49,7 @@ exports.handler = async function (event, context) {
       description: '',
       childId: Metadata?.childid || null,
       accountId,
-      albums: [],
+      albums,
       tags: [],
     });
     return {

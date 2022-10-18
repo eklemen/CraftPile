@@ -38,6 +38,47 @@ const updatePhotoProps = async (event) => {
   return res.value;
 };
 
+const getChildrenUnsortedPhotos = async (event) => {
+  const userId = event?.identity?.sub;
+  const { userCollection, photoCollection } = await connectToDatabase();
+  const user = await userCollection.findOne({ userId });
+  const childrenObjects = user?.children;
+  const unsortedPhotos = await photoCollection.aggregate([
+    {
+      '$match': {
+        'accountId': '4b61adff-fa33-4c6f-890f-f59e3f80879f',
+        'childId': {
+          '$in': [
+            '3103d357-eb10-4224-b99c-f65a827f6205', '3103d357-eb10-4224-b99c-f65a827f6206'
+          ]
+        },
+        'albums': {
+          '$size': 0
+        }
+      }
+    }, {
+      '$group': {
+        '_id': '$childId',
+        'photos': {
+          '$push': {
+            '_id': '$_id',
+            'bucketName': '$bucketName',
+            'objectKey': '$objectKey',
+            'dateOfPhoto': '$dateOfPhoto',
+            'description': '$description',
+            'childId': '$childId'
+          }
+        }
+      }
+    }
+  ]).toArray();
+  console.log('unsortedPhotos-------->', unsortedPhotos);
+  return unsortedPhotos;
+  // const childrenUnsortedPhotos = childrenObjects
+  //   .reduce((res, currentChild) => {
+  // }, []);
+};
+
 const getChildrenAlbums = async (event) => {
   const userId = event?.identity?.sub;
   const { albumCollection, userCollection } = await connectToDatabase();
@@ -146,6 +187,7 @@ const resolvers = {
     getChildrenAlbums: (event) => getChildrenAlbums(event),
     getPhotosForAlbum: (event) => getPhotosForAlbum(event),
     getUser: (event, context) => getUser(event, context),
+    getChildrenUnsortedPhotos: (event, context) => getChildrenUnsortedPhotos(event, context),
   },
 };
 

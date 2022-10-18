@@ -4,6 +4,7 @@ import type { StackNavigationProp } from '@react-navigation/stack';
 export type RootStackParamList = {
   Landing: { name: string };
   ManageChildren: { name: string };
+  MainStack: { name: string };
   // Camera: { name: string };
   // Albums: { name: string };
   // AlbumPhotos: {

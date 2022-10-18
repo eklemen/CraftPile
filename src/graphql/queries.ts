@@ -49,18 +49,20 @@ export const getChildrenAlbums = /* GraphQL */ `
         name
         description
         childId
-        posterImage {
-          _id
-          bucketName
-          objectKey
-          dateOfPhoto
-          title
-          description
-          childId
-          accountId
-          albums
-          tags
-        }
+      }
+    }
+  }
+`;
+export const getChildrenUnsortedPhotos = /* GraphQL */ `
+  query GetChildrenUnsortedPhotos {
+    getChildrenUnsortedPhotos {
+      _id
+      photos {
+        _id
+        bucketName
+        objectKey
+        dateOfPhoto
+        childId
       }
     }
   }

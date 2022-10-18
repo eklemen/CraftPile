@@ -76,6 +76,18 @@ type ChildAlbums {
   albums: [Album]
 }
 
+type UnsortedPhoto {
+  _id: ID
+  bucketName: String
+  objectKey: String
+  dateOfPhoto: String
+  childId: String
+}
+type ChildUnsortedPhotos {
+  _id: ID
+  photos: [UnsortedPhoto]
+}
+
 type PhotosForAlbum {
   _id: ID
   name: String
@@ -91,6 +103,8 @@ type Query {
   @function(name: "craftpilePhotos-${env}")
   getChildrenAlbums: [ChildAlbums]
   @function(name: "craftpilePhotos-${env}")
+  getChildrenUnsortedPhotos: [ChildUnsortedPhotos]
+  @function(name: "craftpilePhotos-${env}")
 }
 
 type Mutation {
@@ -99,3 +113,4 @@ type Mutation {
   addChild(input: addChildInput): User
   @function(name: "craftpilePhotos-${env}")
 }
+

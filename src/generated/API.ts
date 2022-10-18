@@ -79,6 +79,21 @@ export type Album = {
   posterImage?: Photo | null,
 };
 
+export type ChildUnsortedPhotos = {
+  __typename: "ChildUnsortedPhotos",
+  _id?: string | null,
+  photos?:  Array<UnsortedPhoto | null > | null,
+};
+
+export type UnsortedPhoto = {
+  __typename: "UnsortedPhoto",
+  _id?: string | null,
+  bucketName?: string | null,
+  objectKey?: string | null,
+  dateOfPhoto?: string | null,
+  childId?: string | null,
+};
+
 export type UpdatePhotoPropsMutationVariables = {
   input?: updatePhotoPropertiesInput | null,
 };
@@ -173,19 +188,21 @@ export type GetChildrenAlbumsQuery = {
       name?: string | null,
       description?: string | null,
       childId?: string | null,
-      posterImage?:  {
-        __typename: "Photo",
-        _id?: string | null,
-        bucketName?: string | null,
-        objectKey?: string | null,
-        dateOfPhoto?: string | null,
-        title?: string | null,
-        description?: string | null,
-        childId?: string | null,
-        accountId?: string | null,
-        albums?: Array< string | null > | null,
-        tags?: Array< string | null > | null,
-      } | null,
+    } | null > | null,
+  } | null > | null,
+};
+
+export type GetChildrenUnsortedPhotosQuery = {
+  getChildrenUnsortedPhotos?:  Array< {
+    __typename: "ChildUnsortedPhotos",
+    _id?: string | null,
+    photos?:  Array< {
+      __typename: "UnsortedPhoto",
+      _id?: string | null,
+      bucketName?: string | null,
+      objectKey?: string | null,
+      dateOfPhoto?: string | null,
+      childId?: string | null,
     } | null > | null,
   } | null > | null,
 };

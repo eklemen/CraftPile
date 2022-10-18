@@ -4,7 +4,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Camera from '../../screens/Camera';
 import Landing from '../../screens/Landing';
 import ManageChildren from '../../screens/ManageChildren';
+import ProfileScreen from '../../screens/Profile';
 import AlbumScreen from '../../screens/Albums';
+import PileScreen from '../../screens/Pile';
 import { RootStackParamList } from '../../types/routes';
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
@@ -14,9 +16,9 @@ function MainBottomNavScreens() {
   return (
     <MainBottomNav.Navigator>
       <MainBottomNav.Screen name="Camera" component={Camera} />
-      <MainBottomNav.Screen name="Pile" component={AlbumScreen} />
+      <MainBottomNav.Screen name="Pile" component={PileScreen} />
       <MainBottomNav.Screen name="Albums" component={AlbumScreen} />
-      <MainBottomNav.Screen name="Profile" component={ManageChildren} />
+      <MainBottomNav.Screen name="Profile" component={ProfileScreen} />
     </MainBottomNav.Navigator>
   );
 }
