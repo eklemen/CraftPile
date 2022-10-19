@@ -8,6 +8,7 @@ import ProfileScreen from '../../screens/Profile';
 import AlbumScreen from '../../screens/Albums';
 import PileScreen from '../../screens/Pile';
 import { RootStackParamList } from '../../types/routes';
+import CameraHeader from '../../screens/Camera/CameraHeader';
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
 const MainBottomNav = createBottomTabNavigator();
@@ -15,7 +16,11 @@ const MainBottomNav = createBottomTabNavigator();
 function MainBottomNavScreens() {
   return (
     <MainBottomNav.Navigator>
-      <MainBottomNav.Screen name="Camera" component={Camera} />
+      <MainBottomNav.Screen
+        name="Camera"
+        component={Camera}
+        options={{headerShown: false}}
+      />
       <MainBottomNav.Screen name="Pile" component={PileScreen} />
       <MainBottomNav.Screen name="Albums" component={AlbumScreen} />
       <MainBottomNav.Screen name="Profile" component={ProfileScreen} />

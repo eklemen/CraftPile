@@ -1,14 +1,18 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+import { Center, Box } from 'native-base';
 
 import commonStyles from '../../common/styles';
 import CameraContainer from './CameraContainer';
+import CameraHeader from './CameraHeader';
 
 function CameraScreen() {
   return (
-    <View style={commonStyles.container}>
-      {/*<Camera2 />*/}
+    <Box safeAreaTop flex={1} bg="primary.800">
+    <Center flex={1}>
+      <CameraHeader />
       <CameraContainer />
-    </View>
+    </Center>
+    </Box>
   );
 }
 

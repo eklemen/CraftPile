@@ -1,6 +1,10 @@
 import React, { createContext, useReducer } from 'react';
+import { CompDataStateTree } from '../constants';
+import * as domains from '../constants';
 
-const initialState = {};
+const initialState: Partial<CompDataStateTree> = {
+  [domains.AUTH]: {},
+};
 const compDataStore = createContext(initialState);
 const { Provider } = compDataStore;
 
@@ -10,9 +14,15 @@ const compDataInitializer = (initialState: Record<string, any>) => {
   };
 };
 
+interface Action {
+  name: string;
+  type: string;
+  payload: Record<string, any>;
+}
+
 const CompDataProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(
-    (state, action) => {
+    (state, action: Action) => {
       switch (action.type) {
         case 'SET_DATA':
           return {

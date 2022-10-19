@@ -35,5 +35,4 @@ export const cameraStyles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
-  sidebarContainer: {},
 });

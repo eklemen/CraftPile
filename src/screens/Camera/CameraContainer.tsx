@@ -6,9 +6,9 @@ import { Camera, CameraPictureOptions, CameraType } from 'expo-camera';
 import { manipulateAsync } from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
-import { Button, Spinner } from 'native-base';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
+import { Box, Column, Button, Spinner } from 'native-base';
 import uuid from 'react-native-uuid';
 
 import useCompData from '../../context/compData/useCompData';
