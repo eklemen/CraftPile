@@ -40,7 +40,7 @@ function AlbumPhotos({ route }: Props) {
     if (albumData?.photos?.length) {
       const photoUrlPromises: Promise<string>[] = albumData.photos.map(
         (photo) => {
-          const s3Path = `thumbnails/${photo?.objectKey!.split('public/')[1]}`;
+          const s3Path = photo?.thumbnailKey;
           return Storage.get(s3Path, {
             contentType: 'image/jpeg',
           });

@@ -129,7 +129,6 @@ function CameraContainer() {
     ]);
     const response = await fetch(thumbnailUri);
     const blob = await response.blob();
-    console.log('thumbnailUri-------->', thumbnailUri);
     const s3ThumbnailPath = `thumbnails/${s3Path}`;
     await Storage.put(s3ThumbnailPath, blob, {
       contentType: 'image/jpeg',
@@ -150,6 +149,7 @@ function CameraContainer() {
       const response = await fetch(imagePath);
       const blob = await response.blob();
       const [extension] = imagePath.split('.').slice(-1);
+      // should use the local file path instead of uuid
       const s3Path = `${authCompData.accountId}/${uuid.v4()}.${extension}`;
 
       await Storage.put(s3Path, blob, {

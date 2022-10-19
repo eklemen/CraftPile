@@ -17,6 +17,8 @@ export type Photo = {
   _id?: string | null,
   bucketName?: string | null,
   objectKey?: string | null,
+  thumbnailKey?: string | null,
+  localPath?: string | null,
   dateOfPhoto?: string | null,
   title?: string | null,
   description?: string | null,
@@ -92,6 +94,8 @@ export type UnsortedPhoto = {
   objectKey?: string | null,
   dateOfPhoto?: string | null,
   childId?: string | null,
+  thumbnailKey?: string | null,
+  localPath?: string | null,
 };
 
 export type UpdatePhotoPropsMutationVariables = {
@@ -104,6 +108,8 @@ export type UpdatePhotoPropsMutation = {
     _id?: string | null,
     bucketName?: string | null,
     objectKey?: string | null,
+    thumbnailKey?: string | null,
+    localPath?: string | null,
     dateOfPhoto?: string | null,
     title?: string | null,
     description?: string | null,
@@ -150,6 +156,8 @@ export type GetPhotosForAlbumQuery = {
       _id?: string | null,
       bucketName?: string | null,
       objectKey?: string | null,
+      thumbnailKey?: string | null,
+      localPath?: string | null,
       dateOfPhoto?: string | null,
       title?: string | null,
       description?: string | null,
@@ -203,6 +211,8 @@ export type GetChildrenUnsortedPhotosQuery = {
       objectKey?: string | null,
       dateOfPhoto?: string | null,
       childId?: string | null,
+      thumbnailKey?: string | null,
+      localPath?: string | null,
     } | null > | null,
   } | null > | null,
 };

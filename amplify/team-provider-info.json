@@ -25,7 +25,7 @@
         },
         "S3Trigger42c71366": {
           "deploymentBucketName": "amplify-craftpile-dev-214433-deployment",
-          "s3Key": "amplify-builds/S3Trigger42c71366-526c636b67593843582f-build.zip",
+          "s3Key": "amplify-builds/S3Trigger42c71366-795736465449527a6169-build.zip",
           "secretsPathAmplifyAppId": "d11bjp4lxch0p2"
         },
         "craftpile7a76396aPostConfirmation": {

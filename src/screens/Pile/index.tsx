@@ -21,38 +21,29 @@ interface Props {
   navigation: AlbumScreenNavigationProp;
 }
 
-function AlbumScreen({ navigation }: Props) {
-  const { compData: authCompData } = useCompData(domains.AUTH);
-  const { compData: albumCompData, setData: setAlbumData } = useCompData(
-    domains.ALBUMS,
-  );
-  const [unsorted, setUnsorted] = useState<any>();
+function PileScreen({ navigation }: Props) {
+  const [pilePhotos, setPilePhotos] = useState<GetChildrenUnsortedPhotosQuery['getChildrenUnsortedPhotos'] | undefined>();
 
   useEffect(() => {
     const getUnsorted = async () => {
-      try {
-        const unsortedPhotos = (await API.graphql(
-          graphqlOperation(getChildrenUnsortedPhotos),
-        )) as GraphQLResult<GetChildrenUnsortedPhotosQuery>;
-        console.log('unsortedPhotos-------->', unsortedPhotos);
-        setUnsorted(unsortedPhotos?.data?.getChildrenUnsortedPhotos);
-      } catch (err) {
-        console.log('err-------->', err);
-      }
+      const unsortedPhotos = (await API.graphql(
+        graphqlOperation(getChildrenUnsortedPhotos)
+      )) as { data: GetChildrenUnsortedPhotosQuery };
+      setPilePhotos(unsortedPhotos?.data?.getChildrenUnsortedPhotos);
     };
-    console.log('unsorted-------->', unsorted);
-    if (!albumCompData?.length) {
+    if (!pilePhotos?.length) {
       getUnsorted();
     }
   }, []);
+  console.log('pilePhotos-------->', pilePhotos);
   return (
     <View style={commonStyles.container}>
       <Text>Pile</Text>
-      {unsorted?.map((photo: any, index: number) => (
-        <Text key={index}>{photo._id}</Text>
+      {pilePhotos?.map((photo) => (
+        <Text key={photo?._id}>{photo?._id}</Text>
       ))}
     </View>
   );
 }
 
-export default AlbumScreen;
+export default PileScreen;

@@ -45,6 +45,7 @@ exports.handler = async function (event, context) {
     await photoCollection.insertOne({
       bucketName: event.Records[0].s3.bucket.name,
       objectKey: event.Records[0].s3.object.key,
+      thumbnailKey: event.Records[0].s3.object.key.replace('public/', 'thumbnails/'),
       dateOfPhoto: new Date(),
       description: '',
       childId: Metadata?.childid || null,

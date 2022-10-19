@@ -21,7 +21,6 @@ interface Props {
   navigation: AlbumScreenNavigationProp;
 }
 function AlbumScreen({ navigation }: Props) {
-  const { compData: authCompData } = useCompData(domains.AUTH);
   const { compData: albumCompData, setData: setAlbumData } = useCompData(
     domains.ALBUMS
   );

@@ -13,6 +13,8 @@ export const getPhotosForAlbum = /* GraphQL */ `
         _id
         bucketName
         objectKey
+        thumbnailKey
+        localPath
         dateOfPhoto
         title
         description
@@ -63,6 +65,8 @@ export const getChildrenUnsortedPhotos = /* GraphQL */ `
         objectKey
         dateOfPhoto
         childId
+        thumbnailKey
+        localPath
       }
     }
   }

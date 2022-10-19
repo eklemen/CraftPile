@@ -8,6 +8,8 @@ export const updatePhotoProps = /* GraphQL */ `
       _id
       bucketName
       objectKey
+      thumbnailKey
+      localPath
       dateOfPhoto
       title
       description
