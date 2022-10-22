@@ -9,6 +9,7 @@ import * as domains from '../../context/constants';
 import { GetUserQuery } from '../../generated/API';
 import { getUser } from '../../graphql/queries';
 import { LandingScreenNavigationProp } from '../../types/routes';
+import { UserCD } from '../../context/constants';
 
 interface Props {
   navigation: LandingScreenNavigationProp;
@@ -16,7 +17,7 @@ interface Props {
 
 function Landing({ navigation }: Props) {
   const [loading, setLoading] = useState<boolean>(true);
-  const { setData: setAuthData, compData: authCompData } = useCompData(
+  const { setData: setAuthData, compData: authCompData } = useCompData<UserCD>(
     domains.AUTH
   );
 
@@ -38,9 +39,9 @@ function Landing({ navigation }: Props) {
   useEffect(() => {
     if (!loading) {
       if (authCompData?.user?.children?.length) {
-        navigation.replace('MainStack');
+        navigation.replace('MainStack', {});
       } else {
-        navigation.replace('ManageChildren');
+        navigation.replace('ManageChildren', {});
       }
     }
   }, [loading]);

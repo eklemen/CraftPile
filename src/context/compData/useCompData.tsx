@@ -1,18 +1,19 @@
 import { useContext } from 'react';
 
 import { compDataStore } from './compDataStore';
+import { CompDataStateTree } from '../constants';
 
-const useCompData = (name: string) => {
+const useCompData = <T,>(name: keyof CompDataStateTree) => {
   if (!name) {
     throw Error('Must provide a name to useCompData(name).');
   }
   const { state, dispatch } = useContext(compDataStore);
-  const getCompData = (compName: string): Record<string, any> =>
-    state[compName] || {};
-  const setData = (payload: Record<string, any>, altName = name) => {
-    return dispatch({ type: 'SET_DATA', name: altName, payload });
+  // const getCompData = (compName: typeof name): CompDataStateTree[typeof name] =>
+  //   state[compName] || {};
+  const setData = (payload: Partial<T>) => {
+    return dispatch({ type: 'SET_DATA', name, payload });
   };
-  const clearStore = () => dispatch({ type: 'CLEAR_STORE' });
+  const clearStore = () => dispatch({ type: 'CLEAR_STORE', name: '' });
   const clearComp = (altName?: string) => {
     if (altName) {
       return dispatch({ type: 'CLEAR_COMP', name: altName });
@@ -21,8 +22,8 @@ const useCompData = (name: string) => {
   };
   return {
     setData,
-    compData: getCompData(name),
-    getCompData,
+    compData: state[name] as T || {} as T,
+    // getCompData,
     clearStore,
     clearComp,
   };

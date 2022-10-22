@@ -1,5 +1,4 @@
 import { GraphQLResult } from '@aws-amplify/api';
-import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { API, graphqlOperation, Storage } from 'aws-amplify';
 import { Camera, CameraPictureOptions, CameraType } from 'expo-camera';
@@ -7,8 +6,7 @@ import { manipulateAsync } from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
 import { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-import { Box, Column, Button, Spinner } from 'native-base';
+import { Box, Center, IconButton, Spinner } from 'native-base';
 import uuid from 'react-native-uuid';
 
 import useCompData from '../../context/compData/useCompData';
@@ -16,9 +14,10 @@ import * as domains from '../../context/constants';
 import { GetUserQuery } from '../../generated/API';
 import { getUser } from '../../graphql/queries';
 import { CameraScreenNavigationProp } from '../../types/routes';
-import ChildSelectSidebar from './ChildSelectSidebar';
 import MockCamera from './MockCamera';
 import { cameraStyles as styles } from './styles';
+import { CameraCD, UserCD } from '../../context/constants';
+import Shutter from '../../appIcons/Shutter';
 
 function CameraContainer() {
   const [saveImageError, setSaveImageError] = useState<{ message: string }>();
@@ -27,11 +26,11 @@ function CameraContainer() {
   const [cameraPermission, setCameraPermission] = useState<boolean>(false);
   const [galleryPermission, setGalleryPermission] = useState<boolean>(false);
   const [uploadingImg, setUploadingImg] = useState<boolean>(false);
-  const { compData: authCompData, setData: setAuthData } = useCompData(
-    domains.AUTH
+  const { compData: authCompData, setData: setAuthData } = useCompData<UserCD>(
+    domains.AUTH,
   );
-  const { compData: cameraCompData, setData: setCameraCompData } = useCompData(
-    domains.CAMERA
+  const { compData: cameraCompData, setData: setCameraCompData } = useCompData<CameraCD>(
+    domains.CAMERA,
   );
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -55,12 +54,12 @@ function CameraContainer() {
   useEffect(() => {
     const getUserData = async () => {
       const userData = (await API.graphql(
-        graphqlOperation(getUser)
+        graphqlOperation(getUser),
       )) as GraphQLResult<GetUserQuery>;
       if (userData.data) {
-        setAuthData(userData.data.getUser);
+        setAuthData({ user: userData.data.getUser });
       } else if (userData.errors) {
-        setAuthData(null);
+        setAuthData({ user: null });
       }
       setLoading(false);
     };
@@ -71,8 +70,8 @@ function CameraContainer() {
 
   useEffect(() => {
     if (!loading) {
-      if (!authCompData?.children?.length) {
-        navigation.navigate('ManageChildren');
+      if (!authCompData?.user?.children?.length) {
+        navigation.navigate('ManageChildren', {});
       }
     }
   }, [loading]);
@@ -82,7 +81,7 @@ function CameraContainer() {
   }
 
   const handleImagePicked = async (
-    pickerResult: ImagePicker.ImagePickerResult
+    pickerResult: ImagePicker.ImagePickerResult,
   ) => {
     try {
       if (pickerResult.cancelled) {
@@ -134,7 +133,7 @@ function CameraContainer() {
       contentType: 'image/jpeg',
       level: 'public',
       metadata: {
-        childId: cameraCompData?.sidebarSelectedChild?.id,
+        childId: cameraCompData?.selectedChild?.id,
         isThumbnail: 'true',
       },
       errorCallback: (err: any) => {
@@ -150,21 +149,21 @@ function CameraContainer() {
       const blob = await response.blob();
       const [extension] = imagePath.split('.').slice(-1);
       // should use the local file path instead of uuid
-      const s3Path = `${authCompData.accountId}/${uuid.v4()}.${extension}`;
+      const s3Path = `${authCompData.user?.accountId}/${uuid.v4()}.${extension}`;
 
       await Storage.put(s3Path, blob, {
         contentType: 'image/jpeg',
         level: 'public',
         metadata: {
-          childId: cameraCompData?.sidebarSelectedChild?.id,
+          childId: cameraCompData?.selectedChild?.id,
         },
         errorCallback: (err: any) => {
           console.error('Unexpected error while uploading====', err);
         },
         progressCallback: ({
-          loaded,
-          total,
-        }: {
+                             loaded,
+                             total,
+                           }: {
           loaded: number;
           total: number;
         }) => {
@@ -183,35 +182,32 @@ function CameraContainer() {
   };
 
   return (
-    <View style={styles.container}>
+    <Center
+      flex={1}
+      justifyContent='center'
+      w='100%'
+    >
       <Camera
         style={styles.camera}
         type={CameraType.back}
         ref={(ref: Camera) => setCamera(ref)}
       >
-        <View style={styles.buttonContainer}>
-          <Button variant="ghost" onPress={pickImage}>
-            <Text style={styles.text}>Photos</Text>
-          </Button>
-          <Button variant="ghost" onPress={takePicture}>
+        <Box
+          flex={1}
+          flexDirection='column'
+          justifyContent='flex-end'
+          alignItems='center'
+        >
+          <Center h={115} w="100%" bg="primary.800">
             {uploadingImg ? (
-              <Spinner size="lg" color="white" />
+              <Spinner w={65} h={65} size='lg' color='white' />
             ) : (
-              <Entypo name="circle" size={64} color="white" />
+              <IconButton width={65} height={65} onPress={takePicture} variant='ghost' icon={<Shutter />} />
             )}
-          </Button>
-          <View>
-            <Button
-              variant="ghost"
-              onPress={() => navigation.navigate('ManageChildren')}
-            >
-              <Text style={styles.text}>Albums</Text>
-            </Button>
-          </View>
-        </View>
-        <ChildSelectSidebar />
+          </Center>
+        </Box>
       </Camera>
-    </View>
+    </Center>
   );
 }
 

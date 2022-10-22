@@ -1,34 +1,36 @@
 import React, { createContext, useReducer } from 'react';
 import { CompDataStateTree } from '../constants';
-import * as domains from '../constants';
 
-const initialState: Partial<CompDataStateTree> = {
-  [domains.AUTH]: {},
+type ContextAction = {
+  type: string,
+  name: string,
+  payload?: Record<string, any>
 };
-const compDataStore = createContext(initialState);
+
+const initialState: Partial<CompDataStateTree> = {};
+const compDataStore = createContext<{
+  state: Partial<CompDataStateTree>;
+  dispatch: React.Dispatch<ContextAction>;
+}>({
+  state: initialState, dispatch: () => null
+});
 const { Provider } = compDataStore;
 
-const compDataInitializer = (initialState: Record<string, any>) => {
+const compDataInitializer = (initialState: Partial<CompDataStateTree>) => {
   return {
     ...initialState,
   };
 };
 
-interface Action {
-  name: string;
-  type: string;
-  payload: Record<string, any>;
-}
-
 const CompDataProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(
-    (state, action: Action) => {
+    (state: Partial<CompDataStateTree>, action: ContextAction) => {
       switch (action.type) {
         case 'SET_DATA':
           return {
             ...state,
             [action.name]: {
-              ...state[action.name],
+              ...state[action.name as keyof CompDataStateTree],
               ...action.payload,
             },
           };
@@ -38,7 +40,7 @@ const CompDataProvider = ({ children }: { children: React.ReactNode }) => {
             [action.name]: {},
           };
         case 'CLEAR_STORE':
-          return {};
+          return initialState;
         default:
           throw new Error('Something went wrong in the compDataStore.');
       }

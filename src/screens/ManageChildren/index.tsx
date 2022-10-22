@@ -45,7 +45,8 @@ function ManageChildren({ navigation }: Props) {
         input: { name: values.childName, age: parseInt(values.age) },
       })
     )) as { data: AddChildMutation };
-    setAuthData(res?.data?.addChild);
+    setAuthData({ user: res?.data?.addChild
+  });
   };
 
   return (

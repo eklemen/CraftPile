@@ -2,10 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const cameraStyles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
     width: '100%',
-    flexDirection: 'column',
   },
   camera: {
     flex: 1,
@@ -15,16 +12,8 @@ export const cameraStyles = StyleSheet.create({
     display: 'flex',
   },
   buttonContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    marginBottom: 24,
-    position: 'relative',
-    alignSelf: 'stretch',
     borderWidth: 1,
     borderColor: 'red',
-    justifyContent: 'space-around',
-    alignItems: 'flex-end',
   },
   button: {
     flex: 1,

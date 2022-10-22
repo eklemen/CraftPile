@@ -4,17 +4,19 @@ import { View, Text } from 'react-native';
 
 import useCompData from '../../context/compData/useCompData';
 import * as domains from '../../context/constants';
+import { CameraCD, UserCD } from '../../context/constants';
+import { Child } from '../../generated/API';
 
 function ChildSelectSidebar() {
-  const { compData: authCompData, setData: setAuthData } = useCompData(
+  const { compData: authCompData, setData: setAuthData } = useCompData<UserCD>(
     domains.AUTH
   );
-  const { compData: cameraCompData, setData: setCameraCompData } = useCompData(
+  const { compData: cameraCompData, setData: setCameraCompData } = useCompData<CameraCD>(
     domains.CAMERA
   );
   useEffect(() => {
     setCameraCompData({
-      sidebarSelectedChild: authCompData?.children?.[0],
+      selectedChild: authCompData?.user?.children?.[0] as Child,
     });
   }, []);
   return (
@@ -24,9 +26,9 @@ function ChildSelectSidebar() {
         right: 0,
       }}
     >
-      {authCompData?.children?.map((child: any) => {
+      {authCompData?.user?.children?.map((child: any) => {
         const isSelected =
-          child.id === cameraCompData?.sidebarSelectedChild?.id;
+          child.id === cameraCompData?.selectedChild?.id;
         return (
           <Button
             key={child.id}
@@ -38,7 +40,7 @@ function ChildSelectSidebar() {
             }}
             onPress={() => {
               setCameraCompData({
-                sidebarSelectedChild: child,
+                selectedChild: child,
               });
             }}
           >

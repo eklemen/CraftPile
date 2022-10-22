@@ -1,35 +1,60 @@
-import { Container, Text, Row, Center, Box } from 'native-base';
+import { useEffect } from 'react';
+import { Container, Row, Center, Box, Button, IconButton } from 'native-base';
 import useCompData from '../../context/compData/useCompData';
 import * as domains from '../../context/constants';
+import { CameraCD, UserCD } from '../../context/constants';
+import CameraRoll from '../../appIcons/CameraRoll';
 
 function CameraHeader() {
-  const { compData: authCompData } = useCompData(
-    domains.AUTH
+  const { compData: authCompData } = useCompData<UserCD>(
+    domains.AUTH,
   );
+  const { compData: cameraCompData, setData: setCameraCompData } = useCompData<CameraCD>(
+    domains.CAMERA,
+  );
+  useEffect(() => {
+    setCameraCompData({
+      selectedChild: authCompData?.user?.children?.[0],
+    });
+  }, []);
   return (
-    <Container
-      bg="primary.800"
-      w="100%"
+    <Center
+      bg='primary.800'
+      w='100%'
       h={70}
     >
-      <Center flex={1}>
-        <Row justifyContent="center">
-          <Box flex={1}>
-            <Text color="white">
-              Import
-            </Text>
-          </Box>
-          <Row flex={3} alignContent="center" justifyContent="center">
-            {authCompData && authCompData?.user?.children?.map((child) => {
-              return (<Text key={child._id} color="white" alignSelf="flex-start">
-                {child.name}
-              </Text>)
-            })}
-          </Row>
-          <Box flex={1} />
+      <Row justifyContent='center'>
+        <Box flex={1}>
+          <IconButton variant='ghost' icon={<CameraRoll />} />
+        </Box>
+        <Row flex={3} alignContent='center' justifyContent='center'>
+          {authCompData?.user!.children!.map((child) => {
+            const isSelected =
+              child!.id === cameraCompData?.selectedChild?.id;
+            return (
+              <Button
+                key={child!.id}
+                mx={1}
+                my='auto'
+                style={{
+                  width: isSelected ? 50 : 40,
+                  height: isSelected ? 50 : 40,
+                  borderRadius: 50,
+                }}
+                onPress={() => {
+                  setCameraCompData({
+                    selectedChild: child,
+                  });
+                }}
+              >
+                {child!.name?.charAt(0)}
+              </Button>
+            );
+          })}
         </Row>
-      </Center>
-    </Container>
+        <Box flex={1} />
+      </Row>
+    </Center>
   );
 }
 

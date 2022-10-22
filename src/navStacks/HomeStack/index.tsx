@@ -9,17 +9,25 @@ import AlbumScreen from '../../screens/Albums';
 import PileScreen from '../../screens/Pile';
 import { RootStackParamList } from '../../types/routes';
 import CameraHeader from '../../screens/Camera/CameraHeader';
+import CameraRoll from '../../appIcons/CameraRoll';
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
 const MainBottomNav = createBottomTabNavigator();
 
 function MainBottomNavScreens() {
   return (
-    <MainBottomNav.Navigator>
+    <MainBottomNav.Navigator
+      screenOptions={{
+        tabBarStyle: { backgroundColor: '#155e75' },
+      }}
+    >
       <MainBottomNav.Screen
         name="Camera"
         component={Camera}
-        options={{headerShown: false}}
+        options={{
+          headerShown: false,
+          // tabBarIcon: () => <CameraRoll />,
+        }}
       />
       <MainBottomNav.Screen name="Pile" component={PileScreen} />
       <MainBottomNav.Screen name="Albums" component={AlbumScreen} />
