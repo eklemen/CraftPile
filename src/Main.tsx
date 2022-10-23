@@ -3,11 +3,12 @@ import Amplify, { Auth } from 'aws-amplify';
 // @ts-ignore
 import { withAuthenticator } from 'aws-amplify-react-native';
 import * as Linking from 'expo-linking';
-import { NativeBaseProvider, Text } from 'native-base';
+import { NativeBaseProvider, extendTheme, Text } from 'native-base';
 
 import config from '../aws-exports';
 import { CompDataProvider } from './context/compData/compDataStore';
 import { AppNavs } from './navStacks/HomeStack';
+import { themeOverrides } from './styles';
 // import RCTAsyncStorage from '@react-native-async-storage/async-storage';
 //
 // Promise.resolve(RCTAsyncStorage.clear()).then(() => {
@@ -63,9 +64,10 @@ const Main = (props: Record<string, any>) => {
   const linking = {
     prefixes: [prefix],
   };
+  const theme = extendTheme(themeOverrides);
   return (
     <CompDataProvider>
-      <NativeBaseProvider>
+      <NativeBaseProvider theme={theme}>
         <NavigationContainer
           linking={linking}
           fallback={<Text>Loading...</Text>}

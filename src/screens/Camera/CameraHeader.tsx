@@ -25,7 +25,7 @@ function CameraHeader() {
     >
       <Row justifyContent='center'>
         <Box flex={1}>
-          <IconButton variant='ghost' icon={<CameraRoll />} />
+          <IconButton variant='ghost' icon={<CameraRoll color='white' />} />
         </Box>
         <Row flex={3} alignContent='center' justifyContent='center'>
           {authCompData?.user!.children!.map((child) => {
@@ -34,6 +34,7 @@ function CameraHeader() {
             return (
               <Button
                 key={child!.id}
+                colorScheme='secondary'
                 mx={1}
                 my='auto'
                 style={{
