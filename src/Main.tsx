@@ -1,9 +1,21 @@
+import { useCallback, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import Amplify, { Auth } from 'aws-amplify';
 // @ts-ignore
 import { withAuthenticator } from 'aws-amplify-react-native';
 import * as Linking from 'expo-linking';
 import { NativeBaseProvider, extendTheme, Text } from 'native-base';
+import {
+  useFonts,
+  Montserrat_300Light,
+  Montserrat_400Regular,
+  Montserrat_700Bold,
+} from '@expo-google-fonts/montserrat';
+import {
+  Nunito_300Light,
+  Nunito_400Regular,
+  Nunito_700Bold,
+} from '@expo-google-fonts/nunito';
 
 import config from '../aws-exports';
 import { CompDataProvider } from './context/compData/compDataStore';
@@ -58,24 +70,31 @@ const signUpConfig = {
   ],
 };
 
-// const Stack = createNativeStackNavigator<RootStackParamList>();
-
-const Main = (props: Record<string, any>) => {
+const Main = () => {
+  const [fontsLoaded] = useFonts({
+    Montserrat_300Light,
+    Montserrat_400Regular,
+    Montserrat_700Bold,
+    Nunito_300Light,
+    Nunito_400Regular,
+    Nunito_700Bold,
+  });
+  if (!fontsLoaded) return <></>;
   const linking = {
     prefixes: [prefix],
   };
   const theme = extendTheme(themeOverrides);
   return (
-    <CompDataProvider>
-      <NativeBaseProvider theme={theme}>
+    <NativeBaseProvider theme={theme}>
+      <CompDataProvider>
         <NavigationContainer
           linking={linking}
           fallback={<Text>Loading...</Text>}
         >
           <AppNavs />
         </NavigationContainer>
-      </NativeBaseProvider>
-    </CompDataProvider>
+      </CompDataProvider>
+    </NativeBaseProvider>
   );
 };
 

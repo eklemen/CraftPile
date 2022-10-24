@@ -21,9 +21,72 @@ const colors = {
     '600': '#a93e37',
     '700': '#913d37',
     '800': '#7a3a36',
-    '900': '#653633'
+    '900': '#653633',
   },
 };
+
+const fontConfig = {
+  Montserrat: {
+    100: {
+      normal: 'Montserrat_300Light',
+    },
+    200: {
+      normal: 'Montserrat_300Light',
+    },
+    300: {
+      normal: 'Montserrat_300Light',
+    },
+    400: {
+      normal: 'Montserrat_400Regular',
+    },
+    500: {
+      normal: 'Montserrat_400Regular',
+    },
+    600: {
+      normal: 'Montserrat_400Regular',
+    },
+    700: {
+      normal: 'Montserrat_700Bold',
+    },
+    800: {
+      normal: 'Montserrat_700Bold',
+    },
+  },
+  Nunito: {
+    100: {
+      normal: 'Nunito_300Light',
+    },
+    200: {
+      normal: 'Nunito_300Light',
+    },
+    300: {
+      normal: 'Nunito_300Light',
+    },
+    400: {
+      normal: 'Nunito_400Regular',
+    },
+    500: {
+      normal: 'Nunito_400Regular',
+    },
+    600: {
+      normal: 'Nunito_400Regular',
+    },
+    700: {
+      normal: 'Nunito_700Bold',
+    },
+    800: {
+      normal: 'Nunito_700Bold',
+    },
+  },
+};
+const fonts = {
+  heading: 'Montserrat',
+  body: 'Nunito',
+  mono: 'Montserrat',
+};
+
 export const themeOverrides = {
   colors,
+  fontConfig,
+  fonts,
 };

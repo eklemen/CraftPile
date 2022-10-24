@@ -18,19 +18,22 @@ const AppStack = createNativeStackNavigator<RootStackParamList>();
 const MainBottomNav = createBottomTabNavigator();
 
 function MainBottomNavScreens() {
-  const {
-    colors,
-  } = useTheme();
+  const { colors, fontConfig } = useTheme();
   return (
     <MainBottomNav.Navigator
       screenOptions={{
         tabBarStyle: {
           borderTopColor: 'transparent',
         },
+        tabBarLabelStyle: {
+          fontFamily: fontConfig?.Nunito[500].normal,
+          fontSize: 14,
+        },
       }}
     >
       <MainBottomNav.Screen
-        name='Camera' component={Camera}
+        name="Camera"
+        component={Camera}
         options={{
           headerShown: false,
           tabBarStyle: {
@@ -38,31 +41,46 @@ function MainBottomNavScreens() {
             borderTopColor: 'transparent',
           },
           tabBarActiveTintColor: colors.white,
-          tabBarIcon: ({ focused, color }) => <CameraIcon size={30} focused={focused} color={color} />,
+          tabBarIcon: ({ focused, color }) => (
+            <CameraIcon size={30} focused={focused} color={color} />
+          ),
+          tabBarAccessibilityLabel: 'Camera',
         }}
       />
       <MainBottomNav.Screen
-        name='Pile' component={PileScreen}
+        name="Pile"
+        component={PileScreen}
         options={{
-          tabBarIcon: ({ focused, color }) => <PileIcon size={30} focused={focused} color={color} />,
+          tabBarIcon: ({ focused, color }) => (
+            <PileIcon size={30} focused={focused} color={color} />
+          ),
           tabBarActiveTintColor: colors.secondary['500'],
           tabBarInactiveTintColor: colors.primary['500'],
+          tabBarAccessibilityLabel: 'Pile',
         }}
       />
       <MainBottomNav.Screen
-        name='Albums' component={AlbumScreen}
+        name="Albums"
+        component={AlbumScreen}
         options={{
-          tabBarIcon: ({ focused, color }) => <AlbumIcon size={26} focused={focused} color={color} />,
+          tabBarIcon: ({ focused, color }) => (
+            <AlbumIcon size={26} focused={focused} color={color} />
+          ),
           tabBarActiveTintColor: colors.secondary['500'],
           tabBarInactiveTintColor: colors.primary['500'],
+          tabBarAccessibilityLabel: 'Albums',
         }}
       />
       <MainBottomNav.Screen
-        name='Profile' component={ProfileScreen}
+        name="Profile"
+        component={ProfileScreen}
         options={{
-          tabBarIcon: ({ focused, color }) => <ProfileIcon size={30} focused={focused} color={color} />,
+          tabBarIcon: ({ focused, color }) => (
+            <ProfileIcon size={30} focused={focused} color={color} />
+          ),
           tabBarActiveTintColor: colors.secondary['500'],
           tabBarInactiveTintColor: colors.primary['500'],
+          tabBarAccessibilityLabel: 'Profile',
         }}
       />
     </MainBottomNav.Navigator>
@@ -73,15 +91,13 @@ function AppNavs() {
   return (
     <AppStack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName='Landing'>
-      <AppStack.Screen name='Landing' component={Landing} />
-      <AppStack.Screen name='MainStack' component={MainBottomNavScreens} />
-      <AppStack.Screen name='ManageChildren' component={ManageChildren} />
+      initialRouteName="Landing"
+    >
+      <AppStack.Screen name="Landing" component={Landing} />
+      <AppStack.Screen name="MainStack" component={MainBottomNavScreens} />
+      <AppStack.Screen name="ManageChildren" component={ManageChildren} />
     </AppStack.Navigator>
   );
 }
 
-export {
-  MainBottomNavScreens,
-  AppNavs,
-};
+export { MainBottomNavScreens, AppNavs };
