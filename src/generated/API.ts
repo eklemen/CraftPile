@@ -83,8 +83,14 @@ export type Album = {
 
 export type ChildUnsortedPhotos = {
   __typename: "ChildUnsortedPhotos",
-  _id?: string | null,
+  _id?: UnsortedId | null,
   photos?:  Array<UnsortedPhoto | null > | null,
+};
+
+export type UnsortedId = {
+  __typename: "UnsortedId",
+  childId?: string | null,
+  name?: string | null,
 };
 
 export type UnsortedPhoto = {
@@ -203,7 +209,11 @@ export type GetChildrenAlbumsQuery = {
 export type GetChildrenUnsortedPhotosQuery = {
   getChildrenUnsortedPhotos?:  Array< {
     __typename: "ChildUnsortedPhotos",
-    _id?: string | null,
+    _id?:  {
+      __typename: "UnsortedId",
+      childId?: string | null,
+      name?: string | null,
+    } | null,
     photos?:  Array< {
       __typename: "UnsortedPhoto",
       _id?: string | null,

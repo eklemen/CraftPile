@@ -84,9 +84,26 @@ const fonts = {
   body: 'Nunito',
   mono: 'Montserrat',
 };
+const components = {
+  Button: {
+    baseStyle: {
+      _text: {
+        fontWeight: 700,
+        fontFamily: 'body',
+      },
+    },
+  },
+  Heading: {
+    baseStyle: {
+      fontWeight: 700,
+      fontFamily: 'heading',
+    },
+  },
+};
 
 export const themeOverrides = {
   colors,
   fontConfig,
   fonts,
+  components,
 };

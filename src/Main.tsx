@@ -1,5 +1,5 @@
-import { useCallback, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { LogBox } from 'react-native';
 import Amplify, { Auth } from 'aws-amplify';
 // @ts-ignore
 import { withAuthenticator } from 'aws-amplify-react-native';
@@ -70,6 +70,7 @@ const signUpConfig = {
   ],
 };
 
+LogBox.ignoreAllLogs();
 const Main = () => {
   const [fontsLoaded] = useFonts({
     Montserrat_300Light,

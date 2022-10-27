@@ -43,40 +43,47 @@ const getChildrenUnsortedPhotos = async (event) => {
   const { userCollection, photoCollection } = await connectToDatabase();
   const user = await userCollection.findOne({ userId });
   const childrenObjects = user?.children;
-  const unsortedPhotos = await photoCollection.aggregate([
-    {
-      '$match': {
-        'accountId': '4b61adff-fa33-4c6f-890f-f59e3f80879f',
-        'childId': {
-          '$in': [
-            '3103d357-eb10-4224-b99c-f65a827f6205', '3103d357-eb10-4224-b99c-f65a827f6206'
-          ]
+  const unsortedPhotos = await photoCollection
+    .aggregate([
+      {
+        $match: {
+          accountId: user.accountId,
+          childId: {
+            $in: childrenObjects.map((c) => c.id),
+          },
+          albums: {
+            $size: 0,
+          },
         },
-        'albums': {
-          '$size': 0
-        }
-      }
-    }, {
-      '$group': {
-        '_id': '$childId',
-        'photos': {
-          '$push': {
-            '_id': '$_id',
-            'bucketName': '$bucketName',
-            'objectKey': '$objectKey',
-            'dateOfPhoto': '$dateOfPhoto',
-            'description': '$description',
-            'childId': '$childId'
-          }
-        }
-      }
-    }
-  ]).toArray();
-  console.log('unsortedPhotos-------->', unsortedPhotos);
-  return unsortedPhotos;
-  // const childrenUnsortedPhotos = childrenObjects
-  //   .reduce((res, currentChild) => {
-  // }, []);
+      },
+      {
+        $group: {
+          _id: { childId: '$childId' },
+          photos: {
+            $push: {
+              _id: '$_id',
+              bucketName: '$bucketName',
+              objectKey: '$objectKey',
+              dateOfPhoto: '$dateOfPhoto',
+              description: '$description',
+              childId: '$childId',
+              thumbnailKey: '$thumbnailKey',
+            },
+          },
+        },
+      },
+    ])
+    .toArray();
+  return unsortedPhotos.map((p) => {
+    const childObj = childrenObjects.find((c) => c.id === p._id.childId);
+    return {
+      photos: p.photos,
+      _id: {
+        ...childObj,
+        childId: childObj.id,
+      },
+    };
+  });
 };
 
 const getChildrenAlbums = async (event) => {
@@ -187,7 +194,8 @@ const resolvers = {
     getChildrenAlbums: (event) => getChildrenAlbums(event),
     getPhotosForAlbum: (event) => getPhotosForAlbum(event),
     getUser: (event, context) => getUser(event, context),
-    getChildrenUnsortedPhotos: (event, context) => getChildrenUnsortedPhotos(event, context),
+    getChildrenUnsortedPhotos: (event, context) =>
+      getChildrenUnsortedPhotos(event, context),
   },
 };
 

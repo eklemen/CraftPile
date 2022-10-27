@@ -20,6 +20,7 @@ interface ChildAlbum {
 interface Props {
   navigation: AlbumScreenNavigationProp;
 }
+
 function AlbumScreen({ navigation }: Props) {
   const { compData: albumCompData, setData: setAlbumData } = useCompData(
     domains.ALBUMS

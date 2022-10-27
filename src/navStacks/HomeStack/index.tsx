@@ -29,6 +29,7 @@ function MainBottomNavScreens() {
           fontFamily: fontConfig?.Nunito[500].normal,
           fontSize: 14,
         },
+        headerShown: false,
       }}
     >
       <MainBottomNav.Screen

@@ -87,8 +87,12 @@ type UnsortedPhoto {
   thumbnailKey: String
   localPath: String
 }
+type UnsortedId {
+  childId: String
+  name: String
+}
 type ChildUnsortedPhotos {
-  _id: ID
+  _id: UnsortedId
   photos: [UnsortedPhoto]
 }
 
