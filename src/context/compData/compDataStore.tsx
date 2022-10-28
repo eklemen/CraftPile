@@ -1,10 +1,10 @@
 import React, { createContext, useReducer } from 'react';
-import { CompDataStateTree } from '../constants';
+import { CompDataStateTree, PILE } from '../constants';
 
 type ContextAction = {
-  type: string,
-  name: string,
-  payload?: Record<string, any>
+  type: string;
+  name: string;
+  payload?: Record<string, any>;
 };
 
 const initialState: Partial<CompDataStateTree> = {};
@@ -12,7 +12,8 @@ const compDataStore = createContext<{
   state: Partial<CompDataStateTree>;
   dispatch: React.Dispatch<ContextAction>;
 }>({
-  state: initialState, dispatch: () => null
+  state: initialState,
+  dispatch: () => null,
 });
 const { Provider } = compDataStore;
 

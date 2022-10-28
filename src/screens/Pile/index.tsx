@@ -1,42 +1,35 @@
 import { API, graphqlOperation } from 'aws-amplify';
-import {
-  Button,
-  Text,
-  useTheme,
-  Column,
-  Box,
-  Row,
-  Heading,
-  Image,
-  Center,
-  ScrollView,
-} from 'native-base';
+import { Button, Column, Heading, Row, Slide } from 'native-base';
 import { useEffect, useState } from 'react';
 
 import {
   ChildUnsortedPhotos,
   GetChildrenUnsortedPhotosQuery,
-  UnsortedPhoto,
 } from '../../generated/API';
 import { getChildrenUnsortedPhotos } from '../../graphql/queries';
 import { AlbumScreenNavigationProp } from '../../types/routes';
-import Storage from '@aws-amplify/storage';
-import S3Image from '../../shared/S3Image';
-import ImageBox from './ImageBox';
 import ChildPileBlock from './ChildPileBlock';
 import { FlatList } from 'react-native';
+import useCompData from '../../context/compData/useCompData';
+import { PILE, PileCD } from '../../context/constants';
 
 interface Props {
   navigation: AlbumScreenNavigationProp;
 }
 
 function PileScreen({ navigation }: Props) {
-  // const { fontConfig } = useTheme();
+  const { compData: pileCompData, setData: setPileData } =
+    useCompData<PileCD>(PILE);
   const [pilePhotos, setPilePhotos] = useState<
     GetChildrenUnsortedPhotosQuery['getChildrenUnsortedPhotos'] | undefined
   >();
 
   useEffect(() => {
+    setPileData({
+      multiSelect: false,
+      selectedPhotos: {},
+      selectedPhoto: null,
+    });
     const getUnsorted = async () => {
       const unsortedPhotos = (await API.graphql(
         graphqlOperation(getChildrenUnsortedPhotos)
@@ -47,12 +40,28 @@ function PileScreen({ navigation }: Props) {
       getUnsorted();
     }
   }, []);
+  console.log('pileCompData-------->', pileCompData);
   return (
     <Column safeArea mt={30} h="100%">
       <Row alignItems="center" justifyContent="space-between" px={3} mb={5}>
         <Heading fontSize={34}>Pile</Heading>
-        <Button colorScheme="secondary" size="sm" rounded="full">
-          Select
+        <Button
+          colorScheme="secondary"
+          size="sm"
+          rounded="full"
+          onPress={() => {
+            const payload: Partial<PileCD> = {
+              multiSelect: !pileCompData.multiSelect,
+            };
+            if (pileCompData.multiSelect) {
+              payload.selectedPhotos = {};
+              setPileData(payload);
+            } else {
+              setPileData(payload);
+            }
+          }}
+        >
+          {pileCompData.multiSelect ? 'Cancel' : 'Select'}
         </Button>
       </Row>
       <FlatList
@@ -61,14 +70,7 @@ function PileScreen({ navigation }: Props) {
           <ChildPileBlock child={item as ChildUnsortedPhotos} />
         )}
       />
-      {/*<ScrollView>*/}
-      {/*  {pilePhotos?.map((child) => (*/}
-      {/*    <ChildPileBlock*/}
-      {/*      key={child?._id?.childId}*/}
-      {/*      child={child as ChildUnsortedPhotos}*/}
-      {/*    />*/}
-      {/*  ))}*/}
-      {/*</ScrollView>*/}
+      <Row w="100%" h={63} style={{ borderColor: 'red', borderWidth: 1 }}></Row>
     </Column>
   );
 }

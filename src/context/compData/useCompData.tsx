@@ -22,7 +22,7 @@ const useCompData = <T,>(name: keyof CompDataStateTree) => {
   };
   return {
     setData,
-    compData: state[name] as T || {} as T,
+    compData: (state[name] as T) || ({} as T),
     // getCompData,
     clearStore,
     clearComp,
