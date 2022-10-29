@@ -1,6 +1,14 @@
 import { API, graphqlOperation } from 'aws-amplify';
-import { Button, Column, Heading, Row, Slide } from 'native-base';
-import { useEffect, useState } from 'react';
+import { Button, Column, Heading, Row, Slide, Text } from 'native-base';
+import { useEffect, useRef, useState } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
+  Easing,
+} from 'react-native-reanimated';
 
 import {
   ChildUnsortedPhotos,
@@ -9,9 +17,9 @@ import {
 import { getChildrenUnsortedPhotos } from '../../graphql/queries';
 import { AlbumScreenNavigationProp } from '../../types/routes';
 import ChildPileBlock from './ChildPileBlock';
-import { FlatList } from 'react-native';
 import useCompData from '../../context/compData/useCompData';
 import { PILE, PileCD } from '../../context/constants';
+import TrashCan from '../../appIcons/TrashCan';
 
 interface Props {
   navigation: AlbumScreenNavigationProp;
@@ -23,10 +31,16 @@ function PileScreen({ navigation }: Props) {
   const [pilePhotos, setPilePhotos] = useState<
     GetChildrenUnsortedPhotosQuery['getChildrenUnsortedPhotos'] | undefined
   >();
+  const drawerPosition = useSharedValue(-32);
+  const animatedDrawer = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateY: drawerPosition.value }],
+    };
+  });
 
   useEffect(() => {
     setPileData({
-      multiSelect: false,
+      multiSelect: true,
       selectedPhotos: {},
       selectedPhoto: null,
     });
@@ -40,9 +54,25 @@ function PileScreen({ navigation }: Props) {
       getUnsorted();
     }
   }, []);
+
+  useEffect(() => {
+    if (pileCompData.multiSelect) {
+      // drawerPosition.value = withSpring(0);
+      drawerPosition.value = withTiming(-32, {
+        duration: 300,
+        easing: Easing.out(Easing.exp),
+      });
+    } else {
+      // drawerPosition.value = withSpring(90);
+      drawerPosition.value = withTiming(70, {
+        duration: 250,
+        easing: Easing.in(Easing.exp),
+      });
+    }
+  }, [pileCompData.multiSelect]);
   console.log('pileCompData-------->', pileCompData);
   return (
-    <Column safeArea mt={30} h="100%">
+    <Column safeAreaTop mt={30} h="100%" position="relative">
       <Row alignItems="center" justifyContent="space-between" px={3} mb={5}>
         <Heading fontSize={34}>Pile</Heading>
         <Button
@@ -70,7 +100,24 @@ function PileScreen({ navigation }: Props) {
           <ChildPileBlock child={item as ChildUnsortedPhotos} />
         )}
       />
-      <Row w="100%" h={63} style={{ borderColor: 'red', borderWidth: 1 }}></Row>
+
+      <Animated.View style={[animatedDrawer, { marginTop: -32 }]}>
+        <Row w="100%" h={73} bg="white">
+          <Button
+            h={16}
+            w={16}
+            colorScheme="secondary"
+            variant="ghost"
+            rounded="full"
+            disabled={!Object.keys(pileCompData.selectedPhotos).length}
+            flex={1}
+          >
+            <TrashCan
+              disabled={!Object.keys(pileCompData.selectedPhotos).length}
+            />
+          </Button>
+        </Row>
+      </Animated.View>
     </Column>
   );
 }
