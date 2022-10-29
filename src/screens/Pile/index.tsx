@@ -20,26 +20,24 @@ import ChildPileBlock from './ChildPileBlock';
 import useCompData from '../../context/compData/useCompData';
 import { PILE, PileCD } from '../../context/constants';
 import TrashCan from '../../appIcons/TrashCan';
+import PileActionDrawer from './PileActionDrawer';
 
 interface Props {
   navigation: AlbumScreenNavigationProp;
 }
 
 function PileScreen({ navigation }: Props) {
-  const { compData: pileCompData, setData: setPileData } =
-    useCompData<PileCD>(PILE);
+  const {
+    compData: pileCompData,
+    setData: setPileData,
+    clearComp: resetPileData,
+  } = useCompData<PileCD>(PILE);
   const [pilePhotos, setPilePhotos] = useState<
     GetChildrenUnsortedPhotosQuery['getChildrenUnsortedPhotos'] | undefined
   >();
-  const drawerPosition = useSharedValue(-32);
-  const animatedDrawer = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateY: drawerPosition.value }],
-    };
-  });
 
   useEffect(() => {
-    setPileData({
+    resetPileData({
       multiSelect: true,
       selectedPhotos: {},
       selectedPhoto: null,
@@ -55,22 +53,8 @@ function PileScreen({ navigation }: Props) {
     }
   }, []);
 
-  useEffect(() => {
-    if (pileCompData.multiSelect) {
-      // drawerPosition.value = withSpring(0);
-      drawerPosition.value = withTiming(-32, {
-        duration: 300,
-        easing: Easing.out(Easing.exp),
-      });
-    } else {
-      // drawerPosition.value = withSpring(90);
-      drawerPosition.value = withTiming(70, {
-        duration: 250,
-        easing: Easing.in(Easing.exp),
-      });
-    }
-  }, [pileCompData.multiSelect]);
   console.log('pileCompData-------->', pileCompData);
+
   return (
     <Column safeAreaTop mt={30} h="100%" position="relative">
       <Row alignItems="center" justifyContent="space-between" px={3} mb={5}>
@@ -101,23 +85,7 @@ function PileScreen({ navigation }: Props) {
         )}
       />
 
-      <Animated.View style={[animatedDrawer, { marginTop: -32 }]}>
-        <Row w="100%" h={73} bg="white">
-          <Button
-            h={16}
-            w={16}
-            colorScheme="secondary"
-            variant="ghost"
-            rounded="full"
-            disabled={!Object.keys(pileCompData.selectedPhotos).length}
-            flex={1}
-          >
-            <TrashCan
-              disabled={!Object.keys(pileCompData.selectedPhotos).length}
-            />
-          </Button>
-        </Row>
-      </Animated.View>
+      <PileActionDrawer pileCompData={pileCompData} />
     </Column>
   );
 }

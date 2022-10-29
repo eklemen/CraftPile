@@ -3,22 +3,15 @@ import ImageBox from './ImageBox';
 import { ChildUnsortedPhotos, UnsortedPhoto } from '../../generated/API';
 import useCompData from '../../context/compData/useCompData';
 import { PILE, PileCD } from '../../context/constants';
-import { useEffect } from 'react';
 
 interface Props {
   child: ChildUnsortedPhotos;
 }
 
 function ChildPileBlock({ child }: Props) {
-  const {
-    compData: pileCompData,
-    setData: setPileData,
-    clearComp,
-  } = useCompData<PileCD>(PILE);
+  const { compData: pileCompData, setData: setPileData } =
+    useCompData<PileCD>(PILE);
   if (!child?.photos?.length) return null;
-  useEffect(() => {
-    clearComp();
-  }, []);
   return (
     <Box px={4} mb={5}>
       <Heading size="md">{child?._id?.name}</Heading>

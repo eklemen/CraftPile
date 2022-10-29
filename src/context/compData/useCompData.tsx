@@ -14,12 +14,8 @@ const useCompData = <T,>(name: keyof CompDataStateTree) => {
     return dispatch({ type: 'SET_DATA', name, payload });
   };
   const clearStore = () => dispatch({ type: 'CLEAR_STORE', name: '' });
-  const clearComp = (altName?: string) => {
-    if (altName) {
-      return dispatch({ type: 'CLEAR_COMP', name: altName });
-    }
-    return dispatch({ type: 'CLEAR_COMP', name });
-  };
+  const clearComp = (payload: Partial<T> = {}) =>
+    dispatch({ type: 'CLEAR_COMP', name, payload });
   return {
     setData,
     compData: (state[name] as T) || ({} as T),

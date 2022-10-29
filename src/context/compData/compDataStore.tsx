@@ -38,7 +38,7 @@ const CompDataProvider = ({ children }: { children: React.ReactNode }) => {
         case 'CLEAR_COMP':
           return {
             ...state,
-            [action.name]: {},
+            [action.name]: { ...action.payload },
           };
         case 'CLEAR_STORE':
           return initialState;
