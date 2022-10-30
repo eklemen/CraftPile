@@ -14,11 +14,11 @@ function ChildPileBlock({ child }: Props) {
   if (!child?.photos?.length) return null;
   return (
     <Box px={4} mb={5}>
-      <Heading size="md">{child?._id?.name}</Heading>
+      <Heading size="md">{child._id?.name}</Heading>
       <Row flexWrap="wrap">
-        {child?.photos?.map((photo) => {
+        {child.photos?.map((photo) => {
           const isMultiSelected = pileCompData.selectedPhotos?.hasOwnProperty(
-            photo?._id as string
+            photo?._id
           );
           return (
             <Pressable
@@ -28,25 +28,26 @@ function ChildPileBlock({ child }: Props) {
               my={1}
               onPress={() => {
                 if (pileCompData.multiSelect) {
+                  // if photo is selected, unselect it
                   if (
-                    pileCompData?.selectedPhotos?.hasOwnProperty(
-                      photo?._id as string
-                    )
+                    pileCompData?.selectedPhotos?.hasOwnProperty(photo?._id)
                   ) {
                     const selectedPhotos = { ...pileCompData.selectedPhotos };
-                    delete selectedPhotos[photo?._id as string];
+                    delete selectedPhotos[photo?._id];
                     setPileData({
                       selectedPhotos,
                     });
                   } else {
+                    // otherwise add photo
                     setPileData({
                       selectedPhotos: {
                         ...pileCompData.selectedPhotos,
-                        [photo?._id as string]: photo!,
+                        [photo?._id]: photo!,
                       },
                     });
                   }
                 } else {
+                  // Single select
                   setPileData({
                     selectedPhoto: photo,
                   });

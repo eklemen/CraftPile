@@ -16,7 +16,6 @@ export const updatePhotoProps = /* GraphQL */ `
       childId
       accountId
       albums
-      tags
     }
   }
 `;
@@ -31,6 +30,25 @@ export const addChild = /* GraphQL */ `
         id
         name
         age
+      }
+    }
+  }
+`;
+export const deleteUnsortedPhotos = /* GraphQL */ `
+  mutation DeleteUnsortedPhotos($input: deletePhotosInput!) {
+    deleteUnsortedPhotos(input: $input) {
+      _id {
+        childId
+        name
+      }
+      photos {
+        _id
+        bucketName
+        objectKey
+        dateOfPhoto
+        childId
+        thumbnailKey
+        localPath
       }
     }
   }

@@ -15,17 +15,16 @@ export type updatePhotoPropertiesInput = {
 export type Photo = {
   __typename: "Photo",
   _id?: string | null,
-  bucketName?: string | null,
-  objectKey?: string | null,
-  thumbnailKey?: string | null,
+  bucketName: string,
+  objectKey: string,
+  thumbnailKey: string,
   localPath?: string | null,
-  dateOfPhoto?: string | null,
+  dateOfPhoto: string,
   title?: string | null,
   description?: string | null,
-  childId?: string | null,
-  accountId?: string | null,
-  albums?: Array< string | null > | null,
-  tags?: Array< string | null > | null,
+  childId: string,
+  accountId: string,
+  albums?: Array< string > | null,
 };
 
 export type addChildInput = {
@@ -35,18 +34,45 @@ export type addChildInput = {
 
 export type User = {
   __typename: "User",
-  _id?: string | null,
-  userId?: string | null,
-  email?: string | null,
-  accountId?: string | null,
+  _id: string,
+  userId: string,
+  email: string,
+  accountId: string,
   children?:  Array<Child | null > | null,
 };
 
 export type Child = {
   __typename: "Child",
-  id?: string | null,
-  name?: string | null,
+  id: string,
+  name: string,
   age?: number | null,
+};
+
+export type deletePhotosInput = {
+  ids?: Array< string | null > | null,
+};
+
+export type ChildUnsortedPhotos = {
+  __typename: "ChildUnsortedPhotos",
+  _id?: UnsortedId | null,
+  photos?:  Array<UnsortedPhoto > | null,
+};
+
+export type UnsortedId = {
+  __typename: "UnsortedId",
+  childId: string,
+  name: string,
+};
+
+export type UnsortedPhoto = {
+  __typename: "UnsortedPhoto",
+  _id: string,
+  bucketName: string,
+  objectKey: string,
+  dateOfPhoto: string,
+  childId: string,
+  thumbnailKey: string,
+  localPath?: string | null,
 };
 
 export type getPhotosForAlbumInput = {
@@ -81,29 +107,6 @@ export type Album = {
   posterImage?: Photo | null,
 };
 
-export type ChildUnsortedPhotos = {
-  __typename: "ChildUnsortedPhotos",
-  _id?: UnsortedId | null,
-  photos?:  Array<UnsortedPhoto | null > | null,
-};
-
-export type UnsortedId = {
-  __typename: "UnsortedId",
-  childId?: string | null,
-  name?: string | null,
-};
-
-export type UnsortedPhoto = {
-  __typename: "UnsortedPhoto",
-  _id?: string | null,
-  bucketName?: string | null,
-  objectKey?: string | null,
-  dateOfPhoto?: string | null,
-  childId?: string | null,
-  thumbnailKey?: string | null,
-  localPath?: string | null,
-};
-
 export type UpdatePhotoPropsMutationVariables = {
   input?: updatePhotoPropertiesInput | null,
 };
@@ -112,17 +115,16 @@ export type UpdatePhotoPropsMutation = {
   updatePhotoProps?:  {
     __typename: "Photo",
     _id?: string | null,
-    bucketName?: string | null,
-    objectKey?: string | null,
-    thumbnailKey?: string | null,
+    bucketName: string,
+    objectKey: string,
+    thumbnailKey: string,
     localPath?: string | null,
-    dateOfPhoto?: string | null,
+    dateOfPhoto: string,
     title?: string | null,
     description?: string | null,
-    childId?: string | null,
-    accountId?: string | null,
-    albums?: Array< string | null > | null,
-    tags?: Array< string | null > | null,
+    childId: string,
+    accountId: string,
+    albums?: Array< string > | null,
   } | null,
 };
 
@@ -133,17 +135,42 @@ export type AddChildMutationVariables = {
 export type AddChildMutation = {
   addChild?:  {
     __typename: "User",
-    _id?: string | null,
-    userId?: string | null,
-    email?: string | null,
-    accountId?: string | null,
+    _id: string,
+    userId: string,
+    email: string,
+    accountId: string,
     children?:  Array< {
       __typename: "Child",
-      id?: string | null,
-      name?: string | null,
+      id: string,
+      name: string,
       age?: number | null,
     } | null > | null,
   } | null,
+};
+
+export type DeleteUnsortedPhotosMutationVariables = {
+  input: deletePhotosInput,
+};
+
+export type DeleteUnsortedPhotosMutation = {
+  deleteUnsortedPhotos?:  Array< {
+    __typename: "ChildUnsortedPhotos",
+    _id?:  {
+      __typename: "UnsortedId",
+      childId: string,
+      name: string,
+    } | null,
+    photos?:  Array< {
+      __typename: "UnsortedPhoto",
+      _id: string,
+      bucketName: string,
+      objectKey: string,
+      dateOfPhoto: string,
+      childId: string,
+      thumbnailKey: string,
+      localPath?: string | null,
+    } > | null,
+  } > | null,
 };
 
 export type GetPhotosForAlbumQueryVariables = {
@@ -160,17 +187,16 @@ export type GetPhotosForAlbumQuery = {
     photos?:  Array< {
       __typename: "Photo",
       _id?: string | null,
-      bucketName?: string | null,
-      objectKey?: string | null,
-      thumbnailKey?: string | null,
+      bucketName: string,
+      objectKey: string,
+      thumbnailKey: string,
       localPath?: string | null,
-      dateOfPhoto?: string | null,
+      dateOfPhoto: string,
       title?: string | null,
       description?: string | null,
-      childId?: string | null,
-      accountId?: string | null,
-      albums?: Array< string | null > | null,
-      tags?: Array< string | null > | null,
+      childId: string,
+      accountId: string,
+      albums?: Array< string > | null,
     } | null > | null,
   } | null,
 };
@@ -178,14 +204,14 @@ export type GetPhotosForAlbumQuery = {
 export type GetUserQuery = {
   getUser?:  {
     __typename: "User",
-    _id?: string | null,
-    userId?: string | null,
-    email?: string | null,
-    accountId?: string | null,
+    _id: string,
+    userId: string,
+    email: string,
+    accountId: string,
     children?:  Array< {
       __typename: "Child",
-      id?: string | null,
-      name?: string | null,
+      id: string,
+      name: string,
       age?: number | null,
     } | null > | null,
   } | null,
@@ -211,18 +237,18 @@ export type GetChildrenUnsortedPhotosQuery = {
     __typename: "ChildUnsortedPhotos",
     _id?:  {
       __typename: "UnsortedId",
-      childId?: string | null,
-      name?: string | null,
+      childId: string,
+      name: string,
     } | null,
     photos?:  Array< {
       __typename: "UnsortedPhoto",
-      _id?: string | null,
-      bucketName?: string | null,
-      objectKey?: string | null,
-      dateOfPhoto?: string | null,
-      childId?: string | null,
-      thumbnailKey?: string | null,
+      _id: string,
+      bucketName: string,
+      objectKey: string,
+      dateOfPhoto: string,
+      childId: string,
+      thumbnailKey: string,
       localPath?: string | null,
-    } | null > | null,
-  } | null > | null,
+    } > | null,
+  } > | null,
 };

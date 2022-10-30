@@ -185,10 +185,22 @@ const addChild = async (event) => {
   return res.value;
 };
 
+const deleteUnsortedPhotos = async (event) => {
+  const { photoCollection } = await connectToDatabase();
+  const { ids } = event?.arguments?.input;
+  await photoCollection.deleteMany({
+    _id: {
+      $in: ids.map((id) => new ObjectID(id)),
+    },
+  });
+  return await getChildrenUnsortedPhotos(event);
+};
+
 const resolvers = {
   Mutation: {
     updatePhotoProps: (event) => updatePhotoProps(event),
     addChild: (event) => addChild(event),
+    deleteUnsortedPhotos: (event) => deleteUnsortedPhotos(event),
   },
   Query: {
     getChildrenAlbums: (event) => getChildrenAlbums(event),
