@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import {
-  Box,
   Button,
   Center,
   Column,
@@ -12,6 +11,12 @@ import {
 } from 'native-base';
 import { AUTH, PILE, PileCD, UserCD } from '../../context/constants';
 import useCompData from '../../context/compData/useCompData';
+import { gql, useMutation } from '@apollo/client';
+import {
+  AssignPhotosToChildMutation,
+  AssignPhotosToChildMutationVariables,
+} from '../../generated/API';
+import { assignPhotosToChild } from '../../graphql/mutations';
 
 interface Props {
   isOpen: boolean;
@@ -20,8 +25,14 @@ interface Props {
 
 function ChildSelectModal({ isOpen, onClose }: Props) {
   const { compData: userCompData } = useCompData<UserCD>(AUTH);
-  const { compData: pileCompData } = useCompData<PileCD>(PILE);
+  const { compData: pileCompData, clearComp: resetPileData } =
+    useCompData<PileCD>(PILE);
+  const [assignPhotos, { loading, error }] = useMutation<
+    AssignPhotosToChildMutation,
+    AssignPhotosToChildMutationVariables
+  >(gql(assignPhotosToChild));
   const [radioValue, setRadioValue] = useState<string>();
+  const [initialChildId, setInitialChildId] = useState<string>();
   useEffect(() => {
     const hasSelectedChild =
       pileCompData?.selectedPhotos &&
@@ -29,11 +40,26 @@ function ChildSelectModal({ isOpen, onClose }: Props) {
     const selectedChild = hasSelectedChild
       ? Object.values(pileCompData?.selectedPhotos)[0]?.childId
       : undefined;
+    setInitialChildId(selectedChild);
     setRadioValue(selectedChild);
   }, [pileCompData.selectedPhotos]);
 
-  console.log('value-------->', radioValue);
-  const handleSave = () => {
+  const handleSave = async () => {
+    if (initialChildId !== radioValue) {
+      await assignPhotos({
+        variables: {
+          input: {
+            ids: Object.keys(pileCompData.selectedPhotos) || [],
+            childId: radioValue!,
+          },
+        },
+      });
+    }
+    resetPileData({
+      multiSelect: false,
+      selectedPhotos: {},
+      selectedPhoto: null,
+    });
     onClose();
   };
   if (!radioValue) return null;
@@ -81,7 +107,13 @@ function ChildSelectModal({ isOpen, onClose }: Props) {
           </Column>
         </Modal.Body>
         <Modal.Footer borderTopWidth={0}>
-          <Button colorScheme="secondary" flex={1} h={70} onPress={handleSave}>
+          <Button
+            colorScheme="secondary"
+            flex={1}
+            h={70}
+            onPress={handleSave}
+            isLoading={loading}
+          >
             <Text color="white" fontFamily="body" fontSize={28}>
               Save
             </Text>

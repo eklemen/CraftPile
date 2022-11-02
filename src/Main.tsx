@@ -31,7 +31,7 @@ import config from '../aws-exports';
 import { CompDataProvider } from './context/compData/compDataStore';
 import { AppNavs } from './navStacks/HomeStack';
 import { themeOverrides } from './styles';
-import { UnsortedId } from './generated/API';
+import { apolloClient } from './apolloConfig';
 // import RCTAsyncStorage from '@react-native-async-storage/async-storage';
 //
 // Promise.resolve(RCTAsyncStorage.clear()).then(() => {
@@ -82,39 +82,7 @@ const signUpConfig = {
 };
 
 LogBox.ignoreAllLogs();
-////////////////////////////////
-const url = config.aws_appsync_graphqlEndpoint;
 
-const region = config.aws_appsync_region;
-
-const auth: AuthOptions = {
-  type: config.aws_appsync_authenticationType as 'AMAZON_COGNITO_USER_POOLS',
-  jwtToken: async () => {
-    const session = await Auth.currentSession();
-    return session.getIdToken().getJwtToken();
-  }, // Required when you use Cognito UserPools OR OpenID Connect. token object is obtained previously
-  // credentials: async () => credentials, // Required when you use IAM-based auth.
-};
-
-const httpLink = new HttpLink({ uri: url });
-const link: ApolloLink = ApolloLink.from([
-  createAuthLink({ url, region, auth }),
-  createSubscriptionHandshakeLink({ url, region, auth }, httpLink),
-]);
-const client = new ApolloClient({
-  link,
-  cache: new InMemoryCache({
-    typePolicies: {
-      UnsortedId: {
-        keyFields: ['childId'],
-      },
-      ChildUnsortedPhotos: {
-        keyFields: ['_id', ['childId']],
-      },
-    },
-  }),
-});
-////////////////////////////////
 const Main = () => {
   const [fontsLoaded] = useFonts({
     Montserrat_300Light,
@@ -130,7 +98,7 @@ const Main = () => {
   };
   const theme = extendTheme(themeOverrides);
   return (
-    <ApolloProvider client={client}>
+    <ApolloProvider client={apolloClient}>
       <NativeBaseProvider theme={theme}>
         <CompDataProvider>
           <NavigationContainer

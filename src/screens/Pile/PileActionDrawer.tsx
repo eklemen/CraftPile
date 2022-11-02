@@ -11,33 +11,24 @@ import { PILE, PileCD } from '../../context/constants';
 import SwitchIcon from '../../appIcons/SwitchIcon';
 import AlbumAddIcon from '../../appIcons/AlbumAddIcon';
 import useCompData from '../../context/compData/useCompData';
-import { API, graphqlOperation } from 'aws-amplify';
 import {
   DeleteUnsortedPhotosMutation,
   DeleteUnsortedPhotosMutationVariables,
-  GetChildrenUnsortedPhotosQuery,
 } from '../../generated/API';
 import { deleteUnsortedPhotos } from '../../graphql/mutations';
 import ChildSelectModal from '../../shared/ChildSelectModal';
 import { gql, useMutation } from '@apollo/client';
 
-interface Props {
-  setPilePhotos: React.Dispatch<
-    GetChildrenUnsortedPhotosQuery['getChildrenUnsortedPhotos'] | undefined
-  >;
-}
-
-function PileActionDrawer({ setPilePhotos }: Props) {
+function PileActionDrawer() {
   const { compData: pileCompData, clearComp: resetPileData } =
     useCompData<PileCD>(PILE);
   const [disableDrawerBtn, setDisableDrawerBtn] = useState(false);
   const [showChildSelectModal, setShowChildSelectModal] = useState(false);
-  const [deletePhotos, { data, loading, error }] = useMutation<
+  const [deletePhotos, { loading: deletePending, error }] = useMutation<
     DeleteUnsortedPhotosMutation,
     DeleteUnsortedPhotosMutationVariables
   >(gql(deleteUnsortedPhotos), {});
-  console.log('data-------->', data);
-  console.log('loading-------->', loading);
+  console.log('deletePending-------->', deletePending);
   console.log('error-------->', error);
 
   // animation

@@ -14,7 +14,7 @@ function ChildPileBlock({ child }: Props) {
   if (!child?.photos?.length) return null;
   return (
     <Box px={4} mb={5}>
-      <Heading size="md">{child._id?.name}</Heading>
+      <Heading size="md">{child?.childName}</Heading>
       <Row flexWrap="wrap">
         {child.photos?.map((photo) => {
           const isMultiSelected = pileCompData.selectedPhotos?.hasOwnProperty(
@@ -54,10 +54,7 @@ function ChildPileBlock({ child }: Props) {
                 }
               }}
             >
-              <ImageBox
-                photo={photo as UnsortedPhoto}
-                isMultiSelected={isMultiSelected}
-              />
+              <ImageBox photo={photo} isMultiSelected={isMultiSelected} />
             </Pressable>
           );
         })}

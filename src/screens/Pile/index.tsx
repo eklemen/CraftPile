@@ -1,14 +1,9 @@
-import { API, graphqlOperation } from 'aws-amplify';
-import { Button, Column, Heading, Row } from 'native-base';
-import { useEffect, useState } from 'react';
-import { FlatList } from 'react-native';
+import { Box, Button, Column, Heading, Row } from 'native-base';
+import { useEffect } from 'react';
+import { Dimensions, FlatList, StatusBar } from 'react-native';
 import { useQuery, gql } from '@apollo/client';
 
-import {
-  ChildUnsortedPhotos,
-  DeleteUnsortedPhotosMutation,
-  GetChildrenUnsortedPhotosQuery,
-} from '../../generated/API';
+import { GetChildrenUnsortedPhotosQuery } from '../../generated/API';
 import { getChildrenUnsortedPhotos } from '../../graphql/queries';
 import { AlbumScreenNavigationProp } from '../../types/routes';
 import ChildPileBlock from './ChildPileBlock';
@@ -26,11 +21,6 @@ function PileScreen({}: Props) {
     setData: setPileData,
     clearComp: resetPileData,
   } = useCompData<PileCD>(PILE);
-  const [_, setPilePhotos] = useState<
-    | GetChildrenUnsortedPhotosQuery['getChildrenUnsortedPhotos']
-    | DeleteUnsortedPhotosMutation['deleteUnsortedPhotos']
-    | undefined
-  >();
 
   const {
     loading: listLoading,
@@ -40,7 +30,7 @@ function PileScreen({}: Props) {
 
   useEffect(() => {
     resetPileData({
-      multiSelect: true,
+      multiSelect: false,
       selectedPhotos: {},
       selectedPhoto: null,
     });
@@ -48,6 +38,7 @@ function PileScreen({}: Props) {
 
   return (
     <Column safeAreaTop mt={30} h="100%" position="relative">
+      <StatusBar barStyle="dark-content" />
       <Row alignItems="center" justifyContent="space-between" px={3} mb={5}>
         <Heading fontSize={34}>Pile</Heading>
         <Button
@@ -74,7 +65,7 @@ function PileScreen({}: Props) {
         renderItem={({ item }) => <ChildPileBlock child={item} />}
       />
 
-      <PileActionDrawer setPilePhotos={setPilePhotos} />
+      <PileActionDrawer />
     </Column>
   );
 }

@@ -7,8 +7,13 @@ input addChildInput {
   age: Int
 }
 
-input deletePhotosInput {
+input photoIdsInput {
   ids: [ID]!
+}
+
+input assignPhotosToChildInput {
+  ids: [ID!]!
+  childId: String!
 }
 
 input getPhotosForAlbumInput {
@@ -32,11 +37,6 @@ input updatePhotoPropertiesInput {
   childId: String
   albums: [String]
   tags: [String]
-}
-
-input changePhotosChildInput {
-  ids: [ID]!
-  childId: String
 }
 
 type NewPhotoResponse {
@@ -95,13 +95,14 @@ type UnsortedPhoto {
   thumbnailKey: String!
   localPath: String
 }
-type UnsortedId {
-  childId: String!
-  name: String!
-}
+#type UnsortedId {
+#  childId: ID!
+#  name: String!
+#}
 type ChildUnsortedPhotos {
-  _id: UnsortedId!
-  photos: [UnsortedPhoto]!
+  _id: ID!
+  childName: String
+  photos: [UnsortedPhoto!]!
 }
 
 type PhotosForAlbum {
@@ -129,7 +130,9 @@ type Mutation {
   @function(name: "craftpilePhotos-${env}")
   addChild(input: addChildInput): User!
   @function(name: "craftpilePhotos-${env}")
-  deleteUnsortedPhotos(input: deletePhotosInput!): [ChildUnsortedPhotos!]
+  deleteUnsortedPhotos(input: photoIdsInput!): [ChildUnsortedPhotos!]
+  @function(name: "craftpilePhotos-${env}")
+  assignPhotosToChild(input: assignPhotosToChildInput!): [ChildUnsortedPhotos!]
   @function(name: "craftpilePhotos-${env}")
 }
 

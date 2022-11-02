@@ -58,7 +58,7 @@ const getChildrenUnsortedPhotos = async (event) => {
       },
       {
         $group: {
-          _id: { childId: '$childId' },
+          _id: '$childId',
           photos: {
             $push: {
               _id: '$_id',
@@ -75,13 +75,11 @@ const getChildrenUnsortedPhotos = async (event) => {
     ])
     .toArray();
   return unsortedPhotos.map((p) => {
-    const childObj = childrenObjects.find((c) => c.id === p._id.childId);
+    const childObj = childrenObjects.find((c) => c.id === p._id);
     return {
       photos: p.photos,
-      _id: {
-        ...childObj,
-        childId: childObj.id,
-      },
+      _id: childObj.id,
+      childName: childObj.name,
     };
   });
 };
@@ -196,11 +194,30 @@ const deleteUnsortedPhotos = async (event) => {
   return await getChildrenUnsortedPhotos(event);
 };
 
+const assignPhotosToChild = async (event) => {
+  const { photoCollection } = await connectToDatabase();
+  const { ids, childId } = event?.arguments?.input;
+  await photoCollection.updateMany(
+    {
+      _id: {
+        $in: ids.map((id) => new ObjectID(id)),
+      },
+    },
+    {
+      $set: {
+        childId,
+      },
+    }
+  );
+  return await getChildrenUnsortedPhotos(event);
+};
+
 const resolvers = {
   Mutation: {
     updatePhotoProps: (event) => updatePhotoProps(event),
     addChild: (event) => addChild(event),
     deleteUnsortedPhotos: (event) => deleteUnsortedPhotos(event),
+    assignPhotosToChild: (event) => assignPhotosToChild(event),
   },
   Query: {
     getChildrenAlbums: (event) => getChildrenAlbums(event),

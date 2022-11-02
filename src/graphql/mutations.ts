@@ -35,12 +35,27 @@ export const addChild = /* GraphQL */ `
   }
 `;
 export const deleteUnsortedPhotos = /* GraphQL */ `
-  mutation DeleteUnsortedPhotos($input: deletePhotosInput!) {
+  mutation DeleteUnsortedPhotos($input: photoIdsInput!) {
     deleteUnsortedPhotos(input: $input) {
-      _id {
+      _id
+      childName
+      photos {
+        _id
+        bucketName
+        objectKey
+        dateOfPhoto
         childId
-        name
+        thumbnailKey
+        localPath
       }
+    }
+  }
+`;
+export const assignPhotosToChild = /* GraphQL */ `
+  mutation AssignPhotosToChild($input: assignPhotosToChildInput!) {
+    assignPhotosToChild(input: $input) {
+      _id
+      childName
       photos {
         _id
         bucketName

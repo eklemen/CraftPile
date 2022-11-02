@@ -57,10 +57,8 @@ export const getChildrenAlbums = /* GraphQL */ `
 export const getChildrenUnsortedPhotos = /* GraphQL */ `
   query GetChildrenUnsortedPhotos {
     getChildrenUnsortedPhotos {
-      _id {
-        childId
-        name
-      }
+      _id
+      childName
       photos {
         _id
         bucketName

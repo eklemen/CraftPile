@@ -27,11 +27,10 @@ function CameraContainer() {
   const [galleryPermission, setGalleryPermission] = useState<boolean>(false);
   const [uploadingImg, setUploadingImg] = useState<boolean>(false);
   const { compData: authCompData, setData: setAuthData } = useCompData<UserCD>(
-    domains.AUTH,
+    domains.AUTH
   );
-  const { compData: cameraCompData, setData: setCameraCompData } = useCompData<CameraCD>(
-    domains.CAMERA,
-  );
+  const { compData: cameraCompData, setData: setCameraCompData } =
+    useCompData<CameraCD>(domains.CAMERA);
   const [loading, setLoading] = useState<boolean>(true);
 
   const askPermissions = async () => {
@@ -54,7 +53,7 @@ function CameraContainer() {
   useEffect(() => {
     const getUserData = async () => {
       const userData = (await API.graphql(
-        graphqlOperation(getUser),
+        graphqlOperation(getUser)
       )) as GraphQLResult<GetUserQuery>;
       if (userData.data) {
         setAuthData({ user: userData.data.getUser });
@@ -81,7 +80,7 @@ function CameraContainer() {
   }
 
   const handleImagePicked = async (
-    pickerResult: ImagePicker.ImagePickerResult,
+    pickerResult: ImagePicker.ImagePickerResult
   ) => {
     try {
       if (pickerResult.cancelled) {
@@ -149,7 +148,9 @@ function CameraContainer() {
       const blob = await response.blob();
       const [extension] = imagePath.split('.').slice(-1);
       // should use the local file path instead of uuid
-      const s3Path = `${authCompData.user?.accountId}/${uuid.v4()}.${extension}`;
+      const s3Path = `${
+        authCompData.user?.accountId
+      }/${uuid.v4()}.${extension}`;
 
       await Storage.put(s3Path, blob, {
         contentType: 'image/jpeg',
@@ -161,9 +162,9 @@ function CameraContainer() {
           console.error('Unexpected error while uploading====', err);
         },
         progressCallback: ({
-                             loaded,
-                             total,
-                           }: {
+          loaded,
+          total,
+        }: {
           loaded: number;
           total: number;
         }) => {
@@ -182,11 +183,7 @@ function CameraContainer() {
   };
 
   return (
-    <Center
-      flex={1}
-      justifyContent='center'
-      w='100%'
-    >
+    <Center flex={1} justifyContent="center" w="100%">
       <Camera
         style={styles.camera}
         type={CameraType.back}
@@ -194,15 +191,21 @@ function CameraContainer() {
       >
         <Box
           flex={1}
-          flexDirection='column'
-          justifyContent='flex-end'
-          alignItems='center'
+          flexDirection="column"
+          justifyContent="flex-end"
+          alignItems="center"
         >
-          <Center h={115} w="100%" bg="primary.800">
+          <Center h={115} w="100%">
             {uploadingImg ? (
-              <Spinner w={65} h={65} size='lg' color='white' />
+              <Spinner w={65} h={65} size="lg" color="white" />
             ) : (
-              <IconButton width={65} height={65} onPress={takePicture} variant='ghost' icon={<Shutter />} />
+              <IconButton
+                width={65}
+                height={65}
+                onPress={takePicture}
+                variant="ghost"
+                icon={<Shutter />}
+              />
             )}
           </Center>
         </Box>

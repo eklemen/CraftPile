@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useTheme } from 'native-base';
+import { Box, useTheme } from 'native-base';
 
 import Camera from '../../screens/Camera';
 import Landing from '../../screens/Landing';
@@ -13,6 +13,7 @@ import CameraIcon from '../../appIcons/CameraIcon';
 import AlbumIcon from '../../appIcons/AlbumIcon';
 import PileIcon from '../../appIcons/PileIcon';
 import ProfileIcon from '../../appIcons/ProfileIcon';
+import { Dimensions } from 'react-native';
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
 const MainBottomNav = createBottomTabNavigator();
@@ -38,7 +39,7 @@ function MainBottomNavScreens() {
         options={{
           headerShown: false,
           tabBarStyle: {
-            backgroundColor: colors.primary['500'],
+            backgroundColor: colors.primary['400'],
             borderTopColor: 'transparent',
           },
           tabBarActiveTintColor: colors.white,
@@ -87,7 +88,6 @@ function MainBottomNavScreens() {
     </MainBottomNav.Navigator>
   );
 }
-
 function AppNavs() {
   return (
     <AppStack.Navigator

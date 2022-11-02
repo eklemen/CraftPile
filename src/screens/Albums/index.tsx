@@ -2,7 +2,7 @@ import { GraphQLResult } from '@aws-amplify/api';
 import { API, graphqlOperation } from 'aws-amplify';
 import { Box, Button } from 'native-base';
 import { useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StatusBar } from 'react-native';
 
 import commonStyles from '../../common/styles';
 import useCompData from '../../context/compData/useCompData';
@@ -41,6 +41,7 @@ function AlbumScreen({ navigation }: Props) {
   }, []);
   return (
     <View style={commonStyles.container}>
+      <StatusBar barStyle="dark-content" />
       {albumCompData?.childrenAlbums &&
         albumCompData.childrenAlbums.map(
           (childAlbum: ChildAlbum, index: number) => {
