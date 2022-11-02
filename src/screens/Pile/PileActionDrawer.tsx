@@ -12,12 +12,12 @@ import SwitchIcon from '../../appIcons/SwitchIcon';
 import AlbumAddIcon from '../../appIcons/AlbumAddIcon';
 import useCompData from '../../context/compData/useCompData';
 import { API, graphqlOperation } from 'aws-amplify';
-import { getChildrenUnsortedPhotos } from '../../graphql/queries';
 import {
   DeleteUnsortedPhotosMutation,
   GetChildrenUnsortedPhotosQuery,
 } from '../../generated/API';
 import { deleteUnsortedPhotos } from '../../graphql/mutations';
+import ChildSelectModal from '../../shared/ChildSelectModal';
 
 interface Props {
   setPilePhotos: React.Dispatch<
@@ -29,6 +29,7 @@ function PileActionDrawer({ setPilePhotos }: Props) {
   const { compData: pileCompData, clearComp: resetPileData } =
     useCompData<PileCD>(PILE);
   const [disableDrawerBtn, setDisableDrawerBtn] = useState(false);
+  const [showChildSelectModal, setShowChildSelectModal] = useState(false);
   const drawerPosition = useSharedValue(70);
   const animatedDrawer = useAnimatedStyle(() => {
     return {
@@ -114,9 +115,7 @@ function PileActionDrawer({ setPilePhotos }: Props) {
             w="100%"
             colorScheme="secondary"
             variant="ghost"
-            onPress={() => {
-              console.log('banana');
-            }}
+            onPress={() => setShowChildSelectModal(true)}
             disabled={disableDrawerBtn}
           >
             <Center flexDirection="row">
@@ -144,7 +143,7 @@ function PileActionDrawer({ setPilePhotos }: Props) {
             colorScheme="secondary"
             variant="ghost"
             onPress={() => {
-              console.log('banana');
+              console.log('add to album');
             }}
             disabled={disableDrawerBtn}
           >
@@ -163,6 +162,10 @@ function PileActionDrawer({ setPilePhotos }: Props) {
           </Button>
         </Box>
       </Row>
+      <ChildSelectModal
+        isOpen={showChildSelectModal}
+        onClose={() => setShowChildSelectModal(false)}
+      />
     </Animated.View>
   );
 }

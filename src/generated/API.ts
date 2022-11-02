@@ -28,7 +28,7 @@ export type Photo = {
 };
 
 export type addChildInput = {
-  name?: string | null,
+  name: string,
   age?: number | null,
 };
 
@@ -38,7 +38,7 @@ export type User = {
   userId: string,
   email: string,
   accountId: string,
-  children?:  Array<Child | null > | null,
+  children:  Array<Child | null >,
 };
 
 export type Child = {
@@ -49,7 +49,7 @@ export type Child = {
 };
 
 export type deletePhotosInput = {
-  ids?: Array< string | null > | null,
+  ids: Array< string | null >,
 };
 
 export type ChildUnsortedPhotos = {
@@ -84,18 +84,18 @@ export type getPhotosForAlbumInput = {
 
 export type PhotosForAlbum = {
   __typename: "PhotosForAlbum",
-  _id?: string | null,
-  name?: string | null,
+  _id: string,
+  name: string,
   description?: string | null,
-  childId?: string | null,
-  photos?:  Array<Photo | null > | null,
+  childId: string,
+  photos?:  Array<Photo > | null,
 };
 
 export type ChildAlbums = {
   __typename: "ChildAlbums",
-  id?: string | null,
-  name?: string | null,
-  albums?:  Array<Album | null > | null,
+  id: string,
+  name: string,
+  albums?:  Array<Album > | null,
 };
 
 export type Album = {
@@ -133,19 +133,19 @@ export type AddChildMutationVariables = {
 };
 
 export type AddChildMutation = {
-  addChild?:  {
+  addChild:  {
     __typename: "User",
     _id: string,
     userId: string,
     email: string,
     accountId: string,
-    children?:  Array< {
+    children:  Array< {
       __typename: "Child",
       id: string,
       name: string,
       age?: number | null,
-    } | null > | null,
-  } | null,
+    } | null >,
+  },
 };
 
 export type DeleteUnsortedPhotosMutationVariables = {
@@ -180,10 +180,10 @@ export type GetPhotosForAlbumQueryVariables = {
 export type GetPhotosForAlbumQuery = {
   getPhotosForAlbum?:  {
     __typename: "PhotosForAlbum",
-    _id?: string | null,
-    name?: string | null,
+    _id: string,
+    name: string,
     description?: string | null,
-    childId?: string | null,
+    childId: string,
     photos?:  Array< {
       __typename: "Photo",
       _id?: string | null,
@@ -197,38 +197,38 @@ export type GetPhotosForAlbumQuery = {
       childId: string,
       accountId: string,
       albums?: Array< string > | null,
-    } | null > | null,
+    } > | null,
   } | null,
 };
 
 export type GetUserQuery = {
-  getUser?:  {
+  getUser:  {
     __typename: "User",
     _id: string,
     userId: string,
     email: string,
     accountId: string,
-    children?:  Array< {
+    children:  Array< {
       __typename: "Child",
       id: string,
       name: string,
       age?: number | null,
-    } | null > | null,
-  } | null,
+    } | null >,
+  },
 };
 
 export type GetChildrenAlbumsQuery = {
   getChildrenAlbums?:  Array< {
     __typename: "ChildAlbums",
-    id?: string | null,
-    name?: string | null,
+    id: string,
+    name: string,
     albums?:  Array< {
       __typename: "Album",
       _id?: string | null,
       name?: string | null,
       description?: string | null,
       childId?: string | null,
-    } | null > | null,
+    } > | null,
   } | null > | null,
 };
 
