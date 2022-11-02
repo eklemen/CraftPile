@@ -2,6 +2,7 @@ import { API, graphqlOperation } from 'aws-amplify';
 import { Button, Column, Heading, Row } from 'native-base';
 import { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
+import { useQuery, gql } from '@apollo/client';
 
 import {
   ChildUnsortedPhotos,
@@ -25,11 +26,17 @@ function PileScreen({}: Props) {
     setData: setPileData,
     clearComp: resetPileData,
   } = useCompData<PileCD>(PILE);
-  const [pilePhotos, setPilePhotos] = useState<
+  const [_, setPilePhotos] = useState<
     | GetChildrenUnsortedPhotosQuery['getChildrenUnsortedPhotos']
     | DeleteUnsortedPhotosMutation['deleteUnsortedPhotos']
     | undefined
   >();
+
+  const {
+    loading: listLoading,
+    data: { getChildrenUnsortedPhotos: pilePhotos } = {},
+    error: listError,
+  } = useQuery<GetChildrenUnsortedPhotosQuery>(gql(getChildrenUnsortedPhotos));
 
   useEffect(() => {
     resetPileData({
@@ -37,15 +44,6 @@ function PileScreen({}: Props) {
       selectedPhotos: {},
       selectedPhoto: null,
     });
-    const getUnsorted = async () => {
-      const unsortedPhotos = (await API.graphql(
-        graphqlOperation(getChildrenUnsortedPhotos)
-      )) as { data: GetChildrenUnsortedPhotosQuery };
-      setPilePhotos(unsortedPhotos?.data?.getChildrenUnsortedPhotos);
-    };
-    if (!pilePhotos?.length) {
-      getUnsorted();
-    }
   }, []);
 
   return (

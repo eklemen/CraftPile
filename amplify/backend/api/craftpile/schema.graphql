@@ -100,8 +100,8 @@ type UnsortedId {
   name: String!
 }
 type ChildUnsortedPhotos {
-  _id: UnsortedId
-  photos: [UnsortedPhoto!]
+  _id: UnsortedId!
+  photos: [UnsortedPhoto]!
 }
 
 type PhotosForAlbum {

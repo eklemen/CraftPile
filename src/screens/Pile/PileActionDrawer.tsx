@@ -14,10 +14,12 @@ import useCompData from '../../context/compData/useCompData';
 import { API, graphqlOperation } from 'aws-amplify';
 import {
   DeleteUnsortedPhotosMutation,
+  DeleteUnsortedPhotosMutationVariables,
   GetChildrenUnsortedPhotosQuery,
 } from '../../generated/API';
 import { deleteUnsortedPhotos } from '../../graphql/mutations';
 import ChildSelectModal from '../../shared/ChildSelectModal';
+import { gql, useMutation } from '@apollo/client';
 
 interface Props {
   setPilePhotos: React.Dispatch<
@@ -30,6 +32,15 @@ function PileActionDrawer({ setPilePhotos }: Props) {
     useCompData<PileCD>(PILE);
   const [disableDrawerBtn, setDisableDrawerBtn] = useState(false);
   const [showChildSelectModal, setShowChildSelectModal] = useState(false);
+  const [deletePhotos, { data, loading, error }] = useMutation<
+    DeleteUnsortedPhotosMutation,
+    DeleteUnsortedPhotosMutationVariables
+  >(gql(deleteUnsortedPhotos), {});
+  console.log('data-------->', data);
+  console.log('loading-------->', loading);
+  console.log('error-------->', error);
+
+  // animation
   const drawerPosition = useSharedValue(70);
   const animatedDrawer = useAnimatedStyle(() => {
     return {
@@ -49,6 +60,8 @@ function PileActionDrawer({ setPilePhotos }: Props) {
       });
     }
   }, [pileCompData.multiSelect]);
+  // end animation
+
   const isMultiSelectEmpty =
     pileCompData?.selectedPhotos &&
     !Object.keys(pileCompData.selectedPhotos).length;
@@ -73,14 +86,11 @@ function PileActionDrawer({ setPilePhotos }: Props) {
     const ids =
       pileCompData?.selectedPhotos && Object.keys(pileCompData.selectedPhotos);
     if (ids) {
-      const updatedUnsortedPhotos = (await API.graphql(
-        graphqlOperation(deleteUnsortedPhotos, {
-          input: {
-            ids: Object.keys(pileCompData.selectedPhotos),
-          },
-        })
-      )) as { data: DeleteUnsortedPhotosMutation };
-      setPilePhotos(updatedUnsortedPhotos?.data?.deleteUnsortedPhotos);
+      await deletePhotos({
+        variables: {
+          input: { ids },
+        },
+      });
       resetPileData({
         multiSelect: true,
         selectedPhotos: {},
