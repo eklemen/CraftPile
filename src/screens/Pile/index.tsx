@@ -23,9 +23,9 @@ function PileScreen({}: Props) {
   } = useCompData<PileCD>(PILE);
 
   const {
-    loading: listLoading,
+    loading: pilePhotosLoading,
     data: { getChildrenUnsortedPhotos: pilePhotos } = {},
-    error: listError,
+    error: pilePhotosError,
   } = useQuery<GetChildrenUnsortedPhotosQuery>(gql(getChildrenUnsortedPhotos));
 
   useEffect(() => {
@@ -35,6 +35,8 @@ function PileScreen({}: Props) {
       selectedPhoto: null,
     });
   }, []);
+
+  const isEmptyState = pilePhotos?.length === 0;
 
   return (
     <Column safeAreaTop mt={30} h="100%" position="relative">
@@ -60,9 +62,21 @@ function PileScreen({}: Props) {
           {pileCompData.multiSelect ? 'Cancel' : 'Select'}
         </Button>
       </Row>
+      {isEmptyState && (
+        <Row>
+          <Heading fontSize={36} textAlign="center" w="100%">
+            {`Great job!\nYou have no crafts in your pile.`}
+          </Heading>
+        </Row>
+      )}
       <FlatList
         data={pilePhotos}
-        renderItem={({ item }) => <ChildPileBlock child={item} />}
+        renderItem={({ item }) => (
+          <ChildPileBlock
+            child={item}
+            hideSkeleton={!pilePhotosLoading && !pilePhotosError}
+          />
+        )}
       />
 
       <PileActionDrawer />

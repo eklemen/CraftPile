@@ -50,6 +50,7 @@ export const getChildrenAlbums = /* GraphQL */ `
         name
         description
         childId
+        posterImage
       }
     }
   }
@@ -67,6 +68,21 @@ export const getChildrenUnsortedPhotos = /* GraphQL */ `
         childId
         thumbnailKey
         localPath
+      }
+    }
+  }
+`;
+export const getAlbumsForChild = /* GraphQL */ `
+  query GetAlbumsForChild($input: getAlbumsForChildInput!) {
+    getAlbumsForChild(input: $input) {
+      id
+      name
+      albums {
+        _id
+        name
+        description
+        childId
+        posterImage
       }
     }
   }

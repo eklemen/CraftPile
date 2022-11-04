@@ -1,35 +1,48 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, Center, Row, Text } from 'native-base';
-import TrashCan from '../../appIcons/TrashCan';
 import Animated, {
   Easing,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import { gql, useMutation } from '@apollo/client';
+import isEmpty from 'lodash.isempty';
+import lodashKeys from 'lodash.keys';
+import TrashCan from '../../appIcons/TrashCan';
 import { PILE, PileCD } from '../../context/constants';
 import SwitchIcon from '../../appIcons/SwitchIcon';
 import AlbumAddIcon from '../../appIcons/AlbumAddIcon';
 import useCompData from '../../context/compData/useCompData';
 import {
+  AddUnsortedPhotosToAlbumMutation,
+  AddUnsortedPhotosToAlbumMutationVariables,
   DeleteUnsortedPhotosMutation,
   DeleteUnsortedPhotosMutationVariables,
 } from '../../generated/API';
-import { deleteUnsortedPhotos } from '../../graphql/mutations';
+import {
+  addUnsortedPhotosToAlbum,
+  deleteUnsortedPhotos,
+} from '../../graphql/mutations';
 import ChildSelectModal from '../../shared/ChildSelectModal';
-import { gql, useMutation } from '@apollo/client';
+import PileAlbumSelectSheet from './PileAlbumSelectSheet';
 
 function PileActionDrawer() {
   const { compData: pileCompData, clearComp: resetPileData } =
     useCompData<PileCD>(PILE);
   const [disableDrawerBtn, setDisableDrawerBtn] = useState(false);
   const [showChildSelectModal, setShowChildSelectModal] = useState(false);
-  const [deletePhotos, { loading: deletePending, error }] = useMutation<
+  const [showAlbumSelect, setShowAlbumSelect] = useState(false);
+
+  const [deletePhotos] = useMutation<
     DeleteUnsortedPhotosMutation,
     DeleteUnsortedPhotosMutationVariables
   >(gql(deleteUnsortedPhotos), {});
-  console.log('deletePending-------->', deletePending);
-  console.log('error-------->', error);
+
+  const [addPhotosToAlbum] = useMutation<
+    AddUnsortedPhotosToAlbumMutation,
+    AddUnsortedPhotosToAlbumMutationVariables
+  >(gql(addUnsortedPhotosToAlbum));
 
   // animation
   const drawerPosition = useSharedValue(70);
@@ -53,9 +66,7 @@ function PileActionDrawer() {
   }, [pileCompData.multiSelect]);
   // end animation
 
-  const isMultiSelectEmpty =
-    pileCompData?.selectedPhotos &&
-    !Object.keys(pileCompData.selectedPhotos).length;
+  const isMultiSelectEmpty = isEmpty(pileCompData?.selectedPhotos);
 
   const isMoreThanOneChildIncluded = () => {
     const values =
@@ -74,8 +85,7 @@ function PileActionDrawer() {
     }
   }, [pileCompData.selectedPhotos]);
   const deleteHandler = async () => {
-    const ids =
-      pileCompData?.selectedPhotos && Object.keys(pileCompData.selectedPhotos);
+    const ids = lodashKeys(pileCompData?.selectedPhotos);
     if (ids) {
       await deletePhotos({
         variables: {
@@ -87,6 +97,28 @@ function PileActionDrawer() {
         selectedPhotos: {},
         selectedPhoto: null,
       });
+    }
+  };
+  const addToAlbumHandler = async () => {
+    const ids = lodashKeys(pileCompData?.selectedPhotos);
+    if (ids.length) {
+      setShowAlbumSelect(true);
+    }
+  };
+  const addPhotosToAlbumHandler = async (albumId: string) => {
+    const ids = lodashKeys(pileCompData?.selectedPhotos);
+    if (ids.length) {
+      await addPhotosToAlbum({
+        variables: {
+          input: { ids, albumId },
+        },
+      });
+      resetPileData({
+        multiSelect: false,
+        selectedPhotos: {},
+        selectedPhoto: null,
+      });
+      setShowAlbumSelect(false);
     }
   };
   return (
@@ -106,12 +138,7 @@ function PileActionDrawer() {
             <TrashCan disabled={isMultiSelectEmpty} />
           </Button>
         </Box>
-        <Box
-          flex={2}
-          flexDirection="row"
-          justifyContent="center"
-          alignItems="center"
-        >
+        <Center flex={2} flexDirection="row">
           <Button
             w="100%"
             colorScheme="secondary"
@@ -132,7 +159,7 @@ function PileActionDrawer() {
               </Text>
             </Center>
           </Button>
-        </Box>
+        </Center>
         <Box
           flex={2}
           flexDirection="row"
@@ -143,9 +170,7 @@ function PileActionDrawer() {
             w="100%"
             colorScheme="secondary"
             variant="ghost"
-            onPress={() => {
-              console.log('add to album');
-            }}
+            onPress={addToAlbumHandler}
             disabled={disableDrawerBtn}
           >
             <Center flexDirection="row">
@@ -166,6 +191,11 @@ function PileActionDrawer() {
       <ChildSelectModal
         isOpen={showChildSelectModal}
         onClose={() => setShowChildSelectModal(false)}
+      />
+      <PileAlbumSelectSheet
+        isOpen={showAlbumSelect}
+        onClose={() => setShowAlbumSelect(false)}
+        onAlbumSelect={addPhotosToAlbumHandler}
       />
     </Animated.View>
   );

@@ -1,4 +1,4 @@
-import { Box, Heading, Pressable, Row } from 'native-base';
+import { Box, Heading, Pressable, Row, Skeleton } from 'native-base';
 import ImageBox from './ImageBox';
 import { ChildUnsortedPhotos, UnsortedPhoto } from '../../generated/API';
 import useCompData from '../../context/compData/useCompData';
@@ -6,15 +6,24 @@ import { PILE, PileCD } from '../../context/constants';
 
 interface Props {
   child: ChildUnsortedPhotos;
+  hideSkeleton?: boolean;
 }
 
-function ChildPileBlock({ child }: Props) {
+function ChildPileBlock({ child, hideSkeleton }: Props) {
   const { compData: pileCompData, setData: setPileData } =
     useCompData<PileCD>(PILE);
   if (!child?.photos?.length) return null;
   return (
     <Box px={4} mb={5}>
-      <Heading size="md">{child?.childName}</Heading>
+      <Skeleton
+        mb={4}
+        width="65%"
+        height="22"
+        rounded="md"
+        isLoaded={hideSkeleton}
+      >
+        <Heading size="md">{child?.childName}</Heading>
+      </Skeleton>
       <Row flexWrap="wrap">
         {child.photos?.map((photo) => {
           const isMultiSelected = pileCompData.selectedPhotos?.hasOwnProperty(
@@ -54,7 +63,10 @@ function ChildPileBlock({ child }: Props) {
                 }
               }}
             >
-              <ImageBox photo={photo} isMultiSelected={isMultiSelected} />
+              <ImageBox
+                photoUri={photo.thumbnailKey}
+                isMultiSelected={isMultiSelected}
+              />
             </Pressable>
           );
         })}

@@ -75,6 +75,11 @@ export type assignPhotosToChildInput = {
   childId: string,
 };
 
+export type addUnsortedPhotosToAlbumInput = {
+  ids: Array< string >,
+  albumId: string,
+};
+
 export type getPhotosForAlbumInput = {
   albumId?: string | null,
   limit?: number | null,
@@ -95,16 +100,22 @@ export type ChildAlbums = {
   __typename: "ChildAlbums",
   id: string,
   name: string,
-  albums?:  Array<Album > | null,
+  albums:  Array<Album >,
 };
 
 export type Album = {
   __typename: "Album",
-  _id?: string | null,
-  name?: string | null,
+  _id: string,
+  name: string,
   description?: string | null,
-  childId?: string | null,
-  posterImage?: Photo | null,
+  childId: string,
+  posterImage?: string | null,
+};
+
+export type getAlbumsForChildInput = {
+  childId: string,
+  limit?: number | null,
+  nextToken?: string | null,
 };
 
 export type UpdatePhotoPropsMutationVariables = {
@@ -192,6 +203,28 @@ export type AssignPhotosToChildMutation = {
   } > | null,
 };
 
+export type AddUnsortedPhotosToAlbumMutationVariables = {
+  input: addUnsortedPhotosToAlbumInput,
+};
+
+export type AddUnsortedPhotosToAlbumMutation = {
+  addUnsortedPhotosToAlbum:  Array< {
+    __typename: "ChildUnsortedPhotos",
+    _id: string,
+    childName?: string | null,
+    photos:  Array< {
+      __typename: "UnsortedPhoto",
+      _id: string,
+      bucketName: string,
+      objectKey: string,
+      dateOfPhoto: string,
+      childId: string,
+      thumbnailKey: string,
+      localPath?: string | null,
+    } >,
+  } >,
+};
+
 export type GetPhotosForAlbumQueryVariables = {
   input?: getPhotosForAlbumInput | null,
 };
@@ -237,18 +270,19 @@ export type GetUserQuery = {
 };
 
 export type GetChildrenAlbumsQuery = {
-  getChildrenAlbums?:  Array< {
+  getChildrenAlbums:  Array< {
     __typename: "ChildAlbums",
     id: string,
     name: string,
-    albums?:  Array< {
+    albums:  Array< {
       __typename: "Album",
-      _id?: string | null,
-      name?: string | null,
+      _id: string,
+      name: string,
       description?: string | null,
-      childId?: string | null,
-    } > | null,
-  } | null > | null,
+      childId: string,
+      posterImage?: string | null,
+    } >,
+  } >,
 };
 
 export type GetChildrenUnsortedPhotosQuery = {
@@ -267,4 +301,24 @@ export type GetChildrenUnsortedPhotosQuery = {
       localPath?: string | null,
     } >,
   } > | null,
+};
+
+export type GetAlbumsForChildQueryVariables = {
+  input: getAlbumsForChildInput,
+};
+
+export type GetAlbumsForChildQuery = {
+  getAlbumsForChild:  {
+    __typename: "ChildAlbums",
+    id: string,
+    name: string,
+    albums:  Array< {
+      __typename: "Album",
+      _id: string,
+      name: string,
+      description?: string | null,
+      childId: string,
+      posterImage?: string | null,
+    } >,
+  },
 };

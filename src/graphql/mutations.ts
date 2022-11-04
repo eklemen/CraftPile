@@ -68,3 +68,20 @@ export const assignPhotosToChild = /* GraphQL */ `
     }
   }
 `;
+export const addUnsortedPhotosToAlbum = /* GraphQL */ `
+  mutation AddUnsortedPhotosToAlbum($input: addUnsortedPhotosToAlbumInput!) {
+    addUnsortedPhotosToAlbum(input: $input) {
+      _id
+      childName
+      photos {
+        _id
+        bucketName
+        objectKey
+        dateOfPhoto
+        childId
+        thumbnailKey
+        localPath
+      }
+    }
+  }
+`;

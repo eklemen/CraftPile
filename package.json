@@ -38,6 +38,8 @@
     "expo-splash-screen": "~0.16.2",
     "expo-status-bar": "~1.4.0",
     "formik": "^2.2.9",
+    "lodash.isempty": "^4.4.0",
+    "lodash.keys": "^4.2.0",
     "native-base": "^3.4.18",
     "react": "18.0.0",
     "react-dom": "18.0.0",
@@ -53,6 +55,8 @@
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@expo/metro-config": "^0.4.0",
+    "@types/lodash.isempty": "^4.4.7",
+    "@types/lodash.keys": "^4.2.7",
     "@types/react": "~18.0.14",
     "@types/react-native": "~0.69.1",
     "@types/uuid": "^8.3.4",

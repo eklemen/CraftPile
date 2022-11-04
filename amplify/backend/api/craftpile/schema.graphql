@@ -16,6 +16,11 @@ input assignPhotosToChildInput {
   childId: String!
 }
 
+input addUnsortedPhotosToAlbumInput {
+  ids: [ID!]!
+  albumId: String!
+}
+
 input getPhotosForAlbumInput {
   albumId: ID
   limit: Int
@@ -24,7 +29,7 @@ input getPhotosForAlbumInput {
 }
 
 input getAlbumsForChildInput {
-  userId: ID!
+  childId: ID!
   limit: Int
   nextToken: String
 }
@@ -37,11 +42,6 @@ input updatePhotoPropertiesInput {
   childId: String
   albums: [String]
   tags: [String]
-}
-
-type NewPhotoResponse {
-  id: ID!
-  name: String
 }
 
 type Photo {
@@ -65,11 +65,11 @@ type Child {
 }
 
 type Album {
-  _id: ID
-  name: String
+  _id: ID!
+  name: String!
   description: String
-  childId: String
-  posterImage: Photo
+  childId: String!
+  posterImage: String
 }
 
 type User {
@@ -83,7 +83,7 @@ type User {
 type ChildAlbums {
   id: ID!
   name: String!
-  albums: [Album!]
+  albums: [Album!]!
 }
 
 type UnsortedPhoto {
@@ -118,9 +118,11 @@ type Query {
   @function(name: "craftpilePhotos-${env}")
   getUser: User!
   @function(name: "craftpilePhotos-${env}")
-  getChildrenAlbums: [ChildAlbums]
+  getChildrenAlbums: [ChildAlbums!]!
   @function(name: "craftpilePhotos-${env}")
   getChildrenUnsortedPhotos: [ChildUnsortedPhotos!]
+  @function(name: "craftpilePhotos-${env}")
+  getAlbumsForChild(input: getAlbumsForChildInput!): ChildAlbums!
   @function(name: "craftpilePhotos-${env}")
 }
 
@@ -134,5 +136,8 @@ type Mutation {
   @function(name: "craftpilePhotos-${env}")
   assignPhotosToChild(input: assignPhotosToChildInput!): [ChildUnsortedPhotos!]
   @function(name: "craftpilePhotos-${env}")
+  addUnsortedPhotosToAlbum(input: addUnsortedPhotosToAlbumInput!): [ChildUnsortedPhotos!]!
+  @function(name: "craftpilePhotos-${env}")
+
 }
 
