@@ -32,12 +32,6 @@ function ManageChildren({ navigation }: Props) {
   const { compData: authCompData, setData: setAuthData } = useCompData(
     domains.AUTH
   );
-  // useEffect(() => {
-  //   API.graphql(
-  //     graphqlOperation(addChild, { input: { name: 'test', age: 1 } })
-  //   )
-  // }, []);
-  console.log('authCompData-------->', authCompData);
 
   const formHandler = async (values: { childName: string; age: any }) => {
     const res = (await API.graphql(
@@ -45,8 +39,7 @@ function ManageChildren({ navigation }: Props) {
         input: { name: values.childName, age: parseInt(values.age) },
       })
     )) as { data: AddChildMutation };
-    setAuthData({ user: res?.data?.addChild
-  });
+    setAuthData({ user: res?.data?.addChild });
   };
 
   return (

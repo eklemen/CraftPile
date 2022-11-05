@@ -85,3 +85,14 @@ export const addUnsortedPhotosToAlbum = /* GraphQL */ `
     }
   }
 `;
+export const createAlbum = /* GraphQL */ `
+  mutation CreateAlbum($input: createAlbumInput!) {
+    createAlbum(input: $input) {
+      _id
+      name
+      description
+      childId
+      posterImage
+    }
+  }
+`;

@@ -2,10 +2,8 @@ import { useEffect } from 'react';
 import {
   Actionsheet,
   Box,
-  Center,
   Column,
   Heading,
-  Pressable,
   Row,
   Skeleton,
   Text,
@@ -20,9 +18,7 @@ import {
   GetAlbumsForChildQueryVariables,
 } from '../../generated/API';
 import { getAlbumsForChild } from '../../graphql/queries';
-import ImageBox from './ImageBox';
-import House from '../../appIcons/House';
-import ImageGridSkeleton from '../../shared/ImageGridSkeleton';
+import AlbumGrid from '../../shared/AlbumGrid';
 
 interface Props {
   isOpen: boolean;
@@ -83,49 +79,14 @@ function PileAlbumSelectSheet({ isOpen, onClose, onAlbumSelect }: Props) {
               </Heading>
             </Skeleton>
           </Row>
-          <Row flexWrap="wrap">
-            <ImageGridSkeleton isLoaded={!loading} />
-
-            {data?.getAlbumsForChild?.albums?.map((album) => {
-              return (
-                <Pressable
-                  key={album?._id}
-                  w="50%"
-                  pr={2}
-                  onPress={() => onAlbumSelect(album._id)}
-                >
-                  <Box
-                    w="100%"
-                    px={1}
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    {album?.posterImage ? (
-                      <ImageBox photoUri={album.posterImage} />
-                    ) : (
-                      <Center
-                        borderColor="primary.800:alpha.20"
-                        borderWidth={1}
-                        w="100%"
-                        minH={160}
-                      >
-                        {/* TODO: randomly choose svg and color */}
-                        <House size={100} />
-                      </Center>
-                    )}
-                    <Box w="100%" mt={3}>
-                      <Heading size="xs" mb={1}>
-                        {album?.name}
-                      </Heading>
-                      {/*<Text fontFamily="body" fontSize={14} color="gray.500">*/}
-                      {/*  3*/}
-                      {/*</Text>*/}
-                    </Box>
-                  </Box>
-                </Pressable>
-              );
-            })}
-          </Row>
+          <AlbumGrid
+            loading={loading}
+            data={data}
+            onAlbumSelect={onAlbumSelect}
+            onAddAlbum={() => {
+              console.log('banana');
+            }}
+          />
         </Column>
       </Actionsheet.Content>
     </Actionsheet>

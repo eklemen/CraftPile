@@ -21,6 +21,13 @@ input addUnsortedPhotosToAlbumInput {
   albumId: String!
 }
 
+input createAlbumInput {
+  childId: String!
+  name: String!
+  accountId: String!
+  description: String
+}
+
 input getPhotosForAlbumInput {
   albumId: ID
   limit: Int
@@ -138,6 +145,7 @@ type Mutation {
   @function(name: "craftpilePhotos-${env}")
   addUnsortedPhotosToAlbum(input: addUnsortedPhotosToAlbumInput!): [ChildUnsortedPhotos!]!
   @function(name: "craftpilePhotos-${env}")
-
+  createAlbum(input: createAlbumInput!): Album!
+  @function(name: "craftpilePhotos-${env}")
 }
 

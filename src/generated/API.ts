@@ -80,6 +80,22 @@ export type addUnsortedPhotosToAlbumInput = {
   albumId: string,
 };
 
+export type createAlbumInput = {
+  childId: string,
+  name: string,
+  accountId: string,
+  description?: string | null,
+};
+
+export type Album = {
+  __typename: "Album",
+  _id: string,
+  name: string,
+  description?: string | null,
+  childId: string,
+  posterImage?: string | null,
+};
+
 export type getPhotosForAlbumInput = {
   albumId?: string | null,
   limit?: number | null,
@@ -101,15 +117,6 @@ export type ChildAlbums = {
   id: string,
   name: string,
   albums:  Array<Album >,
-};
-
-export type Album = {
-  __typename: "Album",
-  _id: string,
-  name: string,
-  description?: string | null,
-  childId: string,
-  posterImage?: string | null,
 };
 
 export type getAlbumsForChildInput = {
@@ -223,6 +230,21 @@ export type AddUnsortedPhotosToAlbumMutation = {
       localPath?: string | null,
     } >,
   } >,
+};
+
+export type CreateAlbumMutationVariables = {
+  input: createAlbumInput,
+};
+
+export type CreateAlbumMutation = {
+  createAlbum:  {
+    __typename: "Album",
+    _id: string,
+    name: string,
+    description?: string | null,
+    childId: string,
+    posterImage?: string | null,
+  },
 };
 
 export type GetPhotosForAlbumQueryVariables = {

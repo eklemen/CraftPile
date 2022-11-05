@@ -249,6 +249,34 @@ const getAlbumsForChild = async (event) => {
   };
 };
 
+const createAlbum = async (event) => {
+  const { albumCollection, userCollection } = await connectToDatabase();
+  const { name, description, childId, accountId } = event?.arguments?.input;
+  const child = await userCollection.findOne(
+    {
+      accountId,
+      'children.id': childId,
+    },
+    {
+      'children.$': 1,
+    }
+  );
+  console.log('child-------->', child);
+  const album = await albumCollection.insertOne({
+    name,
+    description,
+    childId,
+    accountId,
+  });
+  console.log('res-------->', res);
+  // const result = {
+  //   id: childId.id,
+  //   name: child.name,
+  //   albums: [album],
+  // };
+  return album;
+};
+
 const resolvers = {
   Mutation: {
     updatePhotoProps: (event) => updatePhotoProps(event),
@@ -256,6 +284,7 @@ const resolvers = {
     deleteUnsortedPhotos: (event) => deleteUnsortedPhotos(event),
     assignPhotosToChild: (event) => assignPhotosToChild(event),
     addUnsortedPhotosToAlbum: (event) => addUnsortedPhotosToAlbum(event),
+    createAlbum: (event) => createAlbum(event),
   },
   Query: {
     getChildrenAlbums: (event) => getChildrenAlbums(event),
