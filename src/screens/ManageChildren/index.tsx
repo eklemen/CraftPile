@@ -1,5 +1,5 @@
 import { API, graphqlOperation } from 'aws-amplify';
-import { Formik } from 'formik';
+
 import {
   Center,
   Container,
@@ -61,54 +61,36 @@ function ManageChildren({ navigation }: Props) {
             })}
           </HStack>
           {showForm ? (
-            <Formik
-              initialValues={{ childName: '', age: '' }}
-              onSubmit={formHandler}
-            >
-              {({ handleChange, handleBlur, handleSubmit, values }) => (
-                <Box>
-                  <FormControl>
-                    <Stack m="4">
-                      <FormControl.Label>Child's Name</FormControl.Label>
-                      <Input
-                        onChangeText={handleChange('childName')}
-                        onBlur={handleBlur('childName')}
-                        value={values.childName}
-                        size="xl"
-                        variant="underlined"
-                        placeholder="Child's Name"
-                        mb={4}
-                      />
-                      <FormControl.Label>Age</FormControl.Label>
-                      <Input
-                        onChangeText={handleChange('age')}
-                        onBlur={handleBlur('age')}
-                        value={values.age}
-                        size="xl"
-                        variant="underlined"
-                        placeholder="Child's Name"
-                        mb={4}
-                      />
-                    </Stack>
-                  </FormControl>
-                  <HStack justifyContent="space-evenly" w="100%">
-                    <Button
-                      onPress={() => setShowForm(!showForm)}
-                      w="40%"
-                      colorScheme="muted"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      onPress={handleSubmit as (values: any) => void}
-                      w="40%"
-                    >
-                      Submit
-                    </Button>
-                  </HStack>
-                </Box>
-              )}
-            </Formik>
+            <Box>
+              <FormControl>
+                <Stack m="4">
+                  <FormControl.Label>Child's Name</FormControl.Label>
+                  <Input
+                    size="xl"
+                    variant="underlined"
+                    placeholder="Child's Name"
+                    mb={4}
+                  />
+                  <FormControl.Label>Age</FormControl.Label>
+                  <Input
+                    size="xl"
+                    variant="underlined"
+                    placeholder="Child's Name"
+                    mb={4}
+                  />
+                </Stack>
+              </FormControl>
+              <HStack justifyContent="space-evenly" w="100%">
+                <Button
+                  onPress={() => setShowForm(!showForm)}
+                  w="40%"
+                  colorScheme="muted"
+                >
+                  Cancel
+                </Button>
+                <Button w="40%">Submit</Button>
+              </HStack>
+            </Box>
           ) : (
             <Button onPress={() => setShowForm(!showForm)}>Add Child</Button>
           )}
