@@ -14,12 +14,13 @@ import {
 } from 'native-base';
 import useCompData from '../context/compData/useCompData';
 import { AUTH, UserCD } from '../context/constants';
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { createAlbum } from '../graphql/mutations';
 import {
   CreateAlbumMutation,
   CreateAlbumMutationVariables,
 } from '../generated/API';
+import { getUser } from '../graphql/queries';
 
 interface Props {
   isOpen: boolean;
@@ -38,40 +39,41 @@ interface FormInput {
   description: FormObject;
 }
 
+const initialFormState: FormInput = {
+  name: {
+    touched: false,
+    value: '',
+    error: '',
+  },
+  description: {
+    touched: false,
+    value: '',
+    error: '',
+  },
+};
+
 function CreateAlbumModal({ isOpen, onClose, childId }: Props) {
-  const { compData } = useCompData<UserCD>(AUTH);
-  console.log('compData-------->', compData);
+  const { data: userData } = useQuery(gql(getUser));
   const [addAlbum] = useMutation<
     CreateAlbumMutation,
     CreateAlbumMutationVariables
   >(gql(createAlbum));
-  const [formValues, setFormValues] = useState<FormInput>({
-    name: {
-      touched: false,
-      value: '',
-      error: '',
-    },
-    description: {
-      touched: false,
-      value: '',
-      error: '',
-    },
-  });
+  const [formValues, setFormValues] = useState<FormInput>(initialFormState);
   const onSubmit = async () => {
     console.log(formValues);
     const { name, description } = formValues;
-    console.log('childId-------->', childId);
-    console.log('user?.accountId-------->', user?.accountId);
+    const accountId = userData?.getUser.accountId;
     await addAlbum({
       variables: {
         input: {
           name: name.value,
           description: description.value,
           childId,
-          accountId: user?.accountId!,
+          accountId,
         },
       },
     });
+    setFormValues(initialFormState);
     onClose();
   };
   const handleChange = (name: keyof FormInput, value: FormObject['value']) => {

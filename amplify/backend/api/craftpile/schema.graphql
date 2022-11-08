@@ -127,7 +127,7 @@ type Query {
   @function(name: "craftpilePhotos-${env}")
   getChildrenAlbums: [ChildAlbums!]!
   @function(name: "craftpilePhotos-${env}")
-  getChildrenUnsortedPhotos: [ChildUnsortedPhotos!]
+  getChildrenUnsortedPhotos: [ChildUnsortedPhotos!]!
   @function(name: "craftpilePhotos-${env}")
   getAlbumsForChild(input: getAlbumsForChildInput!): ChildAlbums!
   @function(name: "craftpilePhotos-${env}")
@@ -145,7 +145,7 @@ type Mutation {
   @function(name: "craftpilePhotos-${env}")
   addUnsortedPhotosToAlbum(input: addUnsortedPhotosToAlbumInput!): [ChildUnsortedPhotos!]!
   @function(name: "craftpilePhotos-${env}")
-  createAlbum(input: createAlbumInput!): Album!
+  createAlbum(input: createAlbumInput!): ChildAlbums!
   @function(name: "craftpilePhotos-${env}")
 }
 

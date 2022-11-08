@@ -83,9 +83,6 @@ function PileAlbumSelectSheet({ isOpen, onClose, onAlbumSelect }: Props) {
             loading={loading}
             data={data}
             onAlbumSelect={onAlbumSelect}
-            onAddAlbum={() => {
-              console.log('banana');
-            }}
           />
         </Column>
       </Actionsheet.Content>

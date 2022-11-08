@@ -9,34 +9,25 @@ import { GetUserQuery } from '../../generated/API';
 import { getUser } from '../../graphql/queries';
 import { LandingScreenNavigationProp } from '../../types/routes';
 import { UserCD, AUTH } from '../../context/constants';
+import { gql, useQuery } from '@apollo/client';
 
 interface Props {
   navigation: LandingScreenNavigationProp;
 }
 
 function Landing({ navigation }: Props) {
-  const [loading, setLoading] = useState<boolean>(true);
-  const { setData: setAuthData, compData: authCompData } =
-    useCompData<UserCD>(AUTH);
+  const { setData: setAuthData } = useCompData<UserCD>(AUTH);
 
-  useEffect(() => {
-    const getUserData = async () => {
-      const userData = (await API.graphql(
-        graphqlOperation(getUser)
-      )) as GraphQLResult<GetUserQuery>;
-      if (userData?.data?.getUser) {
-        setAuthData({
-          user: userData.data.getUser,
-        });
-      }
-      setLoading(false);
-    };
-    getUserData();
-  }, []);
+  const { loading, data: userData } = useQuery<GetUserQuery>(gql(getUser));
 
   useEffect(() => {
     if (!loading) {
-      if (authCompData?.user?.children?.length) {
+      if (userData?.getUser) {
+        setAuthData({
+          user: userData.getUser,
+        });
+      }
+      if (userData?.getUser.children?.length) {
         navigation.replace('MainStack', {});
       } else {
         navigation.replace('ManageChildren', {});

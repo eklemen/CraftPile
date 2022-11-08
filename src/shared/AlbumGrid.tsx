@@ -51,7 +51,7 @@ function AlbumGrid({ loading, data, onAlbumSelect }: Props) {
           </Pressable>
         );
       })}
-      {!loading && !data?.getAlbumsForChild.albums.length && (
+      {!loading && data?.getAlbumsForChild.albums && (
         <Pressable w="50%" pr={2} onPress={() => setShowAlbumForm(true)}>
           <Center w="100%" px={1}>
             <Center
