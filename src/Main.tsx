@@ -19,13 +19,7 @@ import {
 import { AuthOptions, createAuthLink } from 'aws-appsync-auth-link';
 import { createSubscriptionHandshakeLink } from 'aws-appsync-subscription-link';
 
-import {
-  ApolloProvider,
-  ApolloClient,
-  InMemoryCache,
-  HttpLink,
-  ApolloLink,
-} from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
 
 import config from '../aws-exports';
 import { CompDataProvider } from './context/compData/compDataStore';

@@ -1,31 +1,18 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  Center,
-  Column,
-  Heading,
-  Modal,
-  Pressable,
-  Radio,
-  Row,
-  Text,
-} from 'native-base';
+import { Box, Center, Heading, Pressable, Row } from 'native-base';
 import ImageGridSkeleton from './ImageGridSkeleton';
 import ImageBox from '../screens/Pile/ImageBox';
 import House from '../appIcons/House';
 import { GetAlbumsForChildQuery } from '../generated/API';
-import ChildSelectModal from './ChildSelectModal';
 import CreateAlbumModal from './CreateAlbumModal';
 
 interface Props {
   loading: boolean;
   data: GetAlbumsForChildQuery | undefined;
   onAlbumSelect: (albumId: string) => void;
-  onAddAlbum: () => void;
 }
 
-function AlbumGrid({ loading, data, onAlbumSelect, onAddAlbum }: Props) {
+function AlbumGrid({ loading, data, onAlbumSelect }: Props) {
   const [showAlbumForm, setShowAlbumForm] = useState(false);
   return (
     <Row flexWrap="wrap">
@@ -83,7 +70,11 @@ function AlbumGrid({ loading, data, onAlbumSelect, onAddAlbum }: Props) {
           </Center>
         </Pressable>
       )}
-      <CreateAlbumModal isOpen={true} />
+      <CreateAlbumModal
+        isOpen={showAlbumForm}
+        onClose={() => setShowAlbumForm(false)}
+        childId={data?.getAlbumsForChild.id!}
+      />
     </Row>
   );
 }

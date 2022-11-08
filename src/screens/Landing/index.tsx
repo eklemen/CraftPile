@@ -5,11 +5,10 @@ import { View, Text } from 'react-native';
 
 import commonStyles from '../../common/styles';
 import useCompData from '../../context/compData/useCompData';
-import * as domains from '../../context/constants';
 import { GetUserQuery } from '../../generated/API';
 import { getUser } from '../../graphql/queries';
 import { LandingScreenNavigationProp } from '../../types/routes';
-import { UserCD } from '../../context/constants';
+import { UserCD, AUTH } from '../../context/constants';
 
 interface Props {
   navigation: LandingScreenNavigationProp;
@@ -17,9 +16,8 @@ interface Props {
 
 function Landing({ navigation }: Props) {
   const [loading, setLoading] = useState<boolean>(true);
-  const { setData: setAuthData, compData: authCompData } = useCompData<UserCD>(
-    domains.AUTH
-  );
+  const { setData: setAuthData, compData: authCompData } =
+    useCompData<UserCD>(AUTH);
 
   useEffect(() => {
     const getUserData = async () => {

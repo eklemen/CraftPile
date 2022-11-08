@@ -37,7 +37,7 @@ function PileActionDrawer() {
   const [deletePhotos] = useMutation<
     DeleteUnsortedPhotosMutation,
     DeleteUnsortedPhotosMutationVariables
-  >(gql(deleteUnsortedPhotos), {});
+  >(gql(deleteUnsortedPhotos));
 
   const [addPhotosToAlbum] = useMutation<
     AddUnsortedPhotosToAlbumMutation,

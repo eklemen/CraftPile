@@ -1,6 +1,5 @@
 import {
   AddChildMutation,
-  Child,
   GetUserQuery,
   UnsortedPhoto,
 } from '../generated/API';
