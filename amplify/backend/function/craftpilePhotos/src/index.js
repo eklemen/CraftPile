@@ -74,14 +74,15 @@ const getChildrenUnsortedPhotos = async (event) => {
       },
     ])
     .toArray();
-  return unsortedPhotos.map((p) => {
-    const childObj = childrenObjects.find((c) => c.id === p._id);
+  const res = childrenObjects.map((child) => {
     return {
-      photos: p.photos,
-      _id: childObj.id,
-      childName: childObj.name,
+      _id: child.id, // todo: change to id,
+      childName: child.name,
+      photos: unsortedPhotos.find((p) => p._id === child.id)?.photos || [],
     };
   });
+  console.log('res-------->', res);
+  return res;
 };
 
 const getChildrenAlbums = async (event) => {
@@ -259,31 +260,10 @@ const createAlbum = async (event) => {
     accountId,
   });
   if (album?.insertedId) {
-    const newAlbum = await albumCollection.findOne({
-      _id: album.insertedId,
-    });
-    // {
-    //   _id: new ObjectId("6369c861e41822e1fb9de9c2"),
-    //     name: 'Scoots album 3',
-    //   description: 'Adffasfds',
-    //   childId: '3103d357-eb10-4224-b99c-f65a827f6206',
-    //   accountId: '4b61adff-fa33-4c6f-890f-f59e3f80879f'
-    // }
-    // id: ID!
-    //   name: String!
-    //   albums: [
-    //   _id: ID!
-    //   name: String!
-    //   description: String
-    //   childId: String!
-    //   posterImage: String
-    //   ]!
-    const res = await getAlbumsForChild({
+    return await getAlbumsForChild({
       ...event,
       arguments: { input: { childId } },
     });
-    console.log('res-------->', res);
-    return res;
   } else {
     throw new Error('Failed to create album');
   }

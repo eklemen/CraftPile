@@ -27,8 +27,7 @@ interface Props {
 }
 
 function PileAlbumSelectSheet({ isOpen, onClose, onAlbumSelect }: Props) {
-  const { compData: pileCompData, clearComp: resetPileData } =
-    useCompData<PileCD>(PILE);
+  const { compData: pileCompData } = useCompData<PileCD>(PILE);
   const getChildId = (): string => {
     if (pileCompData.multiSelect && !isEmpty(pileCompData.selectedPhotos)) {
       const key = lodashKeys(pileCompData.selectedPhotos)[0];

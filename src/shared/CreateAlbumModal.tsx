@@ -19,6 +19,7 @@ import { createAlbum } from '../graphql/mutations';
 import {
   CreateAlbumMutation,
   CreateAlbumMutationVariables,
+  GetUserQuery,
 } from '../generated/API';
 import { getUser } from '../graphql/queries';
 
@@ -53,7 +54,7 @@ const initialFormState: FormInput = {
 };
 
 function CreateAlbumModal({ isOpen, onClose, childId }: Props) {
-  const { data: userData } = useQuery(gql(getUser));
+  const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
   const [addAlbum] = useMutation<
     CreateAlbumMutation,
     CreateAlbumMutationVariables
@@ -62,7 +63,7 @@ function CreateAlbumModal({ isOpen, onClose, childId }: Props) {
   const onSubmit = async () => {
     console.log(formValues);
     const { name, description } = formValues;
-    const accountId = userData?.getUser.accountId;
+    const { accountId } = userData?.getUser!;
     await addAlbum({
       variables: {
         input: {

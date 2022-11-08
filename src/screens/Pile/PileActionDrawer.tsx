@@ -93,7 +93,7 @@ function PileActionDrawer() {
         },
       });
       resetPileData({
-        multiSelect: true,
+        multiSelect: false,
         selectedPhotos: {},
         selectedPhoto: null,
       });

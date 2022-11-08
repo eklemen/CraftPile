@@ -36,7 +36,8 @@ function PileScreen({}: Props) {
     });
   }, []);
 
-  const isEmptyState = pilePhotos?.length === 0;
+  const isEmptyState =
+    pilePhotos && pilePhotos.every((obj) => !obj.photos.length);
 
   return (
     <Column safeAreaTop mt={30} h="100%" position="relative">

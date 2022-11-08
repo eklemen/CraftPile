@@ -11,12 +11,14 @@ import {
 } from 'native-base';
 import { AUTH, PILE, PileCD, UserCD } from '../../context/constants';
 import useCompData from '../../context/compData/useCompData';
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import {
   AssignPhotosToChildMutation,
   AssignPhotosToChildMutationVariables,
+  GetUserQuery,
 } from '../../generated/API';
 import { assignPhotosToChild } from '../../graphql/mutations';
+import { getUser } from '../../graphql/queries';
 
 interface Props {
   isOpen: boolean;
@@ -24,7 +26,7 @@ interface Props {
 }
 
 function ChildSelectModal({ isOpen, onClose }: Props) {
-  const { compData: userCompData } = useCompData<UserCD>(AUTH);
+  const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
   const { compData: pileCompData, clearComp: resetPileData } =
     useCompData<PileCD>(PILE);
   const [assignPhotos, { loading, error }] = useMutation<
@@ -86,7 +88,7 @@ function ChildSelectModal({ isOpen, onClose }: Props) {
                 setRadioValue(nextValue);
               }}
             >
-              {userCompData?.user?.children?.map((child) => (
+              {userData?.getUser.children?.map((child) => (
                 <Radio
                   colorScheme="secondary"
                   value={child?.id as string}
