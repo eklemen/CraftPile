@@ -1,4 +1,12 @@
-import { Box, Heading, Pressable, Row, Skeleton } from 'native-base';
+import {
+  Box,
+  Heading,
+  Modal,
+  Pressable,
+  Row,
+  Skeleton,
+  Text,
+} from 'native-base';
 import ImageBox from './ImageBox';
 import { ChildUnsortedPhotos, UnsortedPhoto } from '../../generated/API';
 import useCompData from '../../context/compData/useCompData';
@@ -70,6 +78,18 @@ function ChildPileBlock({ child, hideSkeleton }: Props) {
             </Pressable>
           );
         })}
+        <Modal size="full" isOpen={true} onClose={() => {}}>
+          <Modal.Content>
+            <Modal.CloseButton />
+            <Modal.Header>Contact Us</Modal.Header>
+            <Modal.Body></Modal.Body>
+            <Modal.Footer>
+              <Box>
+                <Text>Hi</Text>
+              </Box>
+            </Modal.Footer>
+          </Modal.Content>
+        </Modal>
       </Row>
     </Box>
   );
