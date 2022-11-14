@@ -1,6 +1,7 @@
 import {
   Box,
   Heading,
+  Image,
   Modal,
   Pressable,
   Row,
@@ -8,9 +9,10 @@ import {
   Text,
 } from 'native-base';
 import ImageBox from './ImageBox';
-import { ChildUnsortedPhotos, UnsortedPhoto } from '../../generated/API';
+import { ChildUnsortedPhotos } from '../../generated/API';
 import useCompData from '../../context/compData/useCompData';
 import { PILE, PileCD } from '../../context/constants';
+import S3Image from '../../shared/S3Image';
 
 interface Props {
   child: ChildUnsortedPhotos;
@@ -18,8 +20,11 @@ interface Props {
 }
 
 function ChildPileBlock({ child, hideSkeleton }: Props) {
-  const { compData: pileCompData, setData: setPileData } =
-    useCompData<PileCD>(PILE);
+  const {
+    compData: pileCompData,
+    setData: setPileData,
+    clearComp: resetPileCompData,
+  } = useCompData<PileCD>(PILE);
   if (!child?.photos?.length) return null;
   return (
     <Box px={4} mb={5}>
@@ -78,11 +83,33 @@ function ChildPileBlock({ child, hideSkeleton }: Props) {
             </Pressable>
           );
         })}
-        <Modal size="full" isOpen={true} onClose={() => {}}>
-          <Modal.Content>
+        <Modal
+          size="full"
+          isOpen={Boolean(pileCompData.selectedPhoto)}
+          onClose={() => {
+            resetPileCompData({
+              multiSelect: false,
+              selectedPhotos: {},
+              selectedPhoto: null,
+            });
+            // setPileData({
+            //   selectedPhoto: null,
+            // });
+          }}
+        >
+          <Modal.Content flex={1}>
             <Modal.CloseButton />
             <Modal.Header>Contact Us</Modal.Header>
-            <Modal.Body></Modal.Body>
+            <Modal.Body>
+              <Text>{pileCompData.selectedPhoto?.thumbnailKey!}</Text>
+              <S3Image
+                s3Key={pileCompData.selectedPhoto?.thumbnailKey!}
+                h="100%"
+                w="100%"
+                style={{}}
+              />
+              {/*<S3Image s3Key={pileCompData.selectedPhoto?.thumbnailKey!} />*/}
+            </Modal.Body>
             <Modal.Footer>
               <Box>
                 <Text>Hi</Text>

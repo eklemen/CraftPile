@@ -8,6 +8,7 @@ export const AUTH = 'AUTH';
 export const CAMERA = 'CAMERA';
 export const ALBUMS = 'ALBUMS';
 export const PILE = 'PILE';
+export const CACHED_IMAGE_URIS = 'CACHED_IMAGE_URIS';
 
 export interface UserCD {
   user?: GetUserQuery['getUser'] | AddChildMutation['addChild'];
@@ -32,9 +33,14 @@ export interface PileCD {
   multiSelect: boolean;
 }
 
+export interface CachedImageUrisCD {
+  [key: string]: { uri: string };
+}
+
 export interface CompDataStateTree {
   [AUTH]: UserCD;
   [CAMERA]: CameraCD;
   [ALBUMS]: {};
   [PILE]: PileCD;
+  [CACHED_IMAGE_URIS]: CachedImageUrisCD;
 }
