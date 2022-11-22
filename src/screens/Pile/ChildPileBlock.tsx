@@ -8,11 +8,18 @@ import {
   Skeleton,
   Text,
 } from 'native-base';
+import { useState } from 'react';
 import ImageBox from './ImageBox';
 import { ChildUnsortedPhotos } from '../../generated/API';
 import useCompData from '../../context/compData/useCompData';
-import { PILE, PileCD } from '../../context/constants';
-import S3Image from '../../shared/S3Image';
+import {
+  CACHED_URLS,
+  CachedUrlsCD,
+  PILE,
+  PileCD,
+} from '../../context/constants';
+import { Dimensions } from 'react-native';
+import PileActionBarSingle from './PileActionBarSingle';
 
 interface Props {
   child: ChildUnsortedPhotos;
@@ -20,11 +27,14 @@ interface Props {
 }
 
 function ChildPileBlock({ child, hideSkeleton }: Props) {
+  const [showImageModal, setShowImageModal] = useState(false);
   const {
     compData: pileCompData,
     setData: setPileData,
     clearComp: resetPileCompData,
   } = useCompData<PileCD>(PILE);
+  const { compData: cachedPhotos, setData: setCachedPhoto } =
+    useCompData<CachedUrlsCD>(CACHED_URLS);
   if (!child?.photos?.length) return null;
   return (
     <Box px={4} mb={5}>
@@ -73,6 +83,7 @@ function ChildPileBlock({ child, hideSkeleton }: Props) {
                   setPileData({
                     selectedPhoto: photo,
                   });
+                  setShowImageModal(true);
                 }
               }}
             >
@@ -85,35 +96,39 @@ function ChildPileBlock({ child, hideSkeleton }: Props) {
         })}
         <Modal
           size="full"
-          isOpen={Boolean(pileCompData.selectedPhoto)}
+          isOpen={showImageModal}
           onClose={() => {
             resetPileCompData({
               multiSelect: false,
               selectedPhotos: {},
               selectedPhoto: null,
             });
-            // setPileData({
-            //   selectedPhoto: null,
-            // });
+            setShowImageModal(false);
+          }}
+          _backdrop={{
+            opacity: 0.65,
           }}
         >
           <Modal.Content flex={1}>
             <Modal.CloseButton />
-            <Modal.Header>Contact Us</Modal.Header>
-            <Modal.Body>
-              <Text>{pileCompData.selectedPhoto?.thumbnailKey!}</Text>
-              <S3Image
-                s3Key={pileCompData.selectedPhoto?.thumbnailKey!}
-                h="100%"
+            <Modal.Header>Image preview</Modal.Header>
+            <Modal.Body
+              h={Dimensions.get('window').height * 0.6}
+              alignItems="stretch"
+              display="flex"
+            >
+              <Image
+                source={{
+                  uri: cachedPhotos[pileCompData.selectedPhoto?.thumbnailKey!],
+                }}
+                alt={'un-described image'}
+                resizeMode="contain"
                 w="100%"
-                style={{}}
+                h="95%"
               />
-              {/*<S3Image s3Key={pileCompData.selectedPhoto?.thumbnailKey!} />*/}
             </Modal.Body>
             <Modal.Footer>
-              <Box>
-                <Text>Hi</Text>
-              </Box>
+              <PileActionBarSingle selectedPhoto={pileCompData.selectedPhoto} />
             </Modal.Footer>
           </Modal.Content>
         </Modal>

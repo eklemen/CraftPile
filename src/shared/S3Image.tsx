@@ -1,45 +1,43 @@
 import { useEffect, useState } from 'react';
-import { Dimensions, ImageBackground } from 'react-native';
 import Storage from '@aws-amplify/storage';
-import { Image, Skeleton, Box } from 'native-base';
-import { CACHED_IMAGE_URIS, CachedImageUrisCD } from '../context/constants';
+import { Image, Skeleton } from 'native-base';
 import useCompData from '../context/compData/useCompData';
+import { CACHED_URLS, CachedUrlsCD } from '../context/constants';
 
 interface Props {
   s3Key: string;
-  s3LocalKey: string;
+  s3LocalKey?: string;
   [key: string]: any;
 }
 
 function S3Image({ s3Key, w = 200, h = 200, ...rest }: Props) {
-  const [imageUrl, setImageUrl] = useState<string | undefined>();
-  const { setData } = useCompData<CachedImageUrisCD>(CACHED_IMAGE_URIS);
+  const { compData: cachedPhotos, setData: setCachedPhoto } =
+    useCompData<CachedUrlsCD>(CACHED_URLS);
   useEffect(() => {
     const getImage = async () => {
-      const res = await Storage.get(s3Key, {
-        contentType: 'image/jpeg',
-      });
-      setImageUrl(res);
-      setData({ [s3Key]: { uri: res } });
+      try {
+        const res = await Storage.get(s3Key, {
+          contentType: 'image/jpeg',
+        });
+        setCachedPhoto({ [s3Key]: res });
+      } catch (err) {
+        console.log('err-------->', err);
+      }
     };
-    if (imageUrl !== s3Key) {
+    if (!cachedPhotos[s3Key]) {
       getImage();
     }
-  }, [s3Key]);
-  if (!imageUrl) return <Skeleton w={160} h={160} />;
+  }, []);
+  if (!cachedPhotos[s3Key]) return <Skeleton w={160} h={160} />;
   return (
     <Image
       source={{
-        uri: imageUrl,
+        uri: cachedPhotos[s3Key],
       }}
       alt={'un-described image'}
       resizeMode="cover"
-      w={Dimensions.get('window').width}
-      h={Dimensions.get('window').height}
-      style={{
-        width: '100%',
-        height: '100%',
-      }}
+      w={w}
+      h={h}
       {...rest}
     />
   );

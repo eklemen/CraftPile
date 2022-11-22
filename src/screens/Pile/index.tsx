@@ -8,8 +8,14 @@ import { getChildrenUnsortedPhotos } from '../../graphql/queries';
 import { AlbumScreenNavigationProp } from '../../types/routes';
 import ChildPileBlock from './ChildPileBlock';
 import useCompData from '../../context/compData/useCompData';
-import { PILE, PileCD } from '../../context/constants';
+import {
+  CACHED_URLS,
+  CachedUrlsCD,
+  PILE,
+  PileCD,
+} from '../../context/constants';
 import PileActionDrawer from './PileActionDrawer';
+import Storage from '@aws-amplify/storage';
 
 interface Props {
   navigation: AlbumScreenNavigationProp;
@@ -21,12 +27,30 @@ function PileScreen({}: Props) {
     setData: setPileData,
     clearComp: resetPileData,
   } = useCompData<PileCD>(PILE);
+  const { setData: setCachedPhotos } = useCompData<CachedUrlsCD>(CACHED_URLS);
 
   const {
     loading: pilePhotosLoading,
     data: { getChildrenUnsortedPhotos: pilePhotos } = {},
     error: pilePhotosError,
-  } = useQuery<GetChildrenUnsortedPhotosQuery>(gql(getChildrenUnsortedPhotos));
+  } = useQuery<GetChildrenUnsortedPhotosQuery>(gql(getChildrenUnsortedPhotos), {
+    onCompleted: async (data) => {
+      const photosArray = data.getChildrenUnsortedPhotos
+        .map((child) => child.photos)
+        .flat();
+      const photoUrlPromises = photosArray.map((photo) =>
+        Storage.get(photo.thumbnailKey, {
+          contentType: 'image/jpeg',
+        })
+      );
+      const res: string[] = await Promise.all(photoUrlPromises);
+      const obj = res.reduce((acc, url, i) => {
+        acc[photosArray[i].thumbnailKey] = url;
+        return acc;
+      }, {} as CachedUrlsCD);
+      setCachedPhotos(obj);
+    },
+  });
 
   useEffect(() => {
     resetPileData({

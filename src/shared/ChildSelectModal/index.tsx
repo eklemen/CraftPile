@@ -26,6 +26,7 @@ interface Props {
 }
 
 function ChildSelectModal({ isOpen, onClose }: Props) {
+  console.log('isOpen-------->', isOpen);
   const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
   const { compData: pileCompData, clearComp: resetPileData } =
     useCompData<PileCD>(PILE);
@@ -36,22 +37,31 @@ function ChildSelectModal({ isOpen, onClose }: Props) {
   const [radioValue, setRadioValue] = useState<string>();
   const [initialChildId, setInitialChildId] = useState<string>();
   useEffect(() => {
-    const hasSelectedChild =
-      pileCompData?.selectedPhotos &&
-      Boolean(Object.keys(pileCompData.selectedPhotos).length);
-    const selectedChild = hasSelectedChild
-      ? Object.values(pileCompData?.selectedPhotos)[0]?.childId
-      : undefined;
-    setInitialChildId(selectedChild);
-    setRadioValue(selectedChild);
-  }, [pileCompData.selectedPhotos]);
+    if (pileCompData.multiSelect) {
+      const hasSelectedChild =
+        pileCompData?.selectedPhotos &&
+        Boolean(Object.keys(pileCompData.selectedPhotos).length);
+      const selectedChild = hasSelectedChild
+        ? Object.values(pileCompData?.selectedPhotos)[0]?.childId
+        : undefined;
+      setInitialChildId(selectedChild);
+      setRadioValue(selectedChild);
+    } else {
+      const selectedChild = pileCompData?.selectedPhoto?.childId;
+      setInitialChildId(selectedChild);
+      setRadioValue(selectedChild);
+    }
+  }, [pileCompData.selectedPhotos, pileCompData.selectedPhoto]);
 
   const handleSave = async () => {
     if (initialChildId !== radioValue) {
+      const ids = pileCompData.multiSelect
+        ? Object.keys(pileCompData.selectedPhotos)
+        : [pileCompData.selectedPhoto?._id!];
       await assignPhotos({
         variables: {
           input: {
-            ids: Object.keys(pileCompData.selectedPhotos) || [],
+            ids: ids || [],
             childId: radioValue!,
           },
         },
