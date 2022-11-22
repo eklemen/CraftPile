@@ -30,6 +30,7 @@ function ChildSelectModal({ isOpen, onClose }: Props) {
   const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
   const { compData: pileCompData, clearComp: resetPileData } =
     useCompData<PileCD>(PILE);
+  console.log('pileCompData-------->', pileCompData);
   const [assignPhotos, { loading, error }] = useMutation<
     AssignPhotosToChildMutation,
     AssignPhotosToChildMutationVariables

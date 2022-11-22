@@ -27,10 +27,12 @@ import {
 import ChildSelectModal from '../../shared/ChildSelectModal';
 import PileAlbumSelectSheet from './PileAlbumSelectSheet';
 
-function PileActionBarSingle({ selectedPhoto }: any) {
-  const { compData: pileCompData, clearComp: resetPileData } =
-    useCompData<PileCD>(PILE);
-  const [showChildSelectModal, setShowChildSelectModal] = useState(false);
+function PileActionBarSingle({ selectedPhoto, setShowChildSelectModal }: any) {
+  const {
+    compData: pileCompData,
+    clearComp: resetPileData,
+    setData: setPileData,
+  } = useCompData<PileCD>(PILE);
   const [showAlbumSelect, setShowAlbumSelect] = useState(false);
 
   const [deletePhotos] = useMutation<

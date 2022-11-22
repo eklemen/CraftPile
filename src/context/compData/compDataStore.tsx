@@ -46,8 +46,7 @@ const CompDataProvider = ({ children }: { children: React.ReactNode }) => {
           throw new Error('Something went wrong in the compDataStore.');
       }
     },
-    initialState,
-    compDataInitializer
+    initialState
   );
 
   return <Provider value={{ state, dispatch }}>{children}</Provider>;

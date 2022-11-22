@@ -188,10 +188,6 @@ function PileActionDrawer() {
           </Button>
         </Box>
       </Row>
-      <ChildSelectModal
-        isOpen={showChildSelectModal}
-        onClose={() => setShowChildSelectModal(false)}
-      />
       <PileAlbumSelectSheet
         isOpen={showAlbumSelect}
         onClose={() => setShowAlbumSelect(false)}

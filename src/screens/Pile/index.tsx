@@ -1,5 +1,5 @@
-import { Box, Button, Column, Heading, Row } from 'native-base';
-import { useEffect } from 'react';
+import { Box, Button, Column, Heading, Image, Modal, Row } from 'native-base';
+import { useEffect, useState } from 'react';
 import { Dimensions, FlatList, StatusBar } from 'react-native';
 import { useQuery, gql } from '@apollo/client';
 
@@ -16,6 +16,8 @@ import {
 } from '../../context/constants';
 import PileActionDrawer from './PileActionDrawer';
 import Storage from '@aws-amplify/storage';
+import ChildSelectModal from '../../shared/ChildSelectModal';
+import PileActionBarSingle from './PileActionBarSingle';
 
 interface Props {
   navigation: AlbumScreenNavigationProp;
@@ -27,7 +29,9 @@ function PileScreen({}: Props) {
     setData: setPileData,
     clearComp: resetPileData,
   } = useCompData<PileCD>(PILE);
-  const { setData: setCachedPhotos } = useCompData<CachedUrlsCD>(CACHED_URLS);
+  const { setData: setCachedPhotos, compData: cachedPhotos } =
+    useCompData<CachedUrlsCD>(CACHED_URLS);
+  const [showChildSelectModal, setShowChildSelectModal] = useState(false);
 
   const {
     loading: pilePhotosLoading,
@@ -105,6 +109,54 @@ function PileScreen({}: Props) {
       />
 
       <PileActionDrawer />
+      <ChildSelectModal
+        isOpen={showChildSelectModal}
+        onClose={() => {
+          setShowChildSelectModal(false);
+          setPileData({ selectedPhoto: null });
+        }}
+      />
+      <Modal
+        size="full"
+        isOpen={Boolean(pileCompData.selectedPhoto)}
+        onClose={() => {
+          resetPileData({
+            multiSelect: false,
+            selectedPhotos: {},
+            selectedPhoto: null,
+            showChildSelectModal: false,
+          });
+        }}
+        _backdrop={{
+          opacity: 0.65,
+        }}
+      >
+        <Modal.Content flex={1}>
+          <Modal.CloseButton />
+          <Modal.Header>Image preview</Modal.Header>
+          <Modal.Body
+            h={Dimensions.get('window').height * 0.6}
+            alignItems="stretch"
+            display="flex"
+          >
+            <Image
+              source={{
+                uri: cachedPhotos[pileCompData.selectedPhoto?.thumbnailKey!],
+              }}
+              alt={'un-described image'}
+              resizeMode="contain"
+              w="100%"
+              h="95%"
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <PileActionBarSingle
+              selectedPhoto={pileCompData.selectedPhoto}
+              setShowChildSelectModal={setShowChildSelectModal}
+            />
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
     </Column>
   );
 }

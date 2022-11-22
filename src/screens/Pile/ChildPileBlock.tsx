@@ -94,44 +94,44 @@ function ChildPileBlock({ child, hideSkeleton }: Props) {
             </Pressable>
           );
         })}
-        <Modal
-          size="full"
-          isOpen={showImageModal}
-          onClose={() => {
-            resetPileCompData({
-              multiSelect: false,
-              selectedPhotos: {},
-              selectedPhoto: null,
-            });
-            setShowImageModal(false);
-          }}
-          _backdrop={{
-            opacity: 0.65,
-          }}
-        >
-          <Modal.Content flex={1}>
-            <Modal.CloseButton />
-            <Modal.Header>Image preview</Modal.Header>
-            <Modal.Body
-              h={Dimensions.get('window').height * 0.6}
-              alignItems="stretch"
-              display="flex"
-            >
-              <Image
-                source={{
-                  uri: cachedPhotos[pileCompData.selectedPhoto?.thumbnailKey!],
-                }}
-                alt={'un-described image'}
-                resizeMode="contain"
-                w="100%"
-                h="95%"
-              />
-            </Modal.Body>
-            <Modal.Footer>
-              <PileActionBarSingle selectedPhoto={pileCompData.selectedPhoto} />
-            </Modal.Footer>
-          </Modal.Content>
-        </Modal>
+        {/*<Modal*/}
+        {/*  size="full"*/}
+        {/*  isOpen={Boolean(pileCompData.selectedPhoto)}*/}
+        {/*  onClose={() => {*/}
+        {/*    resetPileCompData({*/}
+        {/*      multiSelect: false,*/}
+        {/*      selectedPhotos: {},*/}
+        {/*      selectedPhoto: null,*/}
+        {/*    });*/}
+        {/*    setShowImageModal(false);*/}
+        {/*  }}*/}
+        {/*  _backdrop={{*/}
+        {/*    opacity: 0.65,*/}
+        {/*  }}*/}
+        {/*>*/}
+        {/*  <Modal.Content flex={1}>*/}
+        {/*    <Modal.CloseButton />*/}
+        {/*    <Modal.Header>Image preview</Modal.Header>*/}
+        {/*    <Modal.Body*/}
+        {/*      h={Dimensions.get('window').height * 0.6}*/}
+        {/*      alignItems="stretch"*/}
+        {/*      display="flex"*/}
+        {/*    >*/}
+        {/*      <Image*/}
+        {/*        source={{*/}
+        {/*          uri: cachedPhotos[pileCompData.selectedPhoto?.thumbnailKey!],*/}
+        {/*        }}*/}
+        {/*        alt={'un-described image'}*/}
+        {/*        resizeMode="contain"*/}
+        {/*        w="100%"*/}
+        {/*        h="95%"*/}
+        {/*      />*/}
+        {/*    </Modal.Body>*/}
+        {/*    <Modal.Footer>*/}
+        {/*      <PileActionBarSingle selectedPhoto={pileCompData.selectedPhoto} />*/}
+        {/*    </Modal.Footer>*/}
+        {/*  </Modal.Content>*/}
+        {/*</Modal>*/}
       </Row>
     </Box>
   );
