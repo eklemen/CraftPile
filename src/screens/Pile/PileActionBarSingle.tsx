@@ -20,7 +20,7 @@ import {
 } from '../../generated/API';
 import { deleteUnsortedPhotos } from '../../graphql/mutations';
 
-function PileActionBarSingle({ selectedPhoto, setShowChildSelectModal }: any) {
+function PileActionBarSingle({ selectedPhoto }: any) {
   const { clearComp: resetPileData, setData: setPileData } =
     useCompData<PileCD>(PILE);
 

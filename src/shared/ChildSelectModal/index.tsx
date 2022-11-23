@@ -66,11 +66,11 @@ function ChildSelectModal({ isOpen, onClose }: Props) {
         },
       });
     }
-    resetPileData({
-      multiSelect: false,
-      selectedPhotos: {},
-      selectedPhoto: null,
-    });
+    // resetPileData({
+    //   multiSelect: false,
+    //   selectedPhotos: {},
+    //   selectedPhoto: null,
+    // });
     onClose();
   };
   if (!radioValue) return null;

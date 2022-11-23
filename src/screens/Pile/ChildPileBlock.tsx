@@ -27,7 +27,6 @@ interface Props {
 }
 
 function ChildPileBlock({ child, hideSkeleton }: Props) {
-  const [showImageModal, setShowImageModal] = useState(false);
   const {
     compData: pileCompData,
     setData: setPileData,
@@ -80,11 +79,9 @@ function ChildPileBlock({ child, hideSkeleton }: Props) {
                   }
                 } else {
                   // Single select
-                  console.log('singe select photo-------->', photo);
                   setPileData({
                     selectedPhoto: photo,
                   });
-                  setShowImageModal(true);
                 }
               }}
             >
