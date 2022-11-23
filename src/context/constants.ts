@@ -32,6 +32,7 @@ export interface PileCD {
   selectedPhoto: UnsortedPhoto | null;
   multiSelect: boolean;
   showChildSelectModal: boolean;
+  showAlbumSelectSheet: boolean;
 }
 
 export interface CachedUrlsCD {

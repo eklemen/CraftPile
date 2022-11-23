@@ -43,7 +43,14 @@ function PileAlbumSelectSheet({ isOpen, onClose, onAlbumSelect }: Props) {
     GetAlbumsForChildQueryVariables
   >(gql(getAlbumsForChild));
   useEffect(() => {
+    console.log('checkingIsOpen-------->');
+    console.log(
+      'pileCompData.selectedPhoto-------->',
+      pileCompData.selectedPhoto
+    );
     if (isOpen) {
+      console.log('isOpen-------->', isOpen);
+      console.log('getChildId-------->', getChildId());
       getAlbums({
         variables: {
           input: {

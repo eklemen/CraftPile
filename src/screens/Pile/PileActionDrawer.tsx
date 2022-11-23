@@ -24,15 +24,15 @@ import {
   addUnsortedPhotosToAlbum,
   deleteUnsortedPhotos,
 } from '../../graphql/mutations';
-import ChildSelectModal from '../../shared/ChildSelectModal';
 import PileAlbumSelectSheet from './PileAlbumSelectSheet';
 
 function PileActionDrawer() {
-  const { compData: pileCompData, clearComp: resetPileData } =
-    useCompData<PileCD>(PILE);
+  const {
+    compData: pileCompData,
+    clearComp: resetPileData,
+    setData: setPileData,
+  } = useCompData<PileCD>(PILE);
   const [disableDrawerBtn, setDisableDrawerBtn] = useState(false);
-  const [showChildSelectModal, setShowChildSelectModal] = useState(false);
-  const [showAlbumSelect, setShowAlbumSelect] = useState(false);
 
   const [deletePhotos] = useMutation<
     DeleteUnsortedPhotosMutation,
@@ -99,10 +99,10 @@ function PileActionDrawer() {
       });
     }
   };
-  const addToAlbumHandler = async () => {
+  const openAlbumSelect = async () => {
     const ids = lodashKeys(pileCompData?.selectedPhotos);
     if (ids.length) {
-      setShowAlbumSelect(true);
+      setPileData({ showAlbumSelectSheet: true });
     }
   };
   const addPhotosToAlbumHandler = async (albumId: string) => {
@@ -118,7 +118,7 @@ function PileActionDrawer() {
         selectedPhotos: {},
         selectedPhoto: null,
       });
-      setShowAlbumSelect(false);
+      setPileData({ showAlbumSelectSheet: false });
     }
   };
   return (
@@ -143,7 +143,10 @@ function PileActionDrawer() {
             w="100%"
             colorScheme="secondary"
             variant="ghost"
-            onPress={() => setShowChildSelectModal(true)}
+            onPress={() => {
+              console.log('pileCompData-------->', pileCompData);
+              setPileData({ showChildSelectModal: true });
+            }}
             disabled={disableDrawerBtn}
           >
             <Center flexDirection="row">
@@ -170,7 +173,7 @@ function PileActionDrawer() {
             w="100%"
             colorScheme="secondary"
             variant="ghost"
-            onPress={addToAlbumHandler}
+            onPress={openAlbumSelect}
             disabled={disableDrawerBtn}
           >
             <Center flexDirection="row">
@@ -189,8 +192,8 @@ function PileActionDrawer() {
         </Box>
       </Row>
       <PileAlbumSelectSheet
-        isOpen={showAlbumSelect}
-        onClose={() => setShowAlbumSelect(false)}
+        isOpen={pileCompData.showAlbumSelectSheet}
+        onClose={() => setPileData({ showAlbumSelectSheet: false })}
         onAlbumSelect={addPhotosToAlbumHandler}
       />
     </Animated.View>

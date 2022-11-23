@@ -17,11 +17,11 @@ const compDataStore = createContext<{
 });
 const { Provider } = compDataStore;
 
-const compDataInitializer = (initialState: Partial<CompDataStateTree>) => {
-  return {
-    ...initialState,
-  };
-};
+// const compDataInitializer = (initialState: Partial<CompDataStateTree>) => {
+//   return {
+//     ...initialState,
+//   };
+// };
 
 const CompDataProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(

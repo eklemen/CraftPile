@@ -15,25 +15,14 @@ import SwitchIcon from '../../appIcons/SwitchIcon';
 import AlbumAddIcon from '../../appIcons/AlbumAddIcon';
 import useCompData from '../../context/compData/useCompData';
 import {
-  AddUnsortedPhotosToAlbumMutation,
-  AddUnsortedPhotosToAlbumMutationVariables,
   DeleteUnsortedPhotosMutation,
   DeleteUnsortedPhotosMutationVariables,
 } from '../../generated/API';
-import {
-  addUnsortedPhotosToAlbum,
-  deleteUnsortedPhotos,
-} from '../../graphql/mutations';
-import ChildSelectModal from '../../shared/ChildSelectModal';
-import PileAlbumSelectSheet from './PileAlbumSelectSheet';
+import { deleteUnsortedPhotos } from '../../graphql/mutations';
 
 function PileActionBarSingle({ selectedPhoto, setShowChildSelectModal }: any) {
-  const {
-    compData: pileCompData,
-    clearComp: resetPileData,
-    setData: setPileData,
-  } = useCompData<PileCD>(PILE);
-  const [showAlbumSelect, setShowAlbumSelect] = useState(false);
+  const { clearComp: resetPileData, setData: setPileData } =
+    useCompData<PileCD>(PILE);
 
   const [deletePhotos] = useMutation<
     DeleteUnsortedPhotosMutation,
@@ -42,11 +31,6 @@ function PileActionBarSingle({ selectedPhoto, setShowChildSelectModal }: any) {
     onError: (err) => console.log(err),
   });
 
-  const [addPhotosToAlbum] = useMutation<
-    AddUnsortedPhotosToAlbumMutation,
-    AddUnsortedPhotosToAlbumMutationVariables
-  >(gql(addUnsortedPhotosToAlbum));
-
   const deleteHandler = async () => {
     console.log('delete handler', selectedPhoto);
     await deletePhotos({
@@ -54,31 +38,17 @@ function PileActionBarSingle({ selectedPhoto, setShowChildSelectModal }: any) {
         input: { ids: [selectedPhoto?._id!] },
       },
       // onError: (err) => console.log('-=-=-=-=-', err),
-      onCompleted: () => {
-        resetPileData({
-          multiSelect: false,
-          selectedPhotos: {},
-          selectedPhoto: null,
-        });
-      },
-    });
-  };
-  const addToAlbumHandler = async () => {
-    setShowAlbumSelect(true);
-  };
-  const addPhotosToAlbumHandler = async (albumId: string) => {
-    await addPhotosToAlbum({
-      variables: {
-        input: { ids: [pileCompData?.selectedPhoto?._id!], albumId },
-      },
     });
     resetPileData({
       multiSelect: false,
       selectedPhotos: {},
       selectedPhoto: null,
+      showAlbumSelectSheet: false,
+      showChildSelectModal: false,
     });
-    setShowAlbumSelect(false);
   };
+  const openAlbumSelectSheet = () =>
+    setPileData({ showAlbumSelectSheet: true });
   return (
     <Box flex={1}>
       <Row w="100%" h={50} bg="white">
@@ -100,7 +70,7 @@ function PileActionBarSingle({ selectedPhoto, setShowChildSelectModal }: any) {
             w="100%"
             colorScheme="secondary"
             variant="ghost"
-            onPress={() => setShowChildSelectModal(true)}
+            onPress={() => setPileData({ showChildSelectModal: true })}
           >
             <Center flexDirection="row">
               <SwitchIcon />
@@ -126,7 +96,7 @@ function PileActionBarSingle({ selectedPhoto, setShowChildSelectModal }: any) {
             w="100%"
             colorScheme="secondary"
             variant="ghost"
-            onPress={addToAlbumHandler}
+            onPress={openAlbumSelectSheet}
           >
             <Center flexDirection="row">
               <AlbumAddIcon />
@@ -147,11 +117,11 @@ function PileActionBarSingle({ selectedPhoto, setShowChildSelectModal }: any) {
       {/*  isOpen={showChildSelectModal}*/}
       {/*  onClose={() => setShowChildSelectModal(false)}*/}
       {/*/>*/}
-      <PileAlbumSelectSheet
-        isOpen={showAlbumSelect}
-        onClose={() => setShowAlbumSelect(false)}
-        onAlbumSelect={addPhotosToAlbumHandler}
-      />
+      {/*<PileAlbumSelectSheet*/}
+      {/*  isOpen={showAlbumSelect}*/}
+      {/*  onClose={() => setShowAlbumSelect(false)}*/}
+      {/*  onAlbumSelect={addPhotosToAlbumHandler}*/}
+      {/*/>*/}
     </Box>
   );
 }

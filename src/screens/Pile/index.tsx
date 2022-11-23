@@ -1,9 +1,13 @@
 import { Box, Button, Column, Heading, Image, Modal, Row } from 'native-base';
 import { useEffect, useState } from 'react';
 import { Dimensions, FlatList, StatusBar } from 'react-native';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, gql, useMutation } from '@apollo/client';
 
-import { GetChildrenUnsortedPhotosQuery } from '../../generated/API';
+import {
+  AddUnsortedPhotosToAlbumMutation,
+  AddUnsortedPhotosToAlbumMutationVariables,
+  GetChildrenUnsortedPhotosQuery,
+} from '../../generated/API';
 import { getChildrenUnsortedPhotos } from '../../graphql/queries';
 import { AlbumScreenNavigationProp } from '../../types/routes';
 import ChildPileBlock from './ChildPileBlock';
@@ -18,6 +22,8 @@ import PileActionDrawer from './PileActionDrawer';
 import Storage from '@aws-amplify/storage';
 import ChildSelectModal from '../../shared/ChildSelectModal';
 import PileActionBarSingle from './PileActionBarSingle';
+import PileAlbumSelectSheet from './PileAlbumSelectSheet';
+import { addUnsortedPhotosToAlbum } from '../../graphql/mutations';
 
 interface Props {
   navigation: AlbumScreenNavigationProp;
@@ -55,6 +61,23 @@ function PileScreen({}: Props) {
       setCachedPhotos(obj);
     },
   });
+  const [addPhotosToAlbum] = useMutation<
+    AddUnsortedPhotosToAlbumMutation,
+    AddUnsortedPhotosToAlbumMutationVariables
+  >(gql(addUnsortedPhotosToAlbum));
+  const addPhotosToAlbumHandler = async (albumId: string) => {
+    await addPhotosToAlbum({
+      variables: {
+        input: { ids: [pileCompData?.selectedPhoto?._id!], albumId },
+      },
+    });
+    resetPileData({
+      multiSelect: false,
+      selectedPhotos: {},
+      selectedPhoto: null,
+    });
+    setPileData({ showAlbumSelectSheet: false });
+  };
 
   useEffect(() => {
     resetPileData({
@@ -109,6 +132,11 @@ function PileScreen({}: Props) {
       />
 
       <PileActionDrawer />
+      <PileAlbumSelectSheet
+        isOpen={pileCompData.showAlbumSelectSheet}
+        onClose={() => setPileData({ showAlbumSelectSheet: false })}
+        onAlbumSelect={addPhotosToAlbumHandler}
+      />
       <ChildSelectModal
         isOpen={showChildSelectModal}
         onClose={() => {
