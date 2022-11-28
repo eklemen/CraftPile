@@ -1,13 +1,4 @@
-import {
-  Box,
-  Button,
-  Column,
-  Heading,
-  Image,
-  Modal,
-  Row,
-  Text,
-} from 'native-base';
+import { Box, Button, Column, Heading, Image, Modal, Row } from 'native-base';
 import { Dimensions, FlatList, StatusBar } from 'react-native';
 import { useQuery, gql, useMutation } from '@apollo/client';
 
@@ -134,6 +125,7 @@ function PileScreen({}: Props) {
         isOpen={pileCompData.showAlbumSelectSheet}
         onClose={() => setPileData({ showAlbumSelectSheet: false })}
         onAlbumSelect={addPhotosToAlbumHandler}
+        pileCompData={pileCompData}
       />
       <ChildSelectModal
         isOpen={pileCompData.showChildSelectModal}
@@ -168,7 +160,6 @@ function PileScreen({}: Props) {
             </>
           ) : (
             <>
-              <Modal.Header>Image preview</Modal.Header>
               <Modal.Body
                 h={Dimensions.get('window').height * 0.6}
                 alignItems="stretch"

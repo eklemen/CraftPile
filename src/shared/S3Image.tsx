@@ -35,7 +35,9 @@ function S3Image({ s3Key, w = 200, h = 200, ...rest }: Props) {
         uri: cachedPhotos[s3Key],
       }}
       alt={'un-described image'}
-      resizeMode="cover"
+      style={{
+        resizeMode: 'cover',
+      }}
       w={w}
       h={h}
       {...rest}

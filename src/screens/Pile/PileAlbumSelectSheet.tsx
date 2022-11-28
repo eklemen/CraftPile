@@ -11,8 +11,7 @@ import {
 import lodashKeys from 'lodash.keys';
 import isEmpty from 'lodash.isempty';
 import { gql, useLazyQuery } from '@apollo/client';
-import useCompData from '../../context/compData/useCompData';
-import { PILE, PileCD } from '../../context/constants';
+import { PileCD } from '../../context/constants';
 import {
   GetAlbumsForChildQuery,
   GetAlbumsForChildQueryVariables,
