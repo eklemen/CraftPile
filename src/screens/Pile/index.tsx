@@ -1,4 +1,5 @@
-import { Box, Button, Column, Heading, Image, Modal, Row } from 'native-base';
+import { Button, Column, Heading, Modal, Row } from 'native-base';
+import { Image } from 'react-native-expo-image-cache';
 import { Dimensions, FlatList, StatusBar } from 'react-native';
 import { useQuery, gql, useMutation } from '@apollo/client';
 
@@ -166,15 +167,12 @@ function PileScreen({}: Props) {
                 display="flex"
               >
                 <Image
-                  source={{
-                    uri: cachedPhotos[
-                      pileCompData.selectedPhoto?.thumbnailKey!
-                    ],
+                  uri={cachedPhotos[pileCompData.selectedPhoto?.thumbnailKey!]}
+                  style={{
+                    resizeMode: 'contain',
+                    width: '100%',
+                    height: '95%',
                   }}
-                  alt={'un-described image'}
-                  resizeMode="contain"
-                  w="100%"
-                  h="95%"
                 />
               </Modal.Body>
               <Modal.Footer>

@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Storage from '@aws-amplify/storage';
-import { Image, Skeleton } from 'native-base';
+import { Skeleton } from 'native-base';
+import { Image } from 'react-native-expo-image-cache';
 import useCompData from '../context/compData/useCompData';
 import { CACHED_URLS, CachedUrlsCD } from '../context/constants';
 
@@ -31,15 +32,12 @@ function S3Image({ s3Key, w = 200, h = 200, ...rest }: Props) {
   if (!cachedPhotos[s3Key]) return <Skeleton w={160} h={160} />;
   return (
     <Image
-      source={{
-        uri: cachedPhotos[s3Key],
-      }}
-      alt={'un-described image'}
+      uri={cachedPhotos[s3Key]}
       style={{
         resizeMode: 'cover',
+        width: w,
+        height: h,
       }}
-      w={w}
-      h={h}
       {...rest}
     />
   );
