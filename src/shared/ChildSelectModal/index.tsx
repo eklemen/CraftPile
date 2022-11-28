@@ -22,13 +22,13 @@ import { getUser } from '../../graphql/queries';
 
 interface Props {
   isOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void;
+  setPileData: (data: any) => void;
 }
 
-function ChildSelectModal({ isOpen, onClose }: Props) {
+function ChildSelectModal({ isOpen, onClose, setPileData }: Props) {
   const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
-  const { compData: pileCompData, clearComp: resetPileData } =
-    useCompData<PileCD>(PILE);
+  const { compData: pileCompData } = useCompData<PileCD>(PILE);
   const [assignPhotos, { loading, error }] = useMutation<
     AssignPhotosToChildMutation,
     AssignPhotosToChildMutationVariables
@@ -71,7 +71,12 @@ function ChildSelectModal({ isOpen, onClose }: Props) {
     //   selectedPhotos: {},
     //   selectedPhoto: null,
     // });
-    onClose();
+    setPileData({
+      multiSelect: false,
+      selectedPhotos: {},
+      showChildSelectModal: false,
+      selectedPhoto: null,
+    });
   };
   if (!radioValue) return null;
   return (
@@ -79,7 +84,7 @@ function ChildSelectModal({ isOpen, onClose }: Props) {
       isOpen={isOpen}
       onClose={() => {
         setRadioValue(undefined);
-        onClose();
+        setPileData({});
       }}
     >
       <Modal.Content maxWidth="350">

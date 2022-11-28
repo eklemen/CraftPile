@@ -24,9 +24,15 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   onAlbumSelect: (albumId: string) => void;
+  setPileData: (data: any) => void;
 }
 
-function PileAlbumSelectSheet({ isOpen, onClose, onAlbumSelect }: Props) {
+function PileAlbumSelectSheet({
+  isOpen,
+  onClose,
+  onAlbumSelect,
+  setPileData,
+}: Props) {
   const { compData: pileCompData } = useCompData<PileCD>(PILE);
   const getChildId = (): string => {
     if (pileCompData.multiSelect && !isEmpty(pileCompData.selectedPhotos)) {
@@ -43,14 +49,7 @@ function PileAlbumSelectSheet({ isOpen, onClose, onAlbumSelect }: Props) {
     GetAlbumsForChildQueryVariables
   >(gql(getAlbumsForChild));
   useEffect(() => {
-    console.log('checkingIsOpen-------->');
-    console.log(
-      'pileCompData.selectedPhoto-------->',
-      pileCompData.selectedPhoto
-    );
     if (isOpen) {
-      console.log('isOpen-------->', isOpen);
-      console.log('getChildId-------->', getChildId());
       getAlbums({
         variables: {
           input: {

@@ -20,9 +20,8 @@ import {
 } from '../../generated/API';
 import { deleteUnsortedPhotos } from '../../graphql/mutations';
 
-function PileActionBarSingle({ selectedPhoto }: any) {
-  const { clearComp: resetPileData, setData: setPileData } =
-    useCompData<PileCD>(PILE);
+function PileActionBarSingle({ selectedPhoto, setPileData }: any) {
+  const { clearComp: resetPileData } = useCompData<PileCD>(PILE);
 
   const [deletePhotos] = useMutation<
     DeleteUnsortedPhotosMutation,
@@ -39,7 +38,7 @@ function PileActionBarSingle({ selectedPhoto }: any) {
       },
       // onError: (err) => console.log('-=-=-=-=-', err),
     });
-    resetPileData({
+    setPileData({
       multiSelect: false,
       selectedPhotos: {},
       selectedPhoto: null,
