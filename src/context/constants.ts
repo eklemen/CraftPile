@@ -33,6 +33,7 @@ export interface PileCD {
   multiSelect: boolean;
   showChildSelectModal: boolean;
   showAlbumSelectSheet: boolean;
+  showAlbumSelectModal: boolean;
 }
 
 export interface CachedUrlsCD {

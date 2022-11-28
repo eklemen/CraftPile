@@ -24,16 +24,15 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   onAlbumSelect: (albumId: string) => void;
-  setPileData: (data: any) => void;
+  pileCompData: PileCD;
 }
 
 function PileAlbumSelectSheet({
   isOpen,
   onClose,
   onAlbumSelect,
-  setPileData,
+  pileCompData,
 }: Props) {
-  const { compData: pileCompData } = useCompData<PileCD>(PILE);
   const getChildId = (): string => {
     if (pileCompData.multiSelect && !isEmpty(pileCompData.selectedPhotos)) {
       const key = lodashKeys(pileCompData.selectedPhotos)[0];
@@ -44,7 +43,7 @@ function PileAlbumSelectSheet({
       return '';
     }
   };
-  const [getAlbums, { called, loading, data, error }] = useLazyQuery<
+  const [getAlbums, { loading, data, error }] = useLazyQuery<
     GetAlbumsForChildQuery,
     GetAlbumsForChildQueryVariables
   >(gql(getAlbumsForChild));

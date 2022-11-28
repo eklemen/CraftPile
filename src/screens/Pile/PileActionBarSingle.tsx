@@ -47,7 +47,7 @@ function PileActionBarSingle({ selectedPhoto, setPileData }: any) {
     });
   };
   const openAlbumSelectSheet = () =>
-    setPileData({ showAlbumSelectSheet: true });
+    setPileData({ showAlbumSelectModal: true });
   return (
     <Box flex={1}>
       <Row w="100%" h={50} bg="white">

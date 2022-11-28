@@ -80,6 +80,8 @@ function PileScreen({}: Props) {
       selectedPhotos: {},
       showChildSelectModal: false,
       selectedPhoto: null,
+      showAlbumSelectModal: false,
+      showAlbumSelectSheet: false,
     });
   };
 
@@ -130,7 +132,6 @@ function PileScreen({}: Props) {
       <PileActionDrawer />
       <PileAlbumSelectSheet
         isOpen={pileCompData.showAlbumSelectSheet}
-        setPileData={setPileData}
         onClose={() => setPileData({ showAlbumSelectSheet: false })}
         onAlbumSelect={addPhotosToAlbumHandler}
       />
@@ -156,28 +157,43 @@ function PileScreen({}: Props) {
       >
         <Modal.Content flex={1}>
           <Modal.CloseButton />
-          <Modal.Header>Image preview</Modal.Header>
-          <Modal.Body
-            h={Dimensions.get('window').height * 0.6}
-            alignItems="stretch"
-            display="flex"
-          >
-            <Image
-              source={{
-                uri: cachedPhotos[pileCompData.selectedPhoto?.thumbnailKey!],
-              }}
-              alt={'un-described image'}
-              resizeMode="contain"
-              w="100%"
-              h="95%"
-            />
-          </Modal.Body>
-          <Modal.Footer>
-            <PileActionBarSingle
-              selectedPhoto={pileCompData.selectedPhoto}
-              setPileData={setPileData}
-            />
-          </Modal.Footer>
+          {pileCompData.showAlbumSelectModal ? (
+            <>
+              <PileAlbumSelectSheet
+                isOpen={pileCompData.showAlbumSelectModal}
+                onClose={() => setPileData({ showAlbumSelectModal: false })}
+                onAlbumSelect={addPhotosToAlbumHandler}
+                pileCompData={pileCompData}
+              />
+            </>
+          ) : (
+            <>
+              <Modal.Header>Image preview</Modal.Header>
+              <Modal.Body
+                h={Dimensions.get('window').height * 0.6}
+                alignItems="stretch"
+                display="flex"
+              >
+                <Image
+                  source={{
+                    uri: cachedPhotos[
+                      pileCompData.selectedPhoto?.thumbnailKey!
+                    ],
+                  }}
+                  alt={'un-described image'}
+                  resizeMode="contain"
+                  w="100%"
+                  h="95%"
+                />
+              </Modal.Body>
+              <Modal.Footer>
+                <PileActionBarSingle
+                  selectedPhoto={pileCompData.selectedPhoto}
+                  setPileData={setPileData}
+                />
+              </Modal.Footer>
+            </>
+          )}
         </Modal.Content>
       </Modal>
     </Column>
