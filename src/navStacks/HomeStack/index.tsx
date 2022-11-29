@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useTheme } from 'native-base';
+import { Heading, useTheme } from 'native-base';
 
 import Camera from '../../screens/Camera';
 import Landing from '../../screens/Landing';
@@ -8,7 +8,7 @@ import ManageChildren from '../../screens/ManageChildren';
 import ProfileScreen from '../../screens/Profile';
 import AlbumScreen from '../../screens/Albums';
 import PileScreen from '../../screens/Pile';
-import { RootStackParamList } from '../../types/routes';
+import { AlbumStackParamList, RootStackParamList } from '../../types/routes';
 import CameraIcon from '../../appIcons/CameraIcon';
 import AlbumIcon from '../../appIcons/AlbumIcon';
 import PileIcon from '../../appIcons/PileIcon';
@@ -16,6 +16,22 @@ import ProfileIcon from '../../appIcons/ProfileIcon';
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
 const MainBottomNav = createBottomTabNavigator();
+const AlbumStack = createNativeStackNavigator<AlbumStackParamList>();
+
+function AlbumNavs() {
+  return (
+    <AlbumStack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName="AlbumScreen"
+    >
+      <AlbumStack.Screen name="AlbumScreen" component={AlbumScreen} />
+      <AlbumStack.Screen
+        name="AlbumPhotos"
+        component={() => <Heading>Photo</Heading>}
+      />
+    </AlbumStack.Navigator>
+  );
+}
 
 function MainBottomNavScreens() {
   const { colors, fontConfig } = useTheme();
@@ -62,7 +78,7 @@ function MainBottomNavScreens() {
       />
       <MainBottomNav.Screen
         name="Albums"
-        component={AlbumScreen}
+        component={AlbumNavs}
         options={{
           tabBarIcon: ({ focused, color }) => (
             <AlbumIcon size={26} focused={focused} color={color} />

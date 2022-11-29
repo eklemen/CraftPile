@@ -7,7 +7,16 @@ type ContextAction = {
   payload?: Record<string, any>;
 };
 
-const initialState: Partial<CompDataStateTree> = {};
+const initialState: Partial<CompDataStateTree> = {
+  [PILE]: {
+    selectedPhoto: null,
+    selectedPhotos: {},
+    multiSelect: false,
+    showChildSelectModal: false,
+    showAlbumSelectSheet: false,
+    showAlbumSelectModal: false,
+  },
+};
 const compDataStore = createContext<{
   state: Partial<CompDataStateTree>;
   dispatch: React.Dispatch<ContextAction>;

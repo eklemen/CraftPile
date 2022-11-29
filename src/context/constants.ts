@@ -40,10 +40,13 @@ export interface CachedUrlsCD {
   [key: string]: string;
 }
 
+export interface AlbumsCD {
+}
+
 export interface CompDataStateTree {
   [AUTH]: UserCD;
   [CAMERA]: CameraCD;
-  [ALBUMS]: {};
+  [ALBUMS]: AlbumsCD;
   [PILE]: PileCD;
   [CACHED_URLS]: CachedUrlsCD;
 }

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Storage from '@aws-amplify/storage';
 import { Skeleton } from 'native-base';
 import { Image } from 'react-native-expo-image-cache';
@@ -9,9 +9,10 @@ interface Props {
   s3Key: string;
   s3LocalKey?: string;
   [key: string]: any;
+  style?: Record<string, unknown>;
 }
 
-function S3Image({ s3Key, w = 200, h = 200, ...rest }: Props) {
+function S3Image({ s3Key, w = 200, h = 200, style, ...rest }: Props) {
   const { compData: cachedPhotos, setData: setCachedPhoto } =
     useCompData<CachedUrlsCD>(CACHED_URLS);
   useEffect(() => {
@@ -33,11 +34,14 @@ function S3Image({ s3Key, w = 200, h = 200, ...rest }: Props) {
   return (
     <Image
       uri={cachedPhotos[s3Key]}
-      style={{
-        resizeMode: 'cover',
-        width: w,
-        height: h,
-      }}
+      style={[
+        {
+          resizeMode: 'cover',
+          width: w,
+          height: h,
+        },
+        style,
+      ]}
       {...rest}
     />
   );

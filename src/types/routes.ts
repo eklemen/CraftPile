@@ -15,6 +15,14 @@ export type RootStackParamList = {
   // };
 };
 
+export type AlbumStackParamList = {
+  AlbumScreen: { name?: string };
+  AlbumPhotos: {
+    name?: string;
+    albumId: string;
+  };
+};
+
 export type LandingScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   'Landing'
@@ -30,17 +38,17 @@ export type CameraScreenNavigationProp = StackNavigationProp<
   'Camera'
 >;
 
-export type AlbumScreenNavigationProp = StackNavigationProp<
+export type AlbumPhotosScreenRouteProp = RouteProp<
   RootStackParamList,
-  'Albums'
+  'AlbumPhotos2'
+>;
+
+export type AlbumScreenNavigationProp = StackNavigationProp<
+  AlbumStackParamList,
+  'AlbumScreen'
 >;
 
 export type AlbumPhotosScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'AlbumPhotos'
->;
-
-export type AlbumPhotosScreenRouteProp = RouteProp<
-  RootStackParamList,
+  AlbumStackParamList,
   'AlbumPhotos'
 >;

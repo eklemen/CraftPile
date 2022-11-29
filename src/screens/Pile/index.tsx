@@ -135,14 +135,14 @@ function PileScreen({}: Props) {
       {/* Image Modal*/}
       <Modal
         size="full"
-        isOpen={Boolean(pileCompData.selectedPhoto)}
+        isOpen={Boolean(pileCompData.selectedPhoto!)}
         onClose={() => {
           setPileData({
             multiSelect: false,
             selectedPhotos: {},
             selectedPhoto: null,
             showChildSelectModal: false,
-          });
+          } as Partial<PileCD>);
         }}
         _backdrop={{
           opacity: 0.65,
