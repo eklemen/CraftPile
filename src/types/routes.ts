@@ -2,9 +2,9 @@ import type { RouteProp } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 
 export type RootStackParamList = {
-  Landing: { name?: string };
-  ManageChildren: { name?: string };
-  MainStack: { name?: string };
+  Landing: undefined;
+  ManageChildren: undefined;
+  MainStack: undefined;
   // Camera: { name: string };
   // Albums: { name: string };
   // AlbumPhotos: {
@@ -16,7 +16,7 @@ export type RootStackParamList = {
 };
 
 export type AlbumStackParamList = {
-  AlbumScreen: { name?: string };
+  AlbumScreen: undefined;
   AlbumPhotos: {
     name?: string;
     albumId: string;

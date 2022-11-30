@@ -29,7 +29,7 @@ input createAlbumInput {
 }
 
 input getPhotosForAlbumInput {
-  albumId: ID
+  albumId: ID!
   limit: Int
   nextToken: String
   childId: String

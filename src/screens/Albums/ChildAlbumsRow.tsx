@@ -32,6 +32,7 @@ function ChildAlbumsRow({ childAlbum }: Props) {
         <FlatList
           data={childAlbum.albums}
           horizontal
+          keyExtractor={(item) => item._id}
           renderItem={({ item: album }) => <AlbumTile album={album} />}
         />
       </Row>
