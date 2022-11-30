@@ -58,7 +58,7 @@ function CameraContainer() {
       if (userData.data) {
         setAuthData({ user: userData.data.getUser });
       } else if (userData.errors) {
-        setAuthData({ user: null });
+        setAuthData({ user: undefined });
       }
       setLoading(false);
     };

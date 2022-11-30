@@ -30,7 +30,7 @@ function S3Image({ s3Key, w = 200, h = 200, style, ...rest }: Props) {
       getImage();
     }
   }, []);
-  if (!cachedPhotos[s3Key]) return <Skeleton w={160} h={160} />;
+  if (!cachedPhotos[s3Key]) return <Skeleton w={w} h={h} />;
   return (
     <Image
       uri={cachedPhotos[s3Key]}
