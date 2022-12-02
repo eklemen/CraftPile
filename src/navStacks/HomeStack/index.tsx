@@ -8,7 +8,11 @@ import ManageChildren from '../../screens/ManageChildren';
 import ProfileScreen from '../../screens/Profile';
 import AlbumScreen from '../../screens/Albums';
 import PileScreen from '../../screens/Pile';
-import { AlbumStackParamList, RootStackParamList } from '../../types/routes';
+import {
+  AlbumStackParamList,
+  MainStackParamList,
+  RootStackParamList,
+} from '../../types/routes';
 import CameraIcon from '../../appIcons/CameraIcon';
 import AlbumIcon from '../../appIcons/AlbumIcon';
 import PileIcon from '../../appIcons/PileIcon';
@@ -16,7 +20,7 @@ import ProfileIcon from '../../appIcons/ProfileIcon';
 import AlbumPhotos from '../../screens/AlbumPhotos';
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
-const MainBottomNav = createBottomTabNavigator();
+const MainBottomNav = createBottomTabNavigator<MainStackParamList>();
 const AlbumStack = createNativeStackNavigator<AlbumStackParamList>();
 
 function AlbumNavs() {

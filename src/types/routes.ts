@@ -1,26 +1,29 @@
-import type { RouteProp } from '@react-navigation/native';
-import type { StackNavigationProp } from '@react-navigation/stack';
+import type {
+  StackNavigationProp,
+  StackScreenProps,
+} from '@react-navigation/stack';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
 export type RootStackParamList = {
   Landing: undefined;
   ManageChildren: undefined;
-  MainStack: undefined;
-  // Camera: { name: string };
-  // Albums: { name: string };
-  // AlbumPhotos: {
-  //   name: string;
-  //   albumId: string;
-  //   allImages: boolean;
-  //   childId: string;
-  // };
+  MainStack: BottomTabNavigationProp<MainStackParamList>;
 };
 
 export type AlbumStackParamList = {
   AlbumScreen: undefined;
   AlbumPhotos: {
     name?: string;
+    childName?: string;
     albumId: string;
   };
+};
+
+export type MainStackParamList = {
+  Camera: undefined;
+  Pile: undefined;
+  Albums: StackNavigationProp<AlbumStackParamList, 'AlbumScreen'>;
+  Profile: undefined;
 };
 
 export type LandingScreenNavigationProp = StackNavigationProp<
@@ -33,22 +36,12 @@ export type ManageChildrenScreenNavigationProp = StackNavigationProp<
   'ManageChildren'
 >;
 
-export type CameraScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  'Camera'
->;
-
-export type AlbumPhotosScreenRouteProp = RouteProp<
-  RootStackParamList,
-  'AlbumPhotos2'
->;
-
 export type AlbumScreenNavigationProp = StackNavigationProp<
   AlbumStackParamList,
   'AlbumScreen'
 >;
 
-export type AlbumPhotosScreenNavigationProp = StackNavigationProp<
+export type AlbumPhotosScreenNavigationProp = StackScreenProps<
   AlbumStackParamList,
   'AlbumPhotos'
 >;

@@ -1,13 +1,12 @@
 import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { Button, Spinner } from 'native-base';
+import { Button } from 'native-base';
 import { View, Text } from 'react-native';
 
-import { CameraScreenNavigationProp } from '../../types/routes';
 import { cameraStyles as styles } from './styles';
 
 function MockCamera() {
-  const navigation = useNavigation<CameraScreenNavigationProp>();
+  const navigation = useNavigation<any>();
 
   return (
     <View style={styles.container}>

@@ -13,7 +13,6 @@ import useCompData from '../../context/compData/useCompData';
 import * as domains from '../../context/constants';
 import { GetUserQuery } from '../../generated/API';
 import { getUser } from '../../graphql/queries';
-import { CameraScreenNavigationProp } from '../../types/routes';
 import MockCamera from './MockCamera';
 import { cameraStyles as styles } from './styles';
 import { CameraCD, UserCD } from '../../context/constants';
@@ -22,7 +21,7 @@ import Shutter from '../../appIcons/Shutter';
 function CameraContainer() {
   const [saveImageError, setSaveImageError] = useState<{ message: string }>();
   const [camera, setCamera] = useState<Camera>();
-  const navigation = useNavigation<CameraScreenNavigationProp>();
+  const navigation = useNavigation<any>();
   const [cameraPermission, setCameraPermission] = useState<boolean>(false);
   const [galleryPermission, setGalleryPermission] = useState<boolean>(false);
   const [uploadingImg, setUploadingImg] = useState<boolean>(false);

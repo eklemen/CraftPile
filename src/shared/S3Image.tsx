@@ -36,7 +36,7 @@ function S3Image({ s3Key, w = 200, h = 200, style, ...rest }: Props) {
       uri={cachedPhotos[s3Key]}
       style={[
         {
-          resizeMode: 'cover',
+          resizeMode: 'contain',
           width: w,
           height: h,
         },

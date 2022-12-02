@@ -8,8 +8,9 @@ import { Album } from '../../generated/API';
 
 interface Props {
   album: Album;
+  childName?: string;
 }
-function AlbumTile({ album }: Props) {
+function AlbumTile({ album, childName }: Props) {
   const navigation = useNavigation<AlbumScreenNavigationProp>();
   return (
     <Box key={album._id} mb={8}>
@@ -17,6 +18,7 @@ function AlbumTile({ album }: Props) {
         onPress={() =>
           navigation.navigate('AlbumPhotos', {
             albumId: album._id,
+            childName,
           })
         }
       >

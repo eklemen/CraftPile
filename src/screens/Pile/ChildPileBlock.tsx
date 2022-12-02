@@ -1,25 +1,8 @@
-import {
-  Box,
-  Heading,
-  Image,
-  Modal,
-  Pressable,
-  Row,
-  Skeleton,
-  Text,
-} from 'native-base';
-import { useState } from 'react';
+import { Box, Heading, Pressable, Row, Skeleton } from 'native-base';
 import ImageBox from './ImageBox';
 import { ChildUnsortedPhotos } from '../../generated/API';
 import useCompData from '../../context/compData/useCompData';
-import {
-  CACHED_URLS,
-  CachedUrlsCD,
-  PILE,
-  PileCD,
-} from '../../context/constants';
-import { Dimensions } from 'react-native';
-import PileActionBarSingle from './PileActionBarSingle';
+import { PILE, PileCD } from '../../context/constants';
 
 interface Props {
   child: ChildUnsortedPhotos;
@@ -27,13 +10,8 @@ interface Props {
 }
 
 function ChildPileBlock({ child, hideSkeleton }: Props) {
-  const {
-    compData: pileCompData,
-    setData: setPileData,
-    clearComp: resetPileCompData,
-  } = useCompData<PileCD>(PILE);
-  const { compData: cachedPhotos, setData: setCachedPhoto } =
-    useCompData<CachedUrlsCD>(CACHED_URLS);
+  const { compData: pileCompData, setData: setPileData } =
+    useCompData<PileCD>(PILE);
   if (!child?.photos?.length) return null;
   return (
     <Box px={4} mb={5}>
@@ -46,6 +24,8 @@ function ChildPileBlock({ child, hideSkeleton }: Props) {
       >
         <Heading size="md">{child?.childName}</Heading>
       </Skeleton>
+      {/* TODO: make this flatlist or scrollview
+      with numColumns={2} */}
       <Row flexWrap="wrap">
         {child.photos?.map((photo) => {
           const isMultiSelected = pileCompData.selectedPhotos?.hasOwnProperty(

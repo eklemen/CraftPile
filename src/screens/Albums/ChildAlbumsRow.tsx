@@ -33,7 +33,9 @@ function ChildAlbumsRow({ childAlbum }: Props) {
           data={childAlbum.albums}
           horizontal
           keyExtractor={(item) => item._id}
-          renderItem={({ item: album }) => <AlbumTile album={album} />}
+          renderItem={({ item: album }) => (
+            <AlbumTile album={album} childName={childAlbum.name} />
+          )}
         />
       </Row>
     </Box>

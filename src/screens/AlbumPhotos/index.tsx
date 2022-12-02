@@ -1,137 +1,18 @@
-// import { GraphQLResult } from '@aws-amplify/api';
-// import Storage from '@aws-amplify/storage';
-// import { API, graphqlOperation } from 'aws-amplify';
-// import { Formik } from 'formik';
-// import { Button, FormControl, Image, Input, Modal, Row } from 'native-base';
-// import { useEffect, useState } from 'react';
-// import { View, Text, TouchableOpacity, ImageBackground } from 'react-native';
-//
-// import { GetPhotosForAlbumQuery, Photo } from '../../generated/API';
-// import { getPhotosForAlbum } from '../../graphql/queries';
-// import { AlbumPhotosScreenRouteProp } from '../../types/routes';
-// import SelectedPhotoModal from './SelectedPhotoModal';
-//
-// export type PhotoWithUri = Photo & { uri?: string; fullResUri?: string };
-//
-// interface Props {
-//   route: AlbumPhotosScreenRouteProp;
-// }
-// function AlbumPhotos({ route }: Props) {
-//   const [selectedPhoto, setSelectedPhoto] = useState<PhotoWithUri | null>(null);
-//   const [albumData, setAlbumData] =
-//     useState<GetPhotosForAlbumQuery['getPhotosForAlbum']>();
-//   const [photoUris, setPhotoUris] = useState<string[]>([]);
-//   useEffect(() => {
-//     const fetchAlbumData = async () => {
-//       const albumPhotos = (await API.graphql(
-//         graphqlOperation(getPhotosForAlbum, {
-//           input: {
-//             albumId: route.params?.albumId,
-//             childId: route.params?.childId,
-//           },
-//         })
-//       )) as GraphQLResult<GetPhotosForAlbumQuery>;
-//       setAlbumData(albumPhotos?.data?.getPhotosForAlbum);
-//     };
-//     fetchAlbumData();
-//   }, []);
-//
-//   useEffect(() => {
-//     if (albumData?.photos?.length) {
-//       const photoUrlPromises: Promise<string>[] = albumData.photos.map(
-//         (photo) => {
-//           const s3Path = photo?.thumbnailKey;
-//           return Storage.get(s3Path, {
-//             contentType: 'image/jpeg',
-//           });
-//         }
-//       );
-//       Promise.all(photoUrlPromises).then((photoUrls) => {
-//         setPhotoUris(photoUrls);
-//       });
-//     }
-//   }, [albumData]);
-//
-//   useEffect(() => {
-//     if (photoUris.length) {
-//       const updatedPhotos = albumData?.photos?.map((photo, i: number) => ({
-//         ...photo,
-//         uri: photoUris[i],
-//       }));
-//       const updatedAlbumData = {
-//         ...albumData,
-//         photos: updatedPhotos,
-//       } as GetPhotosForAlbumQuery['getPhotosForAlbum'];
-//       setAlbumData(updatedAlbumData);
-//     }
-//   }, [photoUris.length]);
-//
-//   const handleSelectPhoto = async (photo: Photo | null) => {
-//     if (photo) {
-//       const s3Path = photo.objectKey!.split('public/')[1];
-//       const fullResUri = await Storage.get(s3Path, {
-//         contentType: 'image/jpeg',
-//       });
-//       // const albumsPhotoBelongsTo = get albums to map to Ids
-//       setSelectedPhoto({
-//         ...photo,
-//         fullResUri,
-//       });
-//     }
-//   };
-//
-//   console.log('selectedPhoto-------->', selectedPhoto);
-//   return (
-//     <View>
-//       <Row>
-//         {photoUris.length && albumData?.photos
-//           ? albumData.photos.map((photo) => {
-//               return (
-//                 <TouchableOpacity
-//                   onPress={() => handleSelectPhoto(photo)}
-//                   key={photo?._id}
-//                 >
-//                   <View>
-//                     <Image
-//                       shadow={2}
-//                       source={{
-//                         uri: photo?.uri,
-//                       }}
-//                       alt={photo?.description || 'un-described image'}
-//                       size="xl"
-//                     />
-//                     <Text>{photo?.description}</Text>
-//                   </View>
-//                 </TouchableOpacity>
-//               );
-//             })
-//           : null}
-//       </Row>
-//       <SelectedPhotoModal
-//         selectedPhoto={selectedPhoto}
-//         setSelectedPhoto={setSelectedPhoto}
-//       />
-//     </View>
-//   );
-// }
-//
-// export default AlbumPhotos;
 import { useEffect } from 'react';
-import { Column, Heading, Text } from 'native-base';
+import { Box, Column, Heading, Pressable, Row, Text } from 'native-base';
 import { gql, useQuery } from '@apollo/client';
-import {
-  GetChildrenAlbumsQuery,
-  GetPhotosForAlbumQuery,
-} from '../../generated/API';
-import { getChildrenAlbums, getPhotosForAlbum } from '../../graphql/queries';
+import { GetPhotosForAlbumQuery } from '../../generated/API';
+import { getPhotosForAlbum } from '../../graphql/queries';
 import { AlbumPhotosScreenNavigationProp } from '../../types/routes';
+import { FlatList } from 'react-native';
+import ImageBox from '../Pile/ImageBox';
 
 interface Props {
   route: AlbumPhotosScreenNavigationProp;
   navigation: AlbumPhotosScreenNavigationProp;
 }
 
-function AlbumPhotos({ route, navigation }: Props) {
+function AlbumPhotos({ route, navigation }: AlbumPhotosScreenNavigationProp) {
   useEffect(() => {
     if (!Boolean(route.params?.albumId)) {
       navigation.navigate('AlbumScreen');
@@ -150,9 +31,39 @@ function AlbumPhotos({ route, navigation }: Props) {
   console.log('data-------->', data);
   return (
     <Column safeAreaTop mt={30} h="100%">
-      <Heading size="xl" px={3} mb={5}>
-        Album Photos
+      <Heading size="md" px={3} mb={3}>
+        {route.params?.childName || null}
       </Heading>
+      {data?.getPhotosForAlbum?.name && (
+        <Heading size="xl" px={3} mb={5}>
+          {data?.getPhotosForAlbum?.name}
+        </Heading>
+      )}
+      <Box h="100%">
+        <Row flexWrap="wrap">
+          <FlatList
+            data={data?.getPhotosForAlbum?.photos}
+            style={{
+              flexDirection: 'column',
+            }}
+            numColumns={2}
+            renderItem={({ item }) => (
+              <Pressable
+                key={item?._id}
+                w="50%"
+                px={2}
+                mb={4}
+                style={{ borderColor: 'red', borderWidth: 1 }}
+                onPress={() => {
+                  console.log('item._id-------->', item._id);
+                }}
+              >
+                <ImageBox photoUri={item?.thumbnailKey} />
+              </Pressable>
+            )}
+          />
+        </Row>
+      </Box>
     </Column>
   );
 }
