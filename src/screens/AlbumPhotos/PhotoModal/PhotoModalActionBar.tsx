@@ -1,20 +1,23 @@
 import { Box, Button, Center, Row, Text } from 'native-base';
 import { gql, useMutation } from '@apollo/client';
+import { useNavigation } from '@react-navigation/native';
 import TrashCan from '../../../appIcons/TrashCan';
 import SwitchIcon from '../../../appIcons/SwitchIcon';
 import AlbumAddIcon from '../../../appIcons/AlbumAddIcon';
 import {
-  DeleteUnsortedPhotosMutation,
-  DeleteUnsortedPhotosMutationVariables,
+  DeletePhotosInAlbumMutation,
+  DeletePhotosInAlbumMutationVariables,
   Photo,
 } from '../../../generated/API';
-import { deleteUnsortedPhotos } from '../../../graphql/mutations';
+import { deletePhotosInAlbum } from '../../../graphql/mutations';
+import { AlbumScreenNavigationProp } from '../../../types/routes';
 
 interface Props {
   selectedPhoto: Photo;
   onDeleteSuccess: () => void;
   setShowAlbumSelectModal: (isOpen: boolean) => void;
   setShowChildSelectModal: (isOpen: boolean) => void;
+  albumId: string;
 }
 
 function PileActionBarSingle({
@@ -22,21 +25,24 @@ function PileActionBarSingle({
   onDeleteSuccess,
   setShowAlbumSelectModal,
   setShowChildSelectModal,
+  albumId,
 }: Props) {
+  console.log('route params', albumId);
   const [deletePhotos] = useMutation<
-    DeleteUnsortedPhotosMutation,
-    DeleteUnsortedPhotosMutationVariables
-  >(gql(deleteUnsortedPhotos), {
+    DeletePhotosInAlbumMutation,
+    DeletePhotosInAlbumMutationVariables
+  >(gql(deletePhotosInAlbum), {
     onError: (err) => console.log(err),
   });
 
   const deleteHandler = async () => {
-    console.log('delete handler', selectedPhoto);
     await deletePhotos({
       variables: {
-        input: { ids: [selectedPhoto?._id!] },
+        input: {
+          ids: [selectedPhoto?._id!],
+          albumId,
+        },
       },
-      // onError: (err) => console.log('-=-=-=-=-', err),
     });
     onDeleteSuccess();
   };

@@ -10,9 +10,7 @@ import {
   Skeleton,
   Text,
 } from 'native-base';
-import PileAlbumSelectSheet from '../../../screens/Pile/PileAlbumSelectSheet';
 import { Image } from 'react-native-expo-image-cache';
-import PileActionBarSingle from '../../../screens/Pile/PileActionBarSingle';
 import useCompData from '../../../context/compData/useCompData';
 import AlbumGrid from '../../../shared/AlbumGrid';
 import { gql, useLazyQuery } from '@apollo/client';
@@ -22,7 +20,7 @@ import {
   Photo,
 } from '../../../generated/API';
 import { getAlbumsForChild } from '../../../graphql/queries';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import PhotoModalActionBar from './PhotoModalActionBar';
 
 interface Props {
@@ -31,6 +29,8 @@ interface Props {
   showAlbumSelectModal: boolean;
   setShowAlbumSelectModal: () => void;
   onAlbumSelect: () => void;
+  handleDelete: () => void;
+  albumId: string;
 }
 
 function PhotoModal({
@@ -39,7 +39,9 @@ function PhotoModal({
   showAlbumSelectModal,
   setShowAlbumSelectModal,
   onAlbumSelect,
+  albumId,
 }: Props) {
+  const [] = useState();
   const { compData: cachedPhotos } = useCompData<CachedUrlsCD>(CACHED_URLS);
   const [getAlbums, { loading, data, error }] = useLazyQuery<
     GetAlbumsForChildQuery,
@@ -123,9 +125,10 @@ function PhotoModal({
             <Modal.Footer>
               <PhotoModalActionBar
                 selectedPhoto={selectedPhoto}
-                onDeleteSuccess={() => {}}
+                onDeleteSuccess={onClose}
                 setShowAlbumSelectModal={() => {}}
                 setShowChildSelectModal={() => {}}
+                albumId={albumId}
               />
             </Modal.Footer>
           </>

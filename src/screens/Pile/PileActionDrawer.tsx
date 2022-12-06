@@ -195,6 +195,7 @@ function PileActionDrawer() {
         isOpen={pileCompData.showAlbumSelectSheet}
         onClose={() => setPileData({ showAlbumSelectSheet: false })}
         onAlbumSelect={addPhotosToAlbumHandler}
+        pileCompData={pileCompData}
       />
     </Animated.View>
   );

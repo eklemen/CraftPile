@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Box, Column, Heading, Pressable, Row, Text } from 'native-base';
-import { gql, useQuery } from '@apollo/client';
-import { GetPhotosForAlbumQuery, Photo } from '../../generated/API';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import {
+  DeletePhotosInAlbumMutation,
+  DeletePhotosInAlbumMutationVariables,
+  DeleteUnsortedPhotosMutation,
+  DeleteUnsortedPhotosMutationVariables,
+  GetPhotosForAlbumQuery,
+  Photo,
+} from '../../generated/API';
 import { getPhotosForAlbum } from '../../graphql/queries';
 import { AlbumPhotosScreenNavigationProp } from '../../types/routes';
 import { FlatList } from 'react-native';
 import ImageBox from '../Pile/ImageBox';
 import PhotoModal from './PhotoModal';
-
-interface Props {
-  route: AlbumPhotosScreenNavigationProp;
-  navigation: AlbumPhotosScreenNavigationProp;
-}
+import { deleteUnsortedPhotos } from '../../graphql/mutations';
 
 function AlbumPhotos({ route, navigation }: AlbumPhotosScreenNavigationProp) {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo>();
@@ -30,7 +33,6 @@ function AlbumPhotos({ route, navigation }: AlbumPhotosScreenNavigationProp) {
       },
     }
   );
-  console.log('data-------->', data);
   return (
     <Column safeAreaTop mt={30} h="100%">
       <Heading size="md" px={3} mb={3}>
@@ -70,6 +72,8 @@ function AlbumPhotos({ route, navigation }: AlbumPhotosScreenNavigationProp) {
         showAlbumSelectModal={false}
         setShowAlbumSelectModal={() => {}}
         onAlbumSelect={() => {}}
+        handleDelete={() => {}}
+        albumId={route.params?.albumId}
       />
     </Column>
   );

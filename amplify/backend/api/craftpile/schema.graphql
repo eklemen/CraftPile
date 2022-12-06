@@ -11,6 +11,11 @@ input photoIdsInput {
   ids: [ID]!
 }
 
+input deletePhotosInAlbumInput {
+  ids: [String]!
+  albumId: ID!
+}
+
 input assignPhotosToChildInput {
   ids: [ID!]!
   childId: String!
@@ -123,12 +128,16 @@ type PhotosForAlbum {
 type Query {
   getPhotosForAlbum(input: getPhotosForAlbumInput): PhotosForAlbum
   @function(name: "craftpilePhotos-${env}")
+
   getUser: User!
   @function(name: "craftpilePhotos-${env}")
+
   getChildrenAlbums: [ChildAlbums!]!
   @function(name: "craftpilePhotos-${env}")
+
   getChildrenUnsortedPhotos: [ChildUnsortedPhotos!]!
   @function(name: "craftpilePhotos-${env}")
+
   getAlbumsForChild(input: getAlbumsForChildInput!): ChildAlbums!
   @function(name: "craftpilePhotos-${env}")
 }
@@ -136,14 +145,33 @@ type Query {
 type Mutation {
   updatePhotoProps(input: updatePhotoPropertiesInput): Photo
   @function(name: "craftpilePhotos-${env}")
+
   addChild(input: addChildInput): User!
   @function(name: "craftpilePhotos-${env}")
-  deleteUnsortedPhotos(input: photoIdsInput!): [ChildUnsortedPhotos!]
+
+#  delete photos (for album view)
+  deletePhotosInAlbum(input: deletePhotosInAlbumInput!): PhotosForAlbum!
   @function(name: "craftpilePhotos-${env}")
+
+################
+#  album view
   assignPhotosToChild(input: assignPhotosToChildInput!): [ChildUnsortedPhotos!]
   @function(name: "craftpilePhotos-${env}")
+
+  assignPhotosToChildInAlbums(input: assignPhotosToChildInput!): PhotosForAlbum!
+  @function(name: "craftpilePhotos-${env}")
+#  end album view
+
+#################
+#  Pile / unsorted photos
+  deleteUnsortedPhotos(input: photoIdsInput!): [ChildUnsortedPhotos!]
+  @function(name: "craftpilePhotos-${env}")
+
   addUnsortedPhotosToAlbum(input: addUnsortedPhotosToAlbumInput!): [ChildUnsortedPhotos!]!
   @function(name: "craftpilePhotos-${env}")
+# end pile / unsorted photos
+
+
   createAlbum(input: createAlbumInput!): ChildAlbums!
   @function(name: "craftpilePhotos-${env}")
 }
