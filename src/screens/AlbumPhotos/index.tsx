@@ -1,11 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Column, Heading, Pressable, Row, Text } from 'native-base';
 import { gql, useQuery } from '@apollo/client';
-import { GetPhotosForAlbumQuery } from '../../generated/API';
+import { GetPhotosForAlbumQuery, Photo } from '../../generated/API';
 import { getPhotosForAlbum } from '../../graphql/queries';
 import { AlbumPhotosScreenNavigationProp } from '../../types/routes';
 import { FlatList } from 'react-native';
 import ImageBox from '../Pile/ImageBox';
+import PhotoModal from './PhotoModal';
 
 interface Props {
   route: AlbumPhotosScreenNavigationProp;
@@ -13,6 +14,7 @@ interface Props {
 }
 
 function AlbumPhotos({ route, navigation }: AlbumPhotosScreenNavigationProp) {
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo>();
   useEffect(() => {
     if (!Boolean(route.params?.albumId)) {
       navigation.navigate('AlbumScreen');
@@ -54,9 +56,7 @@ function AlbumPhotos({ route, navigation }: AlbumPhotosScreenNavigationProp) {
                 px={2}
                 mb={4}
                 style={{ borderColor: 'red', borderWidth: 1 }}
-                onPress={() => {
-                  console.log('item._id-------->', item._id);
-                }}
+                onPress={() => setSelectedPhoto(item)}
               >
                 <ImageBox photoUri={item?.thumbnailKey} />
               </Pressable>
@@ -64,6 +64,13 @@ function AlbumPhotos({ route, navigation }: AlbumPhotosScreenNavigationProp) {
           />
         </Row>
       </Box>
+      <PhotoModal
+        selectedPhoto={selectedPhoto!}
+        onClose={() => setSelectedPhoto(undefined)}
+        showAlbumSelectModal={false}
+        setShowAlbumSelectModal={() => {}}
+        onAlbumSelect={() => {}}
+      />
     </Column>
   );
 }
