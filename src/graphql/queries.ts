@@ -9,6 +9,8 @@ export const getPhotosForAlbum = /* GraphQL */ `
       name
       description
       childId
+      accountId
+      posterImage
       photos {
         _id
         bucketName

@@ -41,6 +41,8 @@ export const deletePhotosInAlbum = /* GraphQL */ `
       name
       description
       childId
+      accountId
+      posterImage
       photos {
         _id
         bucketName
@@ -75,12 +77,14 @@ export const assignPhotosToChild = /* GraphQL */ `
   }
 `;
 export const assignPhotosToChildInAlbums = /* GraphQL */ `
-  mutation AssignPhotosToChildInAlbums($input: assignPhotosToChildInput!) {
+  mutation AssignPhotosToChildInAlbums($input: reassignPhotosToChildInput!) {
     assignPhotosToChildInAlbums(input: $input) {
       _id
       name
       description
       childId
+      accountId
+      posterImage
       photos {
         _id
         bucketName

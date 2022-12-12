@@ -16,6 +16,7 @@ export type AlbumStackParamList = {
     name?: string;
     childName?: string;
     albumId: string;
+    childId: string;
   };
 };
 

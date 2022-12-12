@@ -20,7 +20,7 @@
       "function": {
         "craftpilePhotos": {
           "deploymentBucketName": "amplify-craftpile-dev-214433-deployment",
-          "s3Key": "amplify-builds/craftpilePhotos-4777484f68455841346c-build.zip",
+          "s3Key": "amplify-builds/craftpilePhotos-4654417966707a614570-build.zip",
           "secretsPathAmplifyAppId": "d11bjp4lxch0p2"
         },
         "S3Trigger42c71366": {

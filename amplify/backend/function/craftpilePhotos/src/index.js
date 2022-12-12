@@ -114,43 +114,21 @@ const getChildrenAlbums = async (event) => {
 
 const getPhotosForAlbum = async (event) => {
   const { albumId, limit, nextToken, childId } = event?.arguments?.input;
-  // TODO: move user fetching to middleware
-  const userId = event?.identity?.sub;
-  const { photoCollection, userCollection, albumCollection } =
-    await connectToDatabase();
-  const user = await userCollection.findOne({ userId });
-  if (childId) {
-    const photos = await photoCollection
-      .find({
-        childId,
-      })
-      .toArray();
-    return {
-      _id: null,
-      name: 'All',
-      description: '',
+  const { photoCollection, albumCollection } = await connectToDatabase();
+  const photos = await photoCollection
+    .find({
       childId,
-      photos,
-    };
-  } else {
-    const album = await albumCollection.findOne({ _id: new ObjectID(albumId) });
-    const photos = await photoCollection
-      .find({
-        accountId: user.accountId,
-        albums: {
-          $in: [new ObjectID(albumId)],
-        },
-      })
-      .toArray();
+      albums: {
+        $in: [new ObjectID(albumId)],
+      },
+    })
+    .toArray();
+  const album = await albumCollection.findOne({ _id: new ObjectID(albumId) });
 
-    return {
-      _id: album._id,
-      name: album.name,
-      description: album.description,
-      childId: album.childId,
-      photos,
-    };
-  }
+  return {
+    ...album,
+    photos,
+  };
 };
 
 const getUser = async (event) => {
@@ -242,9 +220,10 @@ const addUnsortedPhotosToAlbum = async (event) => {
   return await getChildrenUnsortedPhotos(event);
 };
 
-const assignPhotosToChildInAlbums = async (event) => {
+// reassign a photo to a different child's album
+const reassignPhotosToChildAndAlbum = async (event) => {
   const { photoCollection } = await connectToDatabase();
-  const { ids, albumId } = event?.arguments?.input;
+  const { ids, albumId, childId } = event?.arguments?.input;
   await photoCollection.updateMany(
     {
       _id: {
@@ -252,8 +231,9 @@ const assignPhotosToChildInAlbums = async (event) => {
       },
     },
     {
-      $push: {
-        albums: new ObjectID(albumId),
+      $set: {
+        albums: [new ObjectID(albumId)],
+        childId,
       },
     }
   );
@@ -305,7 +285,8 @@ const resolvers = {
     assignPhotosToChild: (event) => assignPhotosToChild(event),
     createAlbum: (event) => createAlbum(event),
     deletePhotosInAlbum: (event) => deletePhotosInAlbum(event),
-    assignPhotosToChildInAlbums: (event) => assignPhotosToChildInAlbums(event),
+    assignPhotosToChildInAlbums: (event) =>
+      reassignPhotosToChildAndAlbum(event),
     // pile / unsorted photos
     addUnsortedPhotosToAlbum: (event) => addUnsortedPhotosToAlbum(event),
     deleteUnsortedPhotos: (event) => deleteUnsortedPhotos(event),

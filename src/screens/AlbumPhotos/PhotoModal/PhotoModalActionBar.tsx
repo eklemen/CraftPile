@@ -5,11 +5,16 @@ import TrashCan from '../../../appIcons/TrashCan';
 import SwitchIcon from '../../../appIcons/SwitchIcon';
 import AlbumAddIcon from '../../../appIcons/AlbumAddIcon';
 import {
+  AssignPhotosToChildInAlbumsMutation,
+  AssignPhotosToChildInAlbumsMutationVariables,
   DeletePhotosInAlbumMutation,
   DeletePhotosInAlbumMutationVariables,
   Photo,
 } from '../../../generated/API';
-import { deletePhotosInAlbum } from '../../../graphql/mutations';
+import {
+  assignPhotosToChildInAlbums,
+  deletePhotosInAlbum,
+} from '../../../graphql/mutations';
 import { AlbumScreenNavigationProp } from '../../../types/routes';
 
 interface Props {

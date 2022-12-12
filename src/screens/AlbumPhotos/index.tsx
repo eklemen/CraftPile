@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { Box, Column, Heading, Pressable, Row, Text } from 'native-base';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import {
-  DeletePhotosInAlbumMutation,
-  DeletePhotosInAlbumMutationVariables,
-  DeleteUnsortedPhotosMutation,
-  DeleteUnsortedPhotosMutationVariables,
+  AssignPhotosToChildInAlbumsMutation,
+  AssignPhotosToChildInAlbumsMutationVariables,
+  AssignPhotosToChildMutation,
+  AssignPhotosToChildMutationVariables,
   GetPhotosForAlbumQuery,
   Photo,
 } from '../../generated/API';
@@ -14,21 +14,34 @@ import { AlbumPhotosScreenNavigationProp } from '../../types/routes';
 import { FlatList } from 'react-native';
 import ImageBox from '../Pile/ImageBox';
 import PhotoModal from './PhotoModal';
-import { deleteUnsortedPhotos } from '../../graphql/mutations';
+import {
+  assignPhotosToChild,
+  assignPhotosToChildInAlbums,
+  deleteUnsortedPhotos,
+} from '../../graphql/mutations';
 
 function AlbumPhotos({ route, navigation }: AlbumPhotosScreenNavigationProp) {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo>();
+  const [showAlbumSelectModal, setShowAlbumSelectModal] = useState(false);
   useEffect(() => {
     if (!Boolean(route.params?.albumId)) {
       navigation.navigate('AlbumScreen');
     }
   }, []);
-  const { loading, data, error } = useQuery<GetPhotosForAlbumQuery>(
+  const [
+    assignPhotosToChild,
+    { loading: loadingAlbums, error: errorAddingPhotosToAlbum },
+  ] = useMutation<
+    AssignPhotosToChildInAlbumsMutation,
+    AssignPhotosToChildInAlbumsMutationVariables
+  >(gql(assignPhotosToChildInAlbums));
+  const { loading, data, error, refetch } = useQuery<GetPhotosForAlbumQuery>(
     gql(getPhotosForAlbum),
     {
       variables: {
         input: {
           albumId: route.params?.albumId,
+          childId: route.params?.childId,
         },
       },
     }
@@ -68,12 +81,16 @@ function AlbumPhotos({ route, navigation }: AlbumPhotosScreenNavigationProp) {
       </Box>
       <PhotoModal
         selectedPhoto={selectedPhoto!}
-        onClose={() => setSelectedPhoto(undefined)}
-        showAlbumSelectModal={false}
-        setShowAlbumSelectModal={() => {}}
-        onAlbumSelect={() => {}}
+        setSelectedPhoto={setSelectedPhoto}
+        onClose={() => {
+          setSelectedPhoto(undefined);
+          setShowAlbumSelectModal(false);
+        }}
+        showAlbumSelectModal={showAlbumSelectModal}
+        setShowAlbumSelectModal={() => setShowAlbumSelectModal(true)}
         handleDelete={() => {}}
-        albumId={route.params?.albumId}
+        onAlbumSelect={() => {}}
+        albumId={route.params?.albumId || ''}
       />
     </Column>
   );

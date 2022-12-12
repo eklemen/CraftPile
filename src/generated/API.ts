@@ -59,7 +59,9 @@ export type PhotosForAlbum = {
   name: string,
   description?: string | null,
   childId: string,
-  photos?:  Array<Photo > | null,
+  accountId: string,
+  posterImage?: string | null,
+  photos:  Array<Photo >,
 };
 
 export type assignPhotosToChildInput = {
@@ -83,6 +85,12 @@ export type UnsortedPhoto = {
   childId: string,
   thumbnailKey: string,
   localPath?: string | null,
+};
+
+export type reassignPhotosToChildInput = {
+  ids: Array< string >,
+  childId: string,
+  albumId: string,
 };
 
 export type photoIdsInput = {
@@ -182,7 +190,9 @@ export type DeletePhotosInAlbumMutation = {
     name: string,
     description?: string | null,
     childId: string,
-    photos?:  Array< {
+    accountId: string,
+    posterImage?: string | null,
+    photos:  Array< {
       __typename: "Photo",
       _id?: string | null,
       bucketName: string,
@@ -195,7 +205,7 @@ export type DeletePhotosInAlbumMutation = {
       childId: string,
       accountId: string,
       albums?: Array< string > | null,
-    } > | null,
+    } >,
   },
 };
 
@@ -222,7 +232,7 @@ export type AssignPhotosToChildMutation = {
 };
 
 export type AssignPhotosToChildInAlbumsMutationVariables = {
-  input: assignPhotosToChildInput,
+  input: reassignPhotosToChildInput,
 };
 
 export type AssignPhotosToChildInAlbumsMutation = {
@@ -232,7 +242,9 @@ export type AssignPhotosToChildInAlbumsMutation = {
     name: string,
     description?: string | null,
     childId: string,
-    photos?:  Array< {
+    accountId: string,
+    posterImage?: string | null,
+    photos:  Array< {
       __typename: "Photo",
       _id?: string | null,
       bucketName: string,
@@ -245,7 +257,7 @@ export type AssignPhotosToChildInAlbumsMutation = {
       childId: string,
       accountId: string,
       albums?: Array< string > | null,
-    } > | null,
+    } >,
   },
 };
 
@@ -324,7 +336,9 @@ export type GetPhotosForAlbumQuery = {
     name: string,
     description?: string | null,
     childId: string,
-    photos?:  Array< {
+    accountId: string,
+    posterImage?: string | null,
+    photos:  Array< {
       __typename: "Photo",
       _id?: string | null,
       bucketName: string,
@@ -337,7 +351,7 @@ export type GetPhotosForAlbumQuery = {
       childId: string,
       accountId: string,
       albums?: Array< string > | null,
-    } > | null,
+    } >,
   } | null,
 };
 

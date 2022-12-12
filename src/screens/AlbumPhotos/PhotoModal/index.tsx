@@ -22,119 +22,120 @@ import {
 import { getAlbumsForChild } from '../../../graphql/queries';
 import { useEffect, useState } from 'react';
 import PhotoModalActionBar from './PhotoModalActionBar';
+import ChildSelect from './ChildSelect';
 
 interface Props {
   selectedPhoto: Photo;
+  setSelectedPhoto: (photo: undefined) => void;
   onClose: () => void;
   showAlbumSelectModal: boolean;
   setShowAlbumSelectModal: () => void;
-  onAlbumSelect: () => void;
   handleDelete: () => void;
+  onAlbumSelect: () => void;
   albumId: string;
 }
 
 function PhotoModal({
   selectedPhoto,
+  setSelectedPhoto,
   onClose,
   showAlbumSelectModal,
   setShowAlbumSelectModal,
   onAlbumSelect,
   albumId,
 }: Props) {
-  const [] = useState();
+  const [showChildSelectModal, setShowChildSelectModal] = useState(false);
   const { compData: cachedPhotos } = useCompData<CachedUrlsCD>(CACHED_URLS);
-  const [getAlbums, { loading, data, error }] = useLazyQuery<
-    GetAlbumsForChildQuery,
-    GetAlbumsForChildQueryVariables
-  >(gql(getAlbumsForChild));
-  useEffect(() => {
-    if (Boolean(selectedPhoto)) {
-      getAlbums({
-        variables: {
-          input: {
-            childId: '',
-          },
-        },
-      });
-    }
-  }, [selectedPhoto]);
   return (
-    <Modal
-      size="full"
-      isOpen={Boolean(selectedPhoto!)}
-      onClose={onClose}
-      _backdrop={{
-        opacity: 0.65,
-      }}
-    >
-      <Modal.Content flex={1}>
-        <Modal.CloseButton />
-        {showAlbumSelectModal ? (
-          <Actionsheet
-            isOpen={showAlbumSelectModal}
-            onClose={onClose}
-            height="100%"
-          >
-            <Actionsheet.Content px={4}>
-              <Column h="100%" w="100%">
-                <Heading size="2xl" w="100%" mb={4}>
-                  Add to album
-                </Heading>
-                <Row alignItems="center" mb={4}>
-                  <Skeleton isLoaded={!false}>
-                    <Box
-                      h={35}
-                      w={35}
-                      rounded="full"
-                      bg="primary.100"
-                      alignItems="center"
-                      justifyContent="center"
-                      mr={3}
-                    >
-                      <Text color="white">P</Text>
-                    </Box>
-                    <Heading size="md">
-                      {`${data?.getAlbumsForChild?.name}'s album`}
-                    </Heading>
-                  </Skeleton>
-                </Row>
-                <AlbumGrid
-                  loading={loading}
-                  data={data}
-                  onAlbumSelect={onAlbumSelect}
-                />
-              </Column>
-            </Actionsheet.Content>
-          </Actionsheet>
-        ) : (
-          <>
-            <Modal.Body
-              h={Dimensions.get('window').height * 0.6}
-              alignItems="stretch"
-              display="flex"
+    <>
+      <Modal
+        size="full"
+        isOpen={Boolean(selectedPhoto!)}
+        onClose={onClose}
+        _backdrop={{
+          opacity: 0.65,
+        }}
+      >
+        <Modal.Content flex={1}>
+          <Modal.CloseButton />
+          {showAlbumSelectModal ? (
+            <Actionsheet
+              isOpen={showAlbumSelectModal}
+              onClose={onClose}
+              height="100%"
             >
-              <Image
-                uri={cachedPhotos[selectedPhoto?.thumbnailKey!]}
-                style={{
-                  resizeMode: 'contain',
-                  width: '100%',
-                  height: '95%',
-                }}
-              />
-            </Modal.Body>
-            <Modal.Footer>
-              <PhotoModalActionBar
-                selectedPhoto={selectedPhoto}
-                onDeleteSuccess={onClose}
-                setShowAlbumSelectModal={() => {}}
-                setShowChildSelectModal={() => {}}
-                albumId={albumId}
-              />
-            </Modal.Footer>
-          </>
-        )}
-      </Modal.Content>
-    </Modal>
+              <Actionsheet.Content px={4}>
+                <Column h="100%" w="100%">
+                  <Heading size="2xl" w="100%" mb={4}>
+                    Add to album
+                  </Heading>
+                  <Row alignItems="center" mb={4}>
+                    <Skeleton isLoaded={!false}>
+                      <Box
+                        h={35}
+                        w={35}
+                        rounded="full"
+                        bg="primary.100"
+                        alignItems="center"
+                        justifyContent="center"
+                        mr={3}
+                      >
+                        <Text color="white">P</Text>
+                      </Box>
+                      <Heading size="md">
+                        {`${data?.getAlbumsForChild?.name}'s album`}
+                      </Heading>
+                    </Skeleton>
+                  </Row>
+                  <AlbumGrid
+                    loading={loading}
+                    data={data}
+                    onAlbumSelect={onAlbumSelect}
+                  />
+                </Column>
+              </Actionsheet.Content>
+            </Actionsheet>
+          ) : (
+            <>
+              <Modal.Body
+                h={Dimensions.get('window').height * 0.6}
+                alignItems="stretch"
+                display="flex"
+              >
+                <Image
+                  uri={cachedPhotos[selectedPhoto?.thumbnailKey!]}
+                  style={{
+                    resizeMode: 'contain',
+                    width: '100%',
+                    height: '95%',
+                  }}
+                />
+              </Modal.Body>
+              <Modal.Footer>
+                <PhotoModalActionBar
+                  selectedPhoto={selectedPhoto}
+                  onDeleteSuccess={onClose}
+                  setShowAlbumSelectModal={() => {}}
+                  setShowChildSelectModal={() => {
+                    setShowChildSelectModal(true);
+                  }}
+                  albumId={albumId}
+                />
+              </Modal.Footer>
+            </>
+          )}
+        </Modal.Content>
+      </Modal>
+      <ChildSelect
+        isOpen={showChildSelectModal}
+        onClose={() => {
+          setShowChildSelectModal(false);
+          setSelectedPhoto(undefined);
+        }}
+        currentAlbumId={albumId}
+        selectedPhoto={selectedPhoto}
+      />
+    </>
   );
 }
 
