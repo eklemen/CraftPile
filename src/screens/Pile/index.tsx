@@ -123,12 +123,6 @@ function PileScreen({}: Props) {
       />
 
       <PileActionDrawer />
-      <PileAlbumSelectSheet
-        isOpen={pileCompData.showAlbumSelectSheet}
-        onClose={() => setPileData({ showAlbumSelectSheet: false })}
-        onAlbumSelect={addPhotosToAlbumHandler}
-        pileCompData={pileCompData}
-      />
       <ChildSelectModal
         isOpen={pileCompData.showChildSelectModal}
         setPileData={setPileData}

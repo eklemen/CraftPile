@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Box, Button, Center, Row, Text } from 'native-base';
 import Animated, {
   Easing,
@@ -95,14 +95,12 @@ function PileActionDrawer() {
         variables: {
           input: { ids },
         },
-        onCompleted: () => {
-          resetPileData({
-            multiSelect: false,
-            selectedPhotos: {},
-            selectedPhoto: null,
-          });
-        },
       });
+      // resetPileData({
+      //   multiSelect: false,
+      //   selectedPhotos: {},
+      //   selectedPhoto: null,
+      // });
     }
   };
   const openAlbumSelect = async () => {
@@ -112,23 +110,20 @@ function PileActionDrawer() {
     }
   };
   const addPhotosToAlbumHandler = async (albumId: string) => {
-    console.log('bunk...');
     const ids = Object.keys(pileCompData?.selectedPhotos);
-    console.log('ids-------->', ids);
-    console.log('albumId-------->', albumId);
-    // if (ids.length) {
-    //   await addPhotosToAlbum({
-    //     variables: {
-    //       input: { ids, albumId },
-    //     },
-    //   });
-    //   resetPileData({
-    //     multiSelect: false,
-    //     selectedPhotos: {},
-    //     selectedPhoto: null,
-    //   });
-    //   setPileData({ showAlbumSelectSheet: false });
-    // }
+    if (ids.length) {
+      await addPhotosToAlbum({
+        variables: {
+          input: { ids, albumId },
+        },
+      });
+      resetPileData({
+        multiSelect: false,
+        selectedPhotos: {},
+        selectedPhoto: null,
+      });
+      setPileData({ showAlbumSelectSheet: false });
+    }
   };
   return (
     <Animated.View style={[animatedDrawer, { marginTop: -32 }]}>

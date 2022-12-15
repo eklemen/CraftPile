@@ -19,7 +19,6 @@ function AlbumGrid({ loading, data, onAlbumSelect }: Props) {
       <ImageGridSkeleton isLoaded={!loading} />
       {data?.getAlbumsForChild?.albums?.map((album, i) => {
         return (
-          <Actionsheet.Item>
             <Pressable
               key={album?._id}
               w="50%"
@@ -50,11 +49,9 @@ function AlbumGrid({ loading, data, onAlbumSelect }: Props) {
                 </Box>
               </Center>
             </Pressable>
-          </Actionsheet.Item>
         );
       })}
       {!loading && data?.getAlbumsForChild.albums && (
-        <Actionsheet.Item>
           <Pressable w="50%" pr={2} onPress={() => setShowAlbumForm(true)}>
             <Center w="100%" px={1}>
               <Center
@@ -72,7 +69,6 @@ function AlbumGrid({ loading, data, onAlbumSelect }: Props) {
               </Center>
             </Center>
           </Pressable>
-        </Actionsheet.Item>
       )}
       <CreateAlbumModal
         isOpen={showAlbumForm}

@@ -8,7 +8,7 @@ input addChildInput {
 }
 
 input photoIdsInput {
-  ids: [ID]!
+  ids: [ID!]!
 }
 
 input deletePhotosInAlbumInput {
