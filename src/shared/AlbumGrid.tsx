@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Center, Heading, Pressable, Row, Text } from 'native-base';
+import { Actionsheet, Box, Center, Heading, Pressable, Row } from 'native-base';
 import ImageGridSkeleton from './ImageGridSkeleton';
 import ImageBox from '../screens/Pile/ImageBox';
 import House from '../appIcons/House';
@@ -19,56 +19,60 @@ function AlbumGrid({ loading, data, onAlbumSelect }: Props) {
       <ImageGridSkeleton isLoaded={!loading} />
       {data?.getAlbumsForChild?.albums?.map((album, i) => {
         return (
-          <Pressable
-            key={album?._id}
-            w="50%"
-            pr={2}
-            mb={4}
-            onPress={() => onAlbumSelect(album._id)}
-          >
-            <Center w="100%" px={1}>
-              {album?.posterImage ? (
-                <ImageBox photoUri={album.posterImage} />
-              ) : (
-                <Center
-                  borderColor="primary.800:alpha.20"
-                  borderWidth={1}
-                  w="100%"
-                  minH={160}
-                >
-                  <House size={100} />
-                </Center>
-              )}
-              <Box w="100%" mt={2}>
-                <Heading size="xs" mb={1}>
-                  {album?.name}
-                </Heading>
-                {/*<Text fontFamily="body" fontSize={14} color="gray.500">*/}
-                {/*  3*/}
-                {/*</Text>*/}
-              </Box>
-            </Center>
-          </Pressable>
+          <Actionsheet.Item>
+            <Pressable
+              key={album?._id}
+              w="50%"
+              pr={2}
+              mb={4}
+              onPress={() => onAlbumSelect(album._id)}
+            >
+              <Center w="100%" px={1}>
+                {album?.posterImage ? (
+                  <ImageBox photoUri={album.posterImage} />
+                ) : (
+                  <Center
+                    borderColor="primary.800:alpha.20"
+                    borderWidth={1}
+                    w="100%"
+                    minH={160}
+                  >
+                    <House size={100} />
+                  </Center>
+                )}
+                <Box w="100%" mt={2}>
+                  <Heading size="xs" mb={1}>
+                    {album?.name}
+                  </Heading>
+                  {/*<Text fontFamily="body" fontSize={14} color="gray.500">*/}
+                  {/*  3*/}
+                  {/*</Text>*/}
+                </Box>
+              </Center>
+            </Pressable>
+          </Actionsheet.Item>
         );
       })}
       {!loading && data?.getAlbumsForChild.albums && (
-        <Pressable w="50%" pr={2} onPress={() => setShowAlbumForm(true)}>
-          <Center w="100%" px={1}>
-            <Center
-              borderColor="primary.800:alpha.20"
-              borderWidth={1}
-              w="100%"
-              minH={160}
-            >
-              <Heading size="4xl" color="primary.50">
-                +
-              </Heading>
-              <Heading size="sm" color="primary.400">
-                New Album
-              </Heading>
+        <Actionsheet.Item>
+          <Pressable w="50%" pr={2} onPress={() => setShowAlbumForm(true)}>
+            <Center w="100%" px={1}>
+              <Center
+                borderColor="primary.800:alpha.20"
+                borderWidth={1}
+                w="100%"
+                minH={160}
+              >
+                <Heading size="4xl" color="primary.50">
+                  +
+                </Heading>
+                <Heading size="sm" color="primary.400">
+                  New Album
+                </Heading>
+              </Center>
             </Center>
-          </Center>
-        </Pressable>
+          </Pressable>
+        </Actionsheet.Item>
       )}
       <CreateAlbumModal
         isOpen={showAlbumForm}

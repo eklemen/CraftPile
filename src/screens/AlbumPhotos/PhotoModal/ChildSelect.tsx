@@ -88,17 +88,7 @@ function ChildSelect({
             albumId: album,
           },
         },
-        refetchQueries: [
-          {
-            query: gql(getPhotosForAlbum),
-            variables: {
-              input: {
-                albumId: currentAlbumId,
-                childId: selectedPhoto.childId,
-              },
-            },
-          },
-        ],
+
         onError: (error) => {
           console.log('error-------->', error);
         },

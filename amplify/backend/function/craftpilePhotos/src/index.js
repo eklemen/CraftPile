@@ -123,8 +123,10 @@ const getPhotosForAlbum = async (event) => {
       },
     })
     .toArray();
-  const album = await albumCollection.findOne({ _id: new ObjectID(albumId) });
+  console.log('[getPhotosForAlbum] - photos-------->', photos);
 
+  const album = await albumCollection.findOne({ _id: new ObjectID(albumId) });
+  console.log('[getPhotosForAlbum] - photos-------->', photos);
   return {
     ...album,
     photos,

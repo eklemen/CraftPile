@@ -85,7 +85,10 @@ function PileAlbumSelectSheet({
           <AlbumGrid
             loading={loading}
             data={data}
-            onAlbumSelect={onAlbumSelect}
+            onAlbumSelect={() => {
+              console.log('album selected: pileCompdata.....', pileCompData);
+              return onAlbumSelect;
+            }}
           />
         </Column>
       </Actionsheet.Content>

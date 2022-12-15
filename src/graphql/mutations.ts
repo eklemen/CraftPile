@@ -59,23 +59,6 @@ export const deletePhotosInAlbum = /* GraphQL */ `
     }
   }
 `;
-export const assignPhotosToChild = /* GraphQL */ `
-  mutation AssignPhotosToChild($input: assignPhotosToChildInput!) {
-    assignPhotosToChild(input: $input) {
-      _id
-      childName
-      photos {
-        _id
-        bucketName
-        objectKey
-        dateOfPhoto
-        childId
-        thumbnailKey
-        localPath
-      }
-    }
-  }
-`;
 export const assignPhotosToChildInAlbums = /* GraphQL */ `
   mutation AssignPhotosToChildInAlbums($input: reassignPhotosToChildInput!) {
     assignPhotosToChildInAlbums(input: $input) {
@@ -104,6 +87,23 @@ export const assignPhotosToChildInAlbums = /* GraphQL */ `
 export const deleteUnsortedPhotos = /* GraphQL */ `
   mutation DeleteUnsortedPhotos($input: photoIdsInput!) {
     deleteUnsortedPhotos(input: $input) {
+      _id
+      childName
+      photos {
+        _id
+        bucketName
+        objectKey
+        dateOfPhoto
+        childId
+        thumbnailKey
+        localPath
+      }
+    }
+  }
+`;
+export const assignPhotosToChild = /* GraphQL */ `
+  mutation AssignPhotosToChild($input: assignPhotosToChildInput!) {
+    assignPhotosToChild(input: $input) {
       _id
       childName
       photos {

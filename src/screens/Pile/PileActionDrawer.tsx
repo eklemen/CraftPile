@@ -84,18 +84,24 @@ function PileActionDrawer() {
       setDisableDrawerBtn(false);
     }
   }, [pileCompData.selectedPhotos]);
+  console.log(
+    'Object.keys(pileCompData?.selectedPhotos)-------->',
+    Object.keys(pileCompData?.selectedPhotos)
+  );
   const deleteHandler = async () => {
-    const ids = lodashKeys(pileCompData?.selectedPhotos);
+    const ids = Object.keys(pileCompData?.selectedPhotos);
     if (ids) {
       await deletePhotos({
         variables: {
           input: { ids },
         },
-      });
-      resetPileData({
-        multiSelect: false,
-        selectedPhotos: {},
-        selectedPhoto: null,
+        onCompleted: () => {
+          resetPileData({
+            multiSelect: false,
+            selectedPhotos: {},
+            selectedPhoto: null,
+          });
+        },
       });
     }
   };
@@ -106,20 +112,23 @@ function PileActionDrawer() {
     }
   };
   const addPhotosToAlbumHandler = async (albumId: string) => {
-    const ids = lodashKeys(pileCompData?.selectedPhotos);
-    if (ids.length) {
-      await addPhotosToAlbum({
-        variables: {
-          input: { ids, albumId },
-        },
-      });
-      resetPileData({
-        multiSelect: false,
-        selectedPhotos: {},
-        selectedPhoto: null,
-      });
-      setPileData({ showAlbumSelectSheet: false });
-    }
+    console.log('bunk...');
+    const ids = Object.keys(pileCompData?.selectedPhotos);
+    console.log('ids-------->', ids);
+    console.log('albumId-------->', albumId);
+    // if (ids.length) {
+    //   await addPhotosToAlbum({
+    //     variables: {
+    //       input: { ids, albumId },
+    //     },
+    //   });
+    //   resetPileData({
+    //     multiSelect: false,
+    //     selectedPhotos: {},
+    //     selectedPhoto: null,
+    //   });
+    //   setPileData({ showAlbumSelectSheet: false });
+    // }
   };
   return (
     <Animated.View style={[animatedDrawer, { marginTop: -32 }]}>

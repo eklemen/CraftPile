@@ -64,9 +64,14 @@ export type PhotosForAlbum = {
   photos:  Array<Photo >,
 };
 
-export type assignPhotosToChildInput = {
+export type reassignPhotosToChildInput = {
   ids: Array< string >,
   childId: string,
+  albumId: string,
+};
+
+export type photoIdsInput = {
+  ids: Array< string | null >,
 };
 
 export type ChildUnsortedPhotos = {
@@ -87,14 +92,9 @@ export type UnsortedPhoto = {
   localPath?: string | null,
 };
 
-export type reassignPhotosToChildInput = {
+export type assignPhotosToChildInput = {
   ids: Array< string >,
   childId: string,
-  albumId: string,
-};
-
-export type photoIdsInput = {
-  ids: Array< string | null >,
 };
 
 export type addUnsortedPhotosToAlbumInput = {
@@ -209,28 +209,6 @@ export type DeletePhotosInAlbumMutation = {
   },
 };
 
-export type AssignPhotosToChildMutationVariables = {
-  input: assignPhotosToChildInput,
-};
-
-export type AssignPhotosToChildMutation = {
-  assignPhotosToChild?:  Array< {
-    __typename: "ChildUnsortedPhotos",
-    _id: string,
-    childName?: string | null,
-    photos:  Array< {
-      __typename: "UnsortedPhoto",
-      _id: string,
-      bucketName: string,
-      objectKey: string,
-      dateOfPhoto: string,
-      childId: string,
-      thumbnailKey: string,
-      localPath?: string | null,
-    } >,
-  } > | null,
-};
-
 export type AssignPhotosToChildInAlbumsMutationVariables = {
   input: reassignPhotosToChildInput,
 };
@@ -267,6 +245,28 @@ export type DeleteUnsortedPhotosMutationVariables = {
 
 export type DeleteUnsortedPhotosMutation = {
   deleteUnsortedPhotos?:  Array< {
+    __typename: "ChildUnsortedPhotos",
+    _id: string,
+    childName?: string | null,
+    photos:  Array< {
+      __typename: "UnsortedPhoto",
+      _id: string,
+      bucketName: string,
+      objectKey: string,
+      dateOfPhoto: string,
+      childId: string,
+      thumbnailKey: string,
+      localPath?: string | null,
+    } >,
+  } > | null,
+};
+
+export type AssignPhotosToChildMutationVariables = {
+  input: assignPhotosToChildInput,
+};
+
+export type AssignPhotosToChildMutation = {
+  assignPhotosToChild?:  Array< {
     __typename: "ChildUnsortedPhotos",
     _id: string,
     childName?: string | null,

@@ -16,6 +16,7 @@ import {
   deletePhotosInAlbum,
 } from '../../../graphql/mutations';
 import { AlbumScreenNavigationProp } from '../../../types/routes';
+import { getPhotosForAlbum } from '../../../graphql/queries';
 
 interface Props {
   selectedPhoto: Photo;
@@ -45,9 +46,18 @@ function PileActionBarSingle({
       variables: {
         input: {
           ids: [selectedPhoto?._id!],
-          albumId,
         },
       },
+      refetchQueries: [
+        {
+          query: gql(getPhotosForAlbum),
+          variables: {
+            input: {
+              albumId,
+            },
+          },
+        },
+      ],
     });
     onDeleteSuccess();
   };
