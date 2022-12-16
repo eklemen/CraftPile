@@ -45,18 +45,21 @@ function PileActionBarSingle({
       variables: {
         input: {
           ids: [selectedPhoto?._id!],
+          childId: selectedPhoto?.childId!,
+          albumId,
         },
       },
-      refetchQueries: [
-        {
-          query: gql(getPhotosForAlbum),
-          variables: {
-            input: {
-              albumId,
-            },
-          },
-        },
-      ],
+      onError: (err) => console.log('error deleting...', err),
+      // refetchQueries: [
+      //   {
+      //     query: gql(getPhotosForAlbum),
+      //     variables: {
+      //       input: {
+      //         albumId,
+      //       },
+      //     },
+      //   },
+      // ],
     });
     onDeleteSuccess();
   };

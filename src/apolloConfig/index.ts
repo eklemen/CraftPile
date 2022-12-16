@@ -39,6 +39,15 @@ export const apolloClient = new ApolloClient({
           },
         },
       },
+      PhotosForAlbum: {
+        fields: {
+          photos: {
+            merge(existing, incoming) {
+              return incoming;
+            }
+          }
+        }
+      },
     },
   }),
 });

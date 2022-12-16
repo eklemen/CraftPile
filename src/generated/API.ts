@@ -51,6 +51,7 @@ export type Child = {
 export type deletePhotosInAlbumInput = {
   ids: Array< string | null >,
   albumId: string,
+  childId: string,
 };
 
 export type PhotosForAlbum = {

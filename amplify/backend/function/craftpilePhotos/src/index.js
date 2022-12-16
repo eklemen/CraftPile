@@ -81,7 +81,6 @@ const getChildrenUnsortedPhotos = async (event) => {
       photos: unsortedPhotos.find((p) => p._id === child.id)?.photos || [],
     };
   });
-  console.log('res-------->', res);
   return res;
 };
 
@@ -123,10 +122,8 @@ const getPhotosForAlbum = async (event) => {
       },
     })
     .toArray();
-  console.log('[getPhotosForAlbum] - photos-------->', photos);
 
   const album = await albumCollection.findOne({ _id: new ObjectID(albumId) });
-  console.log('[getPhotosForAlbum] - photos-------->', photos);
   return {
     ...album,
     photos,
@@ -183,7 +180,7 @@ const deletePhotosInAlbum = async (event) => {
       $in: ids.map((id) => new ObjectID(id)),
     },
   });
-  return await getPhotosForAlbum(event);
+  return await getPhotosForAlbum(event)
 };
 
 const assignPhotosToChild = async (event) => {

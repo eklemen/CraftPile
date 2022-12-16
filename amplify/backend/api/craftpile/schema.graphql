@@ -14,6 +14,7 @@ input photoIdsInput {
 input deletePhotosInAlbumInput {
   ids: [ID]!
   albumId: ID!
+  childId: ID!
 }
 
 input assignPhotosToChildInput {
@@ -63,7 +64,7 @@ input updatePhotoPropertiesInput {
 }
 
 type Photo {
-  _id: ID
+  _id: ID!
   bucketName: String!
   objectKey: String!
   thumbnailKey: String!
@@ -133,6 +134,10 @@ type PhotosForAlbum {
   photos: [Photo!]!
 }
 
+type DeleteCount {
+  deletedCount: Int!
+}
+
 type Query {
   getPhotosForAlbum(input: getPhotosForAlbumInput): PhotosForAlbum
   @function(name: "craftpilePhotos-${env}")
@@ -157,12 +162,12 @@ type Mutation {
   addChild(input: addChildInput): User!
   @function(name: "craftpilePhotos-${env}")
 
-#  delete photos (for album view)
+################
+#  album view
+  #  delete photos (for album view)
   deletePhotosInAlbum(input: deletePhotosInAlbumInput!): PhotosForAlbum!
   @function(name: "craftpilePhotos-${env}")
 
-################
-#  album view
   assignPhotosToChildInAlbums(input: reassignPhotosToChildInput!): [Photo!]!
   @function(name: "craftpilePhotos-${env}")
 #  end album view
