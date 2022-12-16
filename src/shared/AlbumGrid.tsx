@@ -3,28 +3,60 @@ import { Actionsheet, Box, Center, Heading, Pressable, Row } from 'native-base';
 import ImageGridSkeleton from './ImageGridSkeleton';
 import ImageBox from '../screens/Pile/ImageBox';
 import House from '../appIcons/House';
-import { GetAlbumsForChildQuery } from '../generated/API';
+import {
+  AddUnsortedPhotosToAlbumMutation,
+  AddUnsortedPhotosToAlbumMutationVariables,
+  GetAlbumsForChildQuery, UnsortedPhoto,
+} from '../generated/API';
 import CreateAlbumModal from './CreateAlbumModal';
+import { gql, useMutation } from '@apollo/client';
+import { addUnsortedPhotosToAlbum } from '../graphql/mutations';
+import useCompData from '../context/compData/useCompData';
+import { PILE, PileCD } from '../context/constants';
 
 interface Props {
   loading: boolean;
   data: GetAlbumsForChildQuery | undefined;
-  onAlbumSelect: (albumId: string) => void;
+  selectedPhotos: Record<string, UnsortedPhoto>;
+  resetPileData: (state: Partial<PileCD>) => void;
 }
 
-function AlbumGrid({ loading, data, onAlbumSelect }: Props) {
+function AlbumGrid({ loading, data, selectedPhotos, resetPileData }: Props) {
   const [showAlbumForm, setShowAlbumForm] = useState(false);
+  const [addPhotosToAlbum] = useMutation<
+    AddUnsortedPhotosToAlbumMutation,
+    AddUnsortedPhotosToAlbumMutationVariables
+    >(gql(addUnsortedPhotosToAlbum));
+  const addPhotosToAlbumHandler = async (albumId: string) => {
+    const ids = Object.keys(selectedPhotos);
+    console.log('ids-------->', ids);
+    if (ids.length) {
+      await addPhotosToAlbum({
+        variables: {
+          input: { ids, albumId },
+        },
+        onCompleted: () => {
+          resetPileData({
+            multiSelect: false,
+            selectedPhotos: {},
+            selectedPhoto: null,
+            showAlbumSelectSheet: false
+          });
+        }
+      });
+    }
+  };
   return (
     <Row flexWrap="wrap">
       <ImageGridSkeleton isLoaded={!loading} />
-      {data?.getAlbumsForChild?.albums?.map((album, i) => {
+      {data?.getAlbumsForChild?.albums?.map((album) => {
         return (
             <Pressable
               key={album?._id}
               w="50%"
               pr={2}
               mb={4}
-              onPress={() => onAlbumSelect(album._id)}
+              onPress={() => addPhotosToAlbumHandler(album._id)}
             >
               <Center w="100%" px={1}>
                 {album?.posterImage ? (

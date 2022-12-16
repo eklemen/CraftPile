@@ -84,10 +84,7 @@ function PileActionDrawer() {
       setDisableDrawerBtn(false);
     }
   }, [pileCompData.selectedPhotos]);
-  console.log(
-    'Object.keys(pileCompData?.selectedPhotos)-------->',
-    Object.keys(pileCompData?.selectedPhotos)
-  );
+
   const deleteHandler = async () => {
     const ids = Object.keys(pileCompData?.selectedPhotos);
     if (ids) {

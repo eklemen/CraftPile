@@ -11,27 +11,29 @@ import {
 import lodashKeys from 'lodash.keys';
 import isEmpty from 'lodash.isempty';
 import { gql, useLazyQuery } from '@apollo/client';
-import { PileCD } from '../../context/constants';
+import { PILE, PileCD } from '../../context/constants';
 import {
   GetAlbumsForChildQuery,
   GetAlbumsForChildQueryVariables,
 } from '../../generated/API';
 import { getAlbumsForChild } from '../../graphql/queries';
 import AlbumGrid from '../../shared/AlbumGrid';
+import useCompData from '../../context/compData/useCompData';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
   onAlbumSelect: (albumId: string) => void;
-  pileCompData: PileCD;
 }
 
 function PileAlbumSelectSheet({
   isOpen,
   onClose,
-  onAlbumSelect,
-  pileCompData,
 }: Props) {
+  const {
+    compData: pileCompData,
+    clearComp: resetPileData,
+  } = useCompData<PileCD>(PILE);
   const getChildId = (): string => {
     if (pileCompData.multiSelect && !isEmpty(pileCompData.selectedPhotos)) {
       const key = lodashKeys(pileCompData.selectedPhotos)[0];
@@ -85,7 +87,8 @@ function PileAlbumSelectSheet({
           <AlbumGrid
             loading={loading}
             data={data}
-            onAlbumSelect={onAlbumSelect}
+            selectedPhotos={pileCompData.selectedPhotos}
+            resetPileData={resetPileData}
           />
         </Column>
       </Actionsheet.Content>
