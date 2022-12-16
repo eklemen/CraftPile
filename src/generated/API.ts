@@ -71,7 +71,7 @@ export type reassignPhotosToChildInput = {
 };
 
 export type photoIdsInput = {
-  ids: Array< string | null >,
+  ids: Array< string >,
 };
 
 export type ChildUnsortedPhotos = {
@@ -214,29 +214,20 @@ export type AssignPhotosToChildInAlbumsMutationVariables = {
 };
 
 export type AssignPhotosToChildInAlbumsMutation = {
-  assignPhotosToChildInAlbums:  {
-    __typename: "PhotosForAlbum",
-    _id: string,
-    name: string,
+  assignPhotosToChildInAlbums:  Array< {
+    __typename: "Photo",
+    _id?: string | null,
+    bucketName: string,
+    objectKey: string,
+    thumbnailKey: string,
+    localPath?: string | null,
+    dateOfPhoto: string,
+    title?: string | null,
     description?: string | null,
     childId: string,
     accountId: string,
-    posterImage?: string | null,
-    photos:  Array< {
-      __typename: "Photo",
-      _id?: string | null,
-      bucketName: string,
-      objectKey: string,
-      thumbnailKey: string,
-      localPath?: string | null,
-      dateOfPhoto: string,
-      title?: string | null,
-      description?: string | null,
-      childId: string,
-      accountId: string,
-      albums?: Array< string > | null,
-    } >,
-  },
+    albums?: Array< string > | null,
+  } >,
 };
 
 export type DeleteUnsortedPhotosMutationVariables = {

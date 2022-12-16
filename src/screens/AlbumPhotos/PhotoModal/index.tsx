@@ -12,17 +12,16 @@ import {
 } from 'native-base';
 import { Image } from 'react-native-expo-image-cache';
 import useCompData from '../../../context/compData/useCompData';
-import AlbumGrid from '../../../shared/AlbumGrid';
-import { gql, useLazyQuery } from '@apollo/client';
+import AlbumGrid from './AlbumGrid';
 import {
-  GetAlbumsForChildQuery,
-  GetAlbumsForChildQueryVariables,
+  GetAlbumsForChildQuery, GetAlbumsForChildQueryVariables,
   Photo,
 } from '../../../generated/API';
-import { getAlbumsForChild } from '../../../graphql/queries';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import PhotoModalActionBar from './PhotoModalActionBar';
 import ChildSelect from './ChildSelect';
+import { gql, useQuery } from '@apollo/client';
+import { getAlbumsForChild } from '../../../graphql/queries';
 
 interface Props {
   selectedPhoto: Photo;
@@ -40,11 +39,13 @@ function PhotoModal({
   setSelectedPhoto,
   onClose,
   showAlbumSelectModal,
-  setShowAlbumSelectModal,
-  onAlbumSelect,
   albumId,
 }: Props) {
   const [showChildSelectModal, setShowChildSelectModal] = useState(false);
+  const { loading: loadingAlbums, data, error } = useQuery<
+    GetAlbumsForChildQuery,
+    GetAlbumsForChildQueryVariables
+    >(gql(getAlbumsForChild));
   const { compData: cachedPhotos } = useCompData<CachedUrlsCD>(CACHED_URLS);
   return (
     <>
@@ -88,9 +89,9 @@ function PhotoModal({
                     </Skeleton>
                   </Row>
                   <AlbumGrid
-                    loading={loading}
+                    selectedPhoto={selectedPhoto}
+                    loading={loadingAlbums}
                     data={data}
-                    onAlbumSelect={onAlbumSelect}
                   />
                 </Column>
               </Actionsheet.Content>

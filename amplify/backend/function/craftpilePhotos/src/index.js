@@ -239,7 +239,10 @@ const reassignPhotosToChildAndAlbum = async (event) => {
       },
     }
   );
-  return await getPhotosForAlbum(event);
+  return await photoCollection.find({
+    childId,
+  }).toArray();
+  // return await getPhotosForAlbum(event);
 };
 
 const getAlbumsForChild = async (event) => {

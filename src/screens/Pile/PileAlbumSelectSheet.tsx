@@ -23,7 +23,6 @@ import useCompData from '../../context/compData/useCompData';
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onAlbumSelect: (albumId: string) => void;
 }
 
 function PileAlbumSelectSheet({

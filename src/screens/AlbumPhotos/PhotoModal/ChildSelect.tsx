@@ -30,6 +30,7 @@ import {
   Photo,
 } from '../../../generated/API';
 import { assignPhotosToChildInAlbums } from '../../../graphql/mutations';
+import { useRoute } from '@react-navigation/native';
 
 interface Props {
   isOpen: boolean;
@@ -42,10 +43,10 @@ function ChildSelect({
   isOpen,
   onClose,
   selectedPhoto,
-  currentAlbumId,
 }: Props) {
   const [album, setAlbum] = useState('');
   const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
+  const route = useRoute<any>();
   const {
     loading,
     data: childAlbums,
@@ -88,7 +89,17 @@ function ChildSelect({
             albumId: album,
           },
         },
-
+        refetchQueries: [
+          {
+            query: gql(getPhotosForAlbum),
+            variables: {
+              input: {
+                albumId: route.params?.albumId,
+                childId: route.params?.childId,
+              },
+            },
+          },
+        ],
         onError: (error) => {
           console.log('error-------->', error);
         },

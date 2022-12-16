@@ -33,7 +33,6 @@ function PileActionBarSingle({
   setShowChildSelectModal,
   albumId,
 }: Props) {
-  console.log('route params', albumId);
   const [deletePhotos] = useMutation<
     DeletePhotosInAlbumMutation,
     DeletePhotosInAlbumMutationVariables

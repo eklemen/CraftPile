@@ -63,24 +63,16 @@ export const assignPhotosToChildInAlbums = /* GraphQL */ `
   mutation AssignPhotosToChildInAlbums($input: reassignPhotosToChildInput!) {
     assignPhotosToChildInAlbums(input: $input) {
       _id
-      name
+      bucketName
+      objectKey
+      thumbnailKey
+      localPath
+      dateOfPhoto
+      title
       description
       childId
       accountId
-      posterImage
-      photos {
-        _id
-        bucketName
-        objectKey
-        thumbnailKey
-        localPath
-        dateOfPhoto
-        title
-        description
-        childId
-        accountId
-        albums
-      }
+      albums
     }
   }
 `;

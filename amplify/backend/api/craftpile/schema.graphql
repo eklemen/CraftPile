@@ -163,7 +163,7 @@ type Mutation {
 
 ################
 #  album view
-  assignPhotosToChildInAlbums(input: reassignPhotosToChildInput!): PhotosForAlbum!
+  assignPhotosToChildInAlbums(input: reassignPhotosToChildInput!): [Photo!]!
   @function(name: "craftpilePhotos-${env}")
 #  end album view
 

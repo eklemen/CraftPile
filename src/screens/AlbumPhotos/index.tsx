@@ -15,9 +15,7 @@ import { FlatList } from 'react-native';
 import ImageBox from '../Pile/ImageBox';
 import PhotoModal from './PhotoModal';
 import {
-  assignPhotosToChild,
   assignPhotosToChildInAlbums,
-  deleteUnsortedPhotos,
 } from '../../graphql/mutations';
 
 function AlbumPhotos({ route, navigation }: AlbumPhotosScreenNavigationProp) {

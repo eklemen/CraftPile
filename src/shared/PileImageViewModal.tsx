@@ -41,8 +41,6 @@ function PileImageViewModal({
             <PileAlbumSelectSheet
               isOpen={pileCompData.showAlbumSelectModal}
               onClose={() => setPileData({ showAlbumSelectModal: false })}
-              onAlbumSelect={addPhotosToAlbumHandler}
-              pileCompData={pileCompData}
             />
           </>
         ) : (
