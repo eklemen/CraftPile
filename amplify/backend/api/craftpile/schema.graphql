@@ -151,6 +151,7 @@ type Query {
   getChildrenUnsortedPhotos: [ChildUnsortedPhotos!]!
   @function(name: "craftpilePhotos-${env}")
 
+#  TODO: make ChildAlbum get last inserted photo for the cover
   getAlbumsForChild(input: getAlbumsForChildInput!): ChildAlbums!
   @function(name: "craftpilePhotos-${env}")
 }

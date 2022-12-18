@@ -26,7 +26,7 @@ interface Props {
   albumId: string;
 }
 
-function PileActionBarSingle({
+function PhotoModalActionBar({
   selectedPhoto,
   onDeleteSuccess,
   setShowAlbumSelectModal,
@@ -50,16 +50,6 @@ function PileActionBarSingle({
         },
       },
       onError: (err) => console.log('error deleting...', err),
-      // refetchQueries: [
-      //   {
-      //     query: gql(getPhotosForAlbum),
-      //     variables: {
-      //       input: {
-      //         albumId,
-      //       },
-      //     },
-      //   },
-      // ],
     });
     onDeleteSuccess();
   };
@@ -132,4 +122,4 @@ function PileActionBarSingle({
   );
 }
 
-export default PileActionBarSingle;
+export default PhotoModalActionBar;

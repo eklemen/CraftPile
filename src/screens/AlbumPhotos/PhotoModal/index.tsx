@@ -38,14 +38,20 @@ function PhotoModal({
   selectedPhoto,
   setSelectedPhoto,
   onClose,
-  showAlbumSelectModal,
   albumId,
 }: Props) {
   const [showChildSelectModal, setShowChildSelectModal] = useState(false);
+  const [showAlbumSelectModal, setShowAlbumSelectModal] = useState(false);
   const { loading: loadingAlbums, data, error } = useQuery<
     GetAlbumsForChildQuery,
     GetAlbumsForChildQueryVariables
-    >(gql(getAlbumsForChild));
+    >(gql(getAlbumsForChild), {
+      variables: {
+        input: {
+          childId: selectedPhoto?.childId!,
+        }
+      }
+  });
   const { compData: cachedPhotos } = useCompData<CachedUrlsCD>(CACHED_URLS);
   return (
     <>
@@ -62,7 +68,9 @@ function PhotoModal({
           {showAlbumSelectModal ? (
             <Actionsheet
               isOpen={showAlbumSelectModal}
-              onClose={onClose}
+              onClose={() => {
+                setShowAlbumSelectModal(false);
+              }}
               height="100%"
             >
               <Actionsheet.Content px={4}>
@@ -71,7 +79,7 @@ function PhotoModal({
                     Add to album
                   </Heading>
                   <Row alignItems="center" mb={4}>
-                    <Skeleton isLoaded={!false}>
+                    <Skeleton isLoaded={!loadingAlbums}>
                       <Box
                         h={35}
                         w={35}
@@ -116,10 +124,8 @@ function PhotoModal({
                 <PhotoModalActionBar
                   selectedPhoto={selectedPhoto}
                   onDeleteSuccess={onClose}
-                  setShowAlbumSelectModal={() => {}}
-                  setShowChildSelectModal={() => {
-                    setShowChildSelectModal(true);
-                  }}
+                  setShowAlbumSelectModal={setShowAlbumSelectModal}
+                  setShowChildSelectModal={setShowChildSelectModal}
                   albumId={albumId}
                 />
               </Modal.Footer>

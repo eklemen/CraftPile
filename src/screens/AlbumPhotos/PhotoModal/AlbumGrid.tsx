@@ -33,12 +33,6 @@ function AlbumGrid({ loading, data, selectedPhoto }: Props) {
         },
         onCompleted: () => {
           setShowAlbumForm(false);
-          // resetPileData({
-          //   multiSelect: false,
-          //   selectedPhotos: {},
-          //   selectedPhoto: null,
-          //   showAlbumSelectSheet: false
-          // });
         },
       });
     }
@@ -46,6 +40,25 @@ function AlbumGrid({ loading, data, selectedPhoto }: Props) {
   return (
     <Row flexWrap='wrap'>
       <ImageGridSkeleton isLoaded={!loading} />
+      {!loading && data?.getAlbumsForChild.albums && (
+        <Pressable w='50%' pr={2} onPress={() => setShowAlbumForm(true)}>
+          <Center w='100%' px={1}>
+            <Center
+              borderColor='primary.800:alpha.20'
+              borderWidth={1}
+              w='100%'
+              minH={160}
+            >
+              <Heading size='4xl' color='primary.50'>
+                +
+              </Heading>
+              <Heading size='sm' color='primary.400'>
+                New Album
+              </Heading>
+            </Center>
+          </Center>
+        </Pressable>
+      )}
       {data?.getAlbumsForChild?.albums?.map((album) => {
         return (
           <Pressable
@@ -80,25 +93,6 @@ function AlbumGrid({ loading, data, selectedPhoto }: Props) {
           </Pressable>
         );
       })}
-      {!loading && data?.getAlbumsForChild.albums && (
-        <Pressable w='50%' pr={2} onPress={() => setShowAlbumForm(true)}>
-          <Center w='100%' px={1}>
-            <Center
-              borderColor='primary.800:alpha.20'
-              borderWidth={1}
-              w='100%'
-              minH={160}
-            >
-              <Heading size='4xl' color='primary.50'>
-                +
-              </Heading>
-              <Heading size='sm' color='primary.400'>
-                New Album
-              </Heading>
-            </Center>
-          </Center>
-        </Pressable>
-      )}
       <CreateAlbumModal
         isOpen={showAlbumForm}
         onClose={() => setShowAlbumForm(false)}

@@ -99,16 +99,21 @@ function ChildSelect({
               },
             },
           },
+          {
+            query: gql(getPhotosForAlbum),
+            variables: {
+              input: {
+                albumId: album,
+                childId: radioValue!,
+              },
+            },
+          },
         ],
         onError: (error) => {
           console.log('error-------->', error);
         },
       });
-      await refetchPhotos();
-      console.log(
-        'errorAddingPhotosToAlbum-------->',
-        errorAddingPhotosToAlbum
-      );
+      // await refetchPhotos();
       onClose();
     }
   };
