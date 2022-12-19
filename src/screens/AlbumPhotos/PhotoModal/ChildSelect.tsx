@@ -6,17 +6,15 @@ import {
   CheckIcon,
   Column,
   Heading,
-  Input,
   Modal,
   Radio,
   Row,
   Select,
   Text,
 } from 'native-base';
-import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import {
   GetChildrenAlbumsQuery,
-  GetPhotosForAlbumQuery,
   GetUserQuery,
 } from '../../../generated/API';
 import {
@@ -60,17 +58,6 @@ function ChildSelect({
     AssignPhotosToChildInAlbumsMutation,
     AssignPhotosToChildInAlbumsMutationVariables
   >(gql(assignPhotosToChildInAlbums));
-  const [refetchPhotos] = useLazyQuery<GetPhotosForAlbumQuery>(
-    gql(getPhotosForAlbum),
-    {
-      variables: {
-        input: {
-          albumId: album,
-          childId: selectedPhoto?.childId,
-        },
-      },
-    }
-  );
   const [radioValue, setRadioValue] = useState<string>();
   const [initialChildId, setInitialChildId] = useState<Photo['childId']>();
   useEffect(() => {

@@ -19,9 +19,11 @@ interface Props {
   loading: boolean;
   data: GetAlbumsForChildQuery | undefined;
   selectedPhoto: Photo;
+  currentAlbumId: string;
+  onClose: () => void;
 }
 
-function AlbumGrid({ loading, data, selectedPhoto }: Props) {
+function AlbumGrid({ loading, data, selectedPhoto, currentAlbumId, onClose }: Props) {
   const [showAlbumForm, setShowAlbumForm] = useState(false);
   const [addPhotosToAlbum] = useMutation<AssignPhotosToChildInAlbumsMutation,
     AssignPhotosToChildInAlbumsMutationVariables>(gql(assignPhotosToChildInAlbums));
@@ -29,11 +31,37 @@ function AlbumGrid({ loading, data, selectedPhoto }: Props) {
     if (selectedPhoto) {
       await addPhotosToAlbum({
         variables: {
-          input: { ids: [selectedPhoto._id!], albumId, childId: selectedPhoto.childId! },
+          input: {
+            ids: [selectedPhoto._id!],
+            albumId,
+            childId: selectedPhoto.childId!,
+          },
         },
+        refetchQueries: [
+          {
+            query: gql(getPhotosForAlbum),
+            variables: {
+              input: {
+                albumId: currentAlbumId,
+                childId: selectedPhoto.childId,
+              },
+            },
+          },
+          {
+            query: gql(getPhotosForAlbum),
+            variables: {
+              input: {
+                albumId,
+                childId: selectedPhoto.childId,
+              },
+            },
+          },
+        ],
         onCompleted: () => {
+          onClose();
           setShowAlbumForm(false);
         },
+        onError: (err) => console.log('error adding photos to album...', err),
       });
     }
   };

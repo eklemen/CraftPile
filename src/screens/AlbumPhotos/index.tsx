@@ -14,25 +14,14 @@ import { AlbumPhotosScreenNavigationProp } from '../../types/routes';
 import { FlatList } from 'react-native';
 import ImageBox from '../Pile/ImageBox';
 import PhotoModal from './PhotoModal';
-import {
-  assignPhotosToChildInAlbums,
-} from '../../graphql/mutations';
 
 function AlbumPhotos({ route, navigation }: AlbumPhotosScreenNavigationProp) {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo>();
-  const [showAlbumSelectModal, setShowAlbumSelectModal] = useState(false);
   useEffect(() => {
     if (!Boolean(route.params?.albumId)) {
       navigation.navigate('AlbumScreen');
     }
   }, []);
-  const [
-    assignPhotosToChild,
-    { loading: loadingAlbums, error: errorAddingPhotosToAlbum },
-  ] = useMutation<
-    AssignPhotosToChildInAlbumsMutation,
-    AssignPhotosToChildInAlbumsMutationVariables
-  >(gql(assignPhotosToChildInAlbums));
   const { loading, data, error, refetch } = useQuery<GetPhotosForAlbumQuery>(
     gql(getPhotosForAlbum),
     {
@@ -82,12 +71,7 @@ function AlbumPhotos({ route, navigation }: AlbumPhotosScreenNavigationProp) {
         setSelectedPhoto={setSelectedPhoto}
         onClose={() => {
           setSelectedPhoto(undefined);
-          setShowAlbumSelectModal(false);
         }}
-        showAlbumSelectModal={showAlbumSelectModal}
-        setShowAlbumSelectModal={() => setShowAlbumSelectModal(true)}
-        handleDelete={() => {}}
-        onAlbumSelect={() => {}}
         albumId={route.params?.albumId || ''}
       />
     </Column>

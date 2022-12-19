@@ -27,10 +27,6 @@ interface Props {
   selectedPhoto: Photo;
   setSelectedPhoto: (photo: undefined) => void;
   onClose: () => void;
-  showAlbumSelectModal: boolean;
-  setShowAlbumSelectModal: () => void;
-  handleDelete: () => void;
-  onAlbumSelect: () => void;
   albumId: string;
 }
 
@@ -53,6 +49,10 @@ function PhotoModal({
       }
   });
   const { compData: cachedPhotos } = useCompData<CachedUrlsCD>(CACHED_URLS);
+  const handleClose= () => {
+    setShowAlbumSelectModal(false);
+    return onClose();
+  };
   return (
     <>
       <Modal
@@ -100,6 +100,8 @@ function PhotoModal({
                     selectedPhoto={selectedPhoto}
                     loading={loadingAlbums}
                     data={data}
+                    currentAlbumId={albumId}
+                    onClose={handleClose}
                   />
                 </Column>
               </Actionsheet.Content>
