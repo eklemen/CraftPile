@@ -10,11 +10,12 @@ interface Props {
   album: Album;
   childName?: string;
   childId: string;
+  style?: Record<string, unknown>
 }
-function AlbumTile({ album, childName, childId }: Props) {
+function AlbumTile({ album, childName, childId, style }: Props) {
   const navigation = useNavigation<AlbumScreenNavigationProp>();
   return (
-    <Box key={album._id} mb={8}>
+    <Box key={album._id} mb={8} style={[style]}>
       <Pressable
         onPress={() =>
           navigation.navigate('AlbumPhotos', {

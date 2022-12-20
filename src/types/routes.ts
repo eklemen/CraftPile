@@ -18,6 +18,10 @@ export type AlbumStackParamList = {
     albumId: string;
     childId: string;
   };
+  ViewAllAlbums: {
+    name?: string;
+    childId: string;
+  };
 };
 
 export type MainStackParamList = {
@@ -45,4 +49,9 @@ export type AlbumScreenNavigationProp = StackNavigationProp<
 export type AlbumPhotosScreenNavigationProp = StackScreenProps<
   AlbumStackParamList,
   'AlbumPhotos'
+>;
+
+export type ViewAllAlbumsScreenNavigationProp = StackScreenProps<
+  AlbumStackParamList,
+  'ViewAllAlbums'
 >;

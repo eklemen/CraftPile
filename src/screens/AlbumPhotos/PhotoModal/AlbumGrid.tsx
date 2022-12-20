@@ -87,7 +87,7 @@ function AlbumGrid({ loading, data, selectedPhoto, currentAlbumId, onClose }: Pr
           </Center>
         </Pressable>
       )}
-      {data?.getAlbumsForChild?.albums?.map((album) => {
+      {data?.getAlbumsForChild?.albums?.filter(a => a._id !== currentAlbumId).map((album) => {
         return (
           <Pressable
             key={album?._id}

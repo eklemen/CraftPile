@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Column, Heading, Pressable, Row, Text } from 'native-base';
+import { Box, Center, Column, Heading, Pressable, Row, Text } from 'native-base';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import {
   AssignPhotosToChildInAlbumsMutation,
@@ -31,20 +31,32 @@ function AlbumPhotos({ route, navigation }: AlbumPhotosScreenNavigationProp) {
           childId: route.params?.childId,
         },
       },
-    }
+    },
   );
+  console.log('data?.getPhotosForAlbum?.photos?.length-------->', data?.getPhotosForAlbum?.photos?.length);
   return (
-    <Column safeAreaTop mt={30} h="100%">
-      <Heading size="md" px={3} mb={3}>
+    <Column safeAreaTop mt={30} h='100%'>
+      <Heading size='md' px={3} mb={3}>
         {route.params?.childName || null}
       </Heading>
       {data?.getPhotosForAlbum?.name && (
-        <Heading size="xl" px={3} mb={5}>
+        <Heading size='xl' px={3} mb={5}>
           {data?.getPhotosForAlbum?.name}
         </Heading>
       )}
-      <Box h="100%">
-        <Row flexWrap="wrap">
+      <Box h='100%'>
+        {
+          data?.getPhotosForAlbum?.photos?.length
+            ? null
+            : (
+              <Center height="80%">
+                <Heading size="lg" px={3} fontFamily="body">
+                  No crafts in this album
+                </Heading>
+              </Center>
+            )
+        }
+        <Row flexWrap='wrap'>
           <FlatList
             data={data?.getPhotosForAlbum?.photos}
             style={{
@@ -54,7 +66,7 @@ function AlbumPhotos({ route, navigation }: AlbumPhotosScreenNavigationProp) {
             renderItem={({ item }) => (
               <Pressable
                 key={item?._id}
-                w="50%"
+                w='50%'
                 px={2}
                 mb={4}
                 style={{ borderColor: 'red', borderWidth: 1 }}

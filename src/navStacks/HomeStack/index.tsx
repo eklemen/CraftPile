@@ -18,6 +18,7 @@ import AlbumIcon from '../../appIcons/AlbumIcon';
 import PileIcon from '../../appIcons/PileIcon';
 import ProfileIcon from '../../appIcons/ProfileIcon';
 import AlbumPhotos from '../../screens/AlbumPhotos';
+import ViewAllAlbums from '../../screens/ViewAllAlbums';
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
 const MainBottomNav = createBottomTabNavigator<MainStackParamList>();
@@ -30,6 +31,7 @@ function AlbumNavs() {
       initialRouteName="AlbumScreen"
     >
       <AlbumStack.Screen name="AlbumScreen" component={AlbumScreen} />
+      <AlbumStack.Screen name="ViewAllAlbums" component={ViewAllAlbums} />
       <AlbumStack.Screen name="AlbumPhotos" component={AlbumPhotos} />
     </AlbumStack.Navigator>
   );

@@ -2,11 +2,14 @@ import { Box, Button, Heading, Row, Text, FlatList } from 'native-base';
 import React from 'react';
 import { ChildAlbums } from '../../generated/API';
 import AlbumTile from './AlbumTile';
+import { useNavigation } from '@react-navigation/native';
+import { AlbumScreenNavigationProp } from '../../types/routes';
 
 interface Props {
   childAlbum: ChildAlbums;
 }
 function ChildAlbumsRow({ childAlbum }: Props) {
+  const navigation = useNavigation<AlbumScreenNavigationProp>();
   return (
     <Box pl={3}>
       <Row alignItems="center" justifyContent="space-between" mb={4}>
@@ -15,7 +18,9 @@ function ChildAlbumsRow({ childAlbum }: Props) {
           variant="ghost"
           colorScheme="secondary"
           onPress={() => {
-            console.log('See all');
+            navigation.navigate('ViewAllAlbums', {
+              childId: childAlbum.id,
+            });
           }}
         >
           <Text

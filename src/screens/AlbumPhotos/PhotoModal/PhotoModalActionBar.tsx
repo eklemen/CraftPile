@@ -112,7 +112,7 @@ function PhotoModalActionBar({
                 fontWeight={700}
                 ml={2}
               >
-                Add to Album
+                Change Album
               </Text>
             </Center>
           </Button>
