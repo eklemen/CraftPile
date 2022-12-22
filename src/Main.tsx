@@ -4,7 +4,7 @@ import Amplify, { Auth } from 'aws-amplify';
 // @ts-ignore
 import { withAuthenticator } from 'aws-amplify-react-native';
 import * as Linking from 'expo-linking';
-import { NativeBaseProvider, extendTheme, Text } from 'native-base';
+import { NativeBaseProvider, extendTheme, Text, Box } from 'native-base';
 import {
   useFonts,
   Montserrat_300Light,
@@ -97,7 +97,7 @@ const Main = () => {
         <CompDataProvider>
           <NavigationContainer
             linking={linking}
-            fallback={<Text>Loading...</Text>}
+            fallback={<Box safeAreaTop><Text fontSize={34}>Loading...</Text></Box>}
           >
             <AppNavs />
           </NavigationContainer>

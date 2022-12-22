@@ -1,7 +1,5 @@
-import { GraphQLResult } from '@aws-amplify/api';
-import { API, graphqlOperation } from 'aws-amplify';
-import { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { useEffect } from 'react';
+import { Box, Text } from 'native-base';
 
 import commonStyles from '../../common/styles';
 import useCompData from '../../context/compData/useCompData';
@@ -36,9 +34,9 @@ function Landing({ navigation }: Props) {
   }, [loading]);
 
   return (
-    <View style={commonStyles.container}>
-      <Text>Loading...</Text>
-    </View>
+    <Box safeAreaTop>
+      <Text fontSize={24}>Loading2...</Text>
+    </Box>
   );
 }
 

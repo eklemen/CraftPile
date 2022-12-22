@@ -6,7 +6,7 @@ function AlbumHeader() {
     <>
       <StatusBar barStyle="dark-content" />
       <Row alignItems="center" justifyContent="space-between" px={3} mb={5}>
-        <Heading size="xl">Albums</Heading>
+        <Heading  fontSize={34}>Albums</Heading>
 
         <Button colorScheme="secondary" variant="ghost" py={0} rounded="full">
           <Text fontSize={30} color="secondary.400">

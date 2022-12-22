@@ -18,21 +18,21 @@ function ViewAllAlbums({ route }: ViewAllAlbumsScreenNavigationProp) {
     },
   });
   return (
-    <Column safeAreaTop mt={30} h="100%">
-      <StatusBar barStyle="dark-content" />
+    <Column safeAreaTop mt={30} h='100%'>
+      <StatusBar barStyle='dark-content' />
       <Row px={2} mb={5}>
         <Skeleton
-          width="65%"
-          height="22"
-          rounded="md"
+          width='65%'
+          height='40'
+          rounded='md'
           isLoaded={Boolean(childAlbum?.getAlbumsForChild?.name)}
         >
-          <Heading size="xl">
+          <Heading size='xl'>
             {childAlbum?.getAlbumsForChild.name}
           </Heading>
         </Skeleton>
       </Row>
-      <Row mb={40} flexWrap='wrap'>
+      <Row mb={40} flexWrap='wrap' h={"100%"}>
         <FlatList
           data={childAlbum?.getAlbumsForChild?.albums}
           keyExtractor={(item) => item._id}
@@ -41,15 +41,20 @@ function ViewAllAlbums({ route }: ViewAllAlbumsScreenNavigationProp) {
           }}
           contentContainerStyle={{
             alignItems: 'center',
+            flex: 1,
           }}
           numColumns={2}
           renderItem={({ item: album }) => (
-              <AlbumTile
-                album={album}
-                childName={childAlbum?.getAlbumsForChild.name}
-                childId={childAlbum?.getAlbumsForChild.id!}
-                style={{width: '50%', paddingLeft:14}}
-              />
+            <AlbumTile
+              album={album}
+              childName={childAlbum?.getAlbumsForChild.name}
+              childId={childAlbum?.getAlbumsForChild.id!}
+              style={{
+                width: '50%',
+                overflow: 'hidden',
+                paddingLeft: 10,
+              }}
+            />
           )}
         />
       </Row>
