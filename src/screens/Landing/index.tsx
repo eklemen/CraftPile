@@ -35,7 +35,7 @@ function Landing({ navigation }: Props) {
 
   return (
     <Box safeAreaTop>
-      <Text fontSize={24}>Loading2...</Text>
+      <Text fontSize={24}>Loading...</Text>
     </Box>
   );
 }
