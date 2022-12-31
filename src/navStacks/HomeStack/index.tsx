@@ -1,16 +1,15 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Heading, useTheme } from 'native-base';
+import { useTheme } from 'native-base';
 
 import Camera from '../../screens/Camera';
-import Landing from '../../screens/Landing';
 import ManageChildren from '../../screens/ManageChildren';
 import ProfileScreen from '../../screens/Profile';
 import AlbumScreen from '../../screens/Albums';
 import PileScreen from '../../screens/Pile';
 import {
   AlbumStackParamList,
-  MainStackParamList,
+  MainStackParamList, ProfileStackParamList,
   RootStackParamList,
 } from '../../types/routes';
 import CameraIcon from '../../appIcons/CameraIcon';
@@ -19,10 +18,15 @@ import PileIcon from '../../appIcons/PileIcon';
 import ProfileIcon from '../../appIcons/ProfileIcon';
 import AlbumPhotos from '../../screens/AlbumPhotos';
 import ViewAllAlbums from '../../screens/ViewAllAlbums';
+import { gql, useQuery } from '@apollo/client';
+import { GetUserQuery } from '../../generated/API';
+import { getUser } from '../../graphql/queries';
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
 const MainBottomNav = createBottomTabNavigator<MainStackParamList>();
 const AlbumStack = createNativeStackNavigator<AlbumStackParamList>();
+const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
+const ManageChildrenStack = createNativeStackNavigator<any>();
 
 function AlbumNavs() {
   return (
@@ -37,8 +41,38 @@ function AlbumNavs() {
   );
 }
 
+function ProfileNavs() {
+  return (
+    <ProfileStack.Navigator
+      initialRouteName="ProfileScreen"
+    >
+      <ProfileStack.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <ProfileStack.Screen
+        name="ManageChildren"
+        component={ManageChildren}
+      />
+    </ProfileStack.Navigator>
+  );
+}
+
 function MainBottomNavScreens() {
   const { colors, fontConfig } = useTheme();
+  const {data: userData } = useQuery<GetUserQuery>(gql(getUser));
+  if (!userData?.getUser.children?.length) {
+    return (
+      <ManageChildrenStack.Navigator>
+        <ManageChildrenStack.Screen
+          name="ManageChildren"
+          component={ManageChildren}
+          options={{ headerShown: false }}
+        />
+      </ManageChildrenStack.Navigator>
+    );
+  }
   return (
     <MainBottomNav.Navigator
       screenOptions={{
@@ -51,6 +85,7 @@ function MainBottomNavScreens() {
         },
         headerShown: false,
       }}
+      initialRouteName='Camera'
     >
       <MainBottomNav.Screen
         name="Camera"
@@ -94,7 +129,7 @@ function MainBottomNavScreens() {
       />
       <MainBottomNav.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileNavs}
         options={{
           tabBarIcon: ({ focused, color }) => (
             <ProfileIcon size={30} focused={focused} color={color} />
@@ -112,11 +147,9 @@ function AppNavs() {
   return (
     <AppStack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="Landing"
+      initialRouteName="MainStack"
     >
-      <AppStack.Screen name="Landing" component={Landing} />
       <AppStack.Screen name="MainStack" component={MainBottomNavScreens} />
-      <AppStack.Screen name="ManageChildren" component={ManageChildren} />
     </AppStack.Navigator>
   );
 }

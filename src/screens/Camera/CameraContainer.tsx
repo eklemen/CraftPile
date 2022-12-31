@@ -69,7 +69,9 @@ function CameraContainer() {
   useEffect(() => {
     if (!loading) {
       if (!authCompData?.user?.children?.length) {
-        navigation.navigate('ManageChildren', {});
+        navigation.navigate('Profile', {
+          screen: 'ManageChildren',
+        });
       }
     }
   }, [loading]);

@@ -4,14 +4,18 @@ import useCompData from '../../context/compData/useCompData';
 import * as domains from '../../context/constants';
 import { CameraCD, UserCD } from '../../context/constants';
 import CameraRoll from '../../appIcons/CameraRoll';
+import { gql, useQuery } from '@apollo/client';
+import { GetUserQuery } from '../../generated/API';
+import { getUser } from '../../graphql/queries';
 
 function CameraHeader() {
   const { compData: authCompData } = useCompData<UserCD>(domains.AUTH);
+  const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
   const { compData: cameraCompData, setData: setCameraCompData } =
     useCompData<CameraCD>(domains.CAMERA);
   useEffect(() => {
     setCameraCompData({
-      selectedChild: authCompData?.user?.children?.[0],
+      selectedChild: userData?.getUser.children?.[0],
     });
   }, []);
   return (
@@ -21,7 +25,7 @@ function CameraHeader() {
           <IconButton variant="ghost" icon={<CameraRoll color="white" />} />
         </Box>
         <Row flex={3} alignContent="center" justifyContent="center">
-          {authCompData?.user!.children!.map((child) => {
+          {userData?.getUser.children!.map((child) => {
             const isSelected = child!.id === cameraCompData?.selectedChild?.id;
             return (
               <Button

@@ -24,11 +24,16 @@ export type AlbumStackParamList = {
   };
 };
 
+export type ProfileStackParamList = {
+  ProfileScreen: undefined;
+  ManageChildren: undefined;
+}
+
 export type MainStackParamList = {
   Camera: undefined;
   Pile: undefined;
   Albums: StackNavigationProp<AlbumStackParamList, 'AlbumScreen'>;
-  Profile: undefined;
+  Profile: StackNavigationProp<ProfileStackParamList, 'ProfileScreen'>;
 };
 
 export type LandingScreenNavigationProp = StackNavigationProp<

@@ -1,10 +1,12 @@
+import React, { useCallback, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { LogBox } from 'react-native';
+import { LogBox, View } from 'react-native';
 import Amplify, { Auth } from 'aws-amplify';
 // @ts-ignore
 import { withAuthenticator } from 'aws-amplify-react-native';
 import * as Linking from 'expo-linking';
 import { NativeBaseProvider, extendTheme, Text, Box } from 'native-base';
+import * as SplashScreen from 'expo-splash-screen';
 import {
   useFonts,
   Montserrat_300Light,
@@ -16,16 +18,17 @@ import {
   Nunito_400Regular,
   Nunito_700Bold,
 } from '@expo-google-fonts/nunito';
-import { AuthOptions, createAuthLink } from 'aws-appsync-auth-link';
-import { createSubscriptionHandshakeLink } from 'aws-appsync-subscription-link';
 
-import { ApolloProvider } from '@apollo/client';
+import { gql, useLazyQuery, useQuery } from '@apollo/client';
 
 import config from '../aws-exports';
 import { CompDataProvider } from './context/compData/compDataStore';
 import { AppNavs } from './navStacks/HomeStack';
 import { themeOverrides } from './styles';
-import { apolloClient } from './apolloConfig';
+import { GetUserQuery } from './generated/API';
+import { getUser } from './graphql/queries';
+import useCompData from './context/compData/useCompData';
+import { AUTH, UserCD } from './context/constants';
 // import RCTAsyncStorage from '@react-native-async-storage/async-storage';
 //
 // Promise.resolve(RCTAsyncStorage.clear()).then(() => {
@@ -77,7 +80,11 @@ const signUpConfig = {
 
 LogBox.ignoreAllLogs();
 
-const Main = () => {
+interface Props {
+}
+
+const Main = ({}: Props) => {
+  const [appIsReady, setAppIsReady] = useState(false);
   const [fontsLoaded] = useFonts({
     Montserrat_300Light,
     Montserrat_400Regular,
@@ -86,14 +93,43 @@ const Main = () => {
     Nunito_400Regular,
     Nunito_700Bold,
   });
-  if (!fontsLoaded) return <></>;
+  const { refetch } = useQuery<GetUserQuery>(gql(getUser));
+  const { setData: setAuthData } = useCompData<UserCD>(AUTH);
   const linking = {
     prefixes: [prefix],
   };
   const theme = extendTheme(themeOverrides);
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await SplashScreen.preventAutoHideAsync();
+        const { data: userData } = await refetch();
+        setAuthData({
+          user: userData!.getUser,
+        });
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        // Tell the application to render
+        setAppIsReady(true);
+      }
+    }
+
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+  if (!fontsLoaded) return <></>;
+  if (!appIsReady) {
+    return null;
+  }
   return (
-    <ApolloProvider client={apolloClient}>
-      <NativeBaseProvider theme={theme}>
+    <NativeBaseProvider theme={theme}>
+      <View onLayout={onLayoutRootView} style={{height: '100%'}}>
         <CompDataProvider>
           <NavigationContainer
             linking={linking}
@@ -102,8 +138,8 @@ const Main = () => {
             <AppNavs />
           </NavigationContainer>
         </CompDataProvider>
-      </NativeBaseProvider>
-    </ApolloProvider>
+      </View>
+    </NativeBaseProvider>
   );
 };
 

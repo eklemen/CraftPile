@@ -1,4 +1,4 @@
-import { API, graphqlOperation } from 'aws-amplify';
+import { API } from 'aws-amplify';
 
 import {
   Center,
@@ -6,105 +6,44 @@ import {
   Heading,
   Input,
   Button,
-  VStack,
-  Box,
-  FormControl,
-  Stack,
-  Text,
-  HStack,
-  Flex,
 } from 'native-base';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 
 import useCompData from '../../context/compData/useCompData';
-import * as domains from '../../context/constants';
+import { AUTH } from '../../context/constants';
 import { AddChildMutation } from '../../generated/API';
 import { addChild } from '../../graphql/mutations';
-import { ManageChildrenScreenNavigationProp } from '../../types/routes';
+import { MainStackParamList, ManageChildrenScreenNavigationProp } from '../../types/routes';
 
 interface Props {
-  navigation: ManageChildrenScreenNavigationProp;
+  navigation: any;
 }
 
 function ManageChildren({ navigation }: Props) {
   const [showForm, setShowForm] = useState<boolean>(false);
   const { compData: authCompData, setData: setAuthData } = useCompData(
-    domains.AUTH
+    AUTH
   );
 
   const formHandler = async (values: { childName: string; age: any }) => {
-    const res = (await API.graphql(
-      graphqlOperation(addChild, {
-        input: { name: values.childName, age: parseInt(values.age) },
-      })
-    )) as { data: AddChildMutation };
-    setAuthData({ user: res?.data?.addChild });
+    // const res = (await API.graphql(
+    //   graphqlOperation(addChild, {
+    //     input: { name: values.childName, age: parseInt(values.age) },
+    //   })
+    // )) as { data: AddChildMutation };
+    // setAuthData({ user: res?.data?.addChild });
   };
 
   return (
-    <Center>
+    <Center safeAreaTop>
       <Container alignItems="center" width="100%">
-        <VStack w="100%" h="90%">
-          {authCompData?.children?.length ? null : (
-            <Heading>First, let's add children to your profile</Heading>
-          )}
-          {/*<Input shadow={2} size="xl" variant="underlined" placeholder="Child's Name" />*/}
-          <HStack my={4} shadow={3}>
-            {authCompData?.children?.map((child) => {
-              return (
-                <Box key={child.id} shadow={2} p={4} rounded="md" bg="white">
-                  <Text>Name: {child.name}</Text>
-                  <Text>Age: {child.age}</Text>
-                </Box>
-              );
-            })}
-          </HStack>
-          {showForm ? (
-            <Box>
-              <FormControl>
-                <Stack m="4">
-                  <FormControl.Label>Child's Name</FormControl.Label>
-                  <Input
-                    size="xl"
-                    variant="underlined"
-                    placeholder="Child's Name"
-                    mb={4}
-                  />
-                  <FormControl.Label>Age</FormControl.Label>
-                  <Input
-                    size="xl"
-                    variant="underlined"
-                    placeholder="Child's Name"
-                    mb={4}
-                  />
-                </Stack>
-              </FormControl>
-              <HStack justifyContent="space-evenly" w="100%">
-                <Button
-                  onPress={() => setShowForm(!showForm)}
-                  w="40%"
-                  colorScheme="muted"
-                >
-                  Cancel
-                </Button>
-                <Button w="40%">Submit</Button>
-              </HStack>
-            </Box>
-          ) : (
-            <Button onPress={() => setShowForm(!showForm)}>Add Child</Button>
-          )}
-        </VStack>
-        <Flex w="90%">
-          <Button
-            onPress={() => {
-              setShowForm(false);
-              navigation.navigate('Camera');
-            }}
-          >
-            Done
-          </Button>
-        </Flex>
+        <Heading>Manage children</Heading>
+        <Button
+          onPress={() => {
+            navigation.replace('MainStack');
+          }}
+        >Go to Cam</Button>
       </Container>
     </Center>
   );
