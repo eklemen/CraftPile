@@ -1,30 +1,31 @@
-import { API } from 'aws-amplify';
-
 import {
   Center,
   Container,
   Heading,
   Input,
-  Button,
+  Button, Box, Text, Row, Column, Pressable,
 } from 'native-base';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 
 import useCompData from '../../context/compData/useCompData';
 import { AUTH } from '../../context/constants';
-import { AddChildMutation } from '../../generated/API';
+import { AddChildMutation, Child, GetUserQuery } from '../../generated/API';
 import { addChild } from '../../graphql/mutations';
 import { MainStackParamList, ManageChildrenScreenNavigationProp } from '../../types/routes';
+import { gql, useQuery } from '@apollo/client';
+import { getUser } from '../../graphql/queries';
+import EditIcon from '../../appIcons/Edit';
+import EditChildSheet from './EditChildSheet';
 
 interface Props {
   navigation: any;
 }
 
 function ManageChildren({ navigation }: Props) {
-  const [showForm, setShowForm] = useState<boolean>(false);
-  const { compData: authCompData, setData: setAuthData } = useCompData(
-    AUTH
-  );
+  const { loading, data: userData } = useQuery<GetUserQuery>(gql(getUser));
+  const [showEditChild, setShowEditChild] = useState<boolean>(false);
+  const [selectedChild, setSelectedChild] = useState<Child>();
 
   const formHandler = async (values: { childName: string; age: any }) => {
     // const res = (await API.graphql(
@@ -36,19 +37,54 @@ function ManageChildren({ navigation }: Props) {
   };
 
   return (
-    <Center safeAreaTop>
-      <Container alignItems="center" width="100%">
-        <Heading>Manage children</Heading>
-        <Button
-          onPress={() => {
-            navigation.replace('MainStack');
-          }}
-        >Go to Cam</Button>
-      </Container>
-    </Center>
+    <Box flex={1} safeAreaTop>
+      <Heading textAlign='center' mb={6}>Manage children</Heading>
+      <Row>
+        <Column w='100%'>
+          {
+            userData?.getUser?.children ? userData?.getUser?.children.map((child) => (
+              <Button
+                key={child!.id}
+                variant='ghost'
+                w='100%'
+                alignItems='center'
+                justifyContent='flex-start'
+                onPress={() => {
+                  setShowEditChild(true);
+                  setSelectedChild(child!);
+                }}
+              >
+                <Row alignItems='center' w='100%'>
+
+                  <Center rounded='full' bg='secondary.100' h={70} w={70} my={4}>
+                    <Text fontSize={40}>
+                      {child?.name.charAt(0).toUpperCase()}
+                    </Text>
+                  </Center>
+                  <Box>
+                    <Heading ml={4}>
+                      {child?.name}
+                    </Heading>
+                  </Box>
+                  <Box ml='auto' mr={7}>
+                    <EditIcon />
+                  </Box>
+                </Row>
+              </Button>),
+            ) : null
+          }
+        </Column>
+      </Row>
+      <EditChildSheet
+        isOpen={showEditChild}
+        selectedChild={selectedChild}
+        onClose={() => {
+          setShowEditChild(false);
+          setSelectedChild(undefined);
+        }}
+      />
+    </Box>
   );
 }
 
 export default ManageChildren;
-
-const styles = StyleSheet.create({});
