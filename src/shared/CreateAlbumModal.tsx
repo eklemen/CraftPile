@@ -22,17 +22,12 @@ import {
   GetUserQuery,
 } from '../generated/API';
 import { getUser } from '../graphql/queries';
+import { FormObject } from '../types/forms';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
   childId: string;
-}
-
-interface FormObject {
-  value: string;
-  touched: boolean;
-  error: string;
 }
 
 interface FormInput {
