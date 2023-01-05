@@ -29,11 +29,11 @@ import { GetUserQuery } from './generated/API';
 import { getUser } from './graphql/queries';
 import useCompData from './context/compData/useCompData';
 import { AUTH, UserCD } from './context/constants';
-// import RCTAsyncStorage from '@react-native-async-storage/async-storage';
-//
-// Promise.resolve(RCTAsyncStorage.clear()).then(() => {
-//   console.log("cleared");
-// });
+import RCTAsyncStorage from '@react-native-async-storage/async-storage';
+
+Promise.resolve(RCTAsyncStorage.clear()).then(() => {
+  console.log("cleared");
+});
 const getIdToken = async () => ({
   Authorization: (await Auth.currentSession()).getIdToken().getJwtToken(),
 });
@@ -102,8 +102,10 @@ const Main = ({}: Props) => {
   useEffect(() => {
     async function prepare() {
       try {
+        console.log('splash')
         await SplashScreen.preventAutoHideAsync();
         const { data: userData } = await refetch();
+        console.log('userData-------->', userData);
         setAuthData({
           user: userData!.getUser,
         });

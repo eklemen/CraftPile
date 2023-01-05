@@ -3,9 +3,9 @@ const aws = require('aws-sdk');
 
 let cachedDb = null;
 const connectToDatabase = async () => {
-  if (cachedDb) {
-    return cachedDb;
-  }
+  // if (cachedDb) {
+  //   return cachedDb;
+  // }
 
   const { Parameters } = await (new aws.SSM())
     .getParameters({
@@ -20,7 +20,8 @@ const connectToDatabase = async () => {
   const photoCollection = db.collection('photos');
   const userCollection = db.collection('users');
   const albumCollection = db.collection('albums');
-  const dbObject = { db, client, photoCollection, userCollection, albumCollection }
+  const childrenCollection = db.collection('children');
+  const dbObject = { db, client, photoCollection, userCollection, albumCollection, childrenCollection }
   cachedDb = dbObject;
   return dbObject;
 }

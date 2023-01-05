@@ -133,7 +133,7 @@ function CameraContainer() {
       contentType: 'image/jpeg',
       level: 'public',
       metadata: {
-        childId: cameraCompData?.selectedChild?.id,
+        childId: cameraCompData?.selectedChild?._id,
         isThumbnail: 'true',
       },
       errorCallback: (err: any) => {
@@ -157,7 +157,7 @@ function CameraContainer() {
         contentType: 'image/jpeg',
         level: 'public',
         metadata: {
-          childId: cameraCompData?.selectedChild?.id,
+          childId: cameraCompData?.selectedChild?._id,
         },
         errorCallback: (err: any) => {
           console.error('Unexpected error while uploading====', err);

@@ -105,7 +105,7 @@ function AlbumGrid({ loading, data, selectedPhotos, resetPileData }: Props) {
       <CreateAlbumModal
         isOpen={showAlbumForm}
         onClose={() => setShowAlbumForm(false)}
-        childId={data?.getAlbumsForChild.id!}
+        childId={data?.getAlbumsForChild._id!}
       />
     </Row>
   );

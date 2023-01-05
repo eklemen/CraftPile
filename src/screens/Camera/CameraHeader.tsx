@@ -26,10 +26,10 @@ function CameraHeader() {
         </Box>
         <Row flex={3} alignContent="center" justifyContent="center">
           {userData?.getUser.children!.map((child) => {
-            const isSelected = child!.id === cameraCompData?.selectedChild?.id;
+            const isSelected = child!._id === cameraCompData?.selectedChild?._id;
             return (
               <Button
-                key={child!.id}
+                key={child!._id}
                 colorScheme="secondary"
                 mx={1}
                 my="auto"

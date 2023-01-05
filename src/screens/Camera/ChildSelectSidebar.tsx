@@ -28,10 +28,10 @@ function ChildSelectSidebar() {
     >
       {authCompData?.user?.children?.map((child: any) => {
         const isSelected =
-          child.id === cameraCompData?.selectedChild?.id;
+          child._id === cameraCompData?.selectedChild?._id;
         return (
           <Button
-            key={child.id}
+            key={child._id}
             my={1}
             style={{
               width: isSelected ? 50 : 40,

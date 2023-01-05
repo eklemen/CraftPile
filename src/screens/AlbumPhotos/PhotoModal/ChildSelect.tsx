@@ -131,9 +131,9 @@ function ChildSelect({
               {userData?.getUser.children?.map((child) => (
                 <Radio
                   colorScheme="secondary"
-                  value={child?.id as string}
+                  value={child?._id as string}
                   my={6}
-                  key={child?.id}
+                  key={child?._id}
                 >
                   <Center bg="primary.200" w={50} h={50} rounded="full">
                     <Text fontSize={20} fontFamily="body" color="white">
@@ -161,7 +161,7 @@ function ChildSelect({
                   onValueChange={(itemValue) => setAlbum(itemValue)}
                 >
                   {childAlbums?.getChildrenAlbums
-                    .find((c) => c?.id === radioValue)
+                    .find((c) => c?._id === radioValue)
                     ?.albums?.map((album) => (
                       <Select.Item
                         label={album?.name}

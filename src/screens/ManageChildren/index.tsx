@@ -44,7 +44,7 @@ function ManageChildren({ navigation }: Props) {
           {
             userData?.getUser?.children ? userData?.getUser?.children.map((child) => (
               <Button
-                key={child!.id}
+                key={child!._id}
                 variant='ghost'
                 w='100%'
                 alignItems='center'

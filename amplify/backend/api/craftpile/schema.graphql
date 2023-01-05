@@ -78,9 +78,9 @@ type Photo {
 }
 
 type Child {
-  id: ID!
+  _id: ID!
   name: String!
-  age: Int
+  accountId: String!
 }
 
 type Album {
@@ -100,7 +100,7 @@ type User {
 }
 
 type ChildAlbums {
-  id: ID!
+  _id: ID!
   name: String!
   albums: [Album!]!
 }
@@ -160,7 +160,7 @@ type Mutation {
   updatePhotoProps(input: updatePhotoPropertiesInput): Photo
   @function(name: "craftpilePhotos-${env}")
 
-  addChild(input: addChildInput): User!
+  addChild(input: addChildInput): [Child]!
   @function(name: "craftpilePhotos-${env}")
 
 ################

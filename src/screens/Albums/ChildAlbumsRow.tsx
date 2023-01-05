@@ -19,7 +19,7 @@ function ChildAlbumsRow({ childAlbum }: Props) {
           colorScheme="secondary"
           onPress={() => {
             navigation.navigate('ViewAllAlbums', {
-              childId: childAlbum.id,
+              childId: childAlbum._id,
             });
           }}
         >
@@ -42,7 +42,7 @@ function ChildAlbumsRow({ childAlbum }: Props) {
             <AlbumTile
               album={album}
               childName={childAlbum.name}
-              childId={childAlbum.id}
+              childId={childAlbum._id}
             />
           )}
         />

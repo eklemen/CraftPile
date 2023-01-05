@@ -20,7 +20,7 @@
       "function": {
         "craftpilePhotos": {
           "deploymentBucketName": "amplify-craftpile-dev-214433-deployment",
-          "s3Key": "amplify-builds/craftpilePhotos-674a7172712f506a414a-build.zip",
+          "s3Key": "amplify-builds/craftpilePhotos-704947665a332b78545a-build.zip",
           "secretsPathAmplifyAppId": "d11bjp4lxch0p2"
         },
         "S3Trigger42c71366": {
@@ -35,7 +35,7 @@
         },
         "craftpiledbConnectLayer": {
           "deploymentBucketName": "amplify-craftpile-dev-214433-deployment",
-          "s3Key": "amplify-builds/craftpiledbConnectLayer-LambdaLayerVersion231e11f7-build.zip"
+          "s3Key": "amplify-builds/craftpiledbConnectLayer-LambdaLayerVersion0b8f12c7-build.zip"
         },
         "craftpileV3ClientSDK": {
           "deploymentBucketName": "amplify-craftpile-dev-214433-deployment",

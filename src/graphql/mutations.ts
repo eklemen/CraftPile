@@ -23,14 +23,8 @@ export const addChild = /* GraphQL */ `
   mutation AddChild($input: addChildInput) {
     addChild(input: $input) {
       _id
-      userId
-      email
+      name
       accountId
-      children {
-        id
-        name
-        age
-      }
     }
   }
 `;
@@ -130,7 +124,7 @@ export const addUnsortedPhotosToAlbum = /* GraphQL */ `
 export const createAlbum = /* GraphQL */ `
   mutation CreateAlbum($input: createAlbumInput!) {
     createAlbum(input: $input) {
-      id
+      _id
       name
       albums {
         _id

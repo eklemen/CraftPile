@@ -33,23 +33,30 @@ const updatePhotoProps = async (event) => {
     },
     {
       returnDocument: 'after',
-    }
+    },
   );
   return res.value;
 };
 
 const getChildrenUnsortedPhotos = async (event) => {
   const userId = event?.identity?.sub;
-  const { userCollection, photoCollection } = await connectToDatabase();
+  const { userCollection, photoCollection, childrenCollection } = await connectToDatabase();
   const user = await userCollection.findOne({ userId });
-  const childrenObjects = user?.children;
+  const childrenObjects  = await childrenCollection.find({
+    accountId: user.accountId
+  }).toArray();
+  /*
+  find photos for account
+  and album size is 0
+
+   */
   const unsortedPhotos = await photoCollection
     .aggregate([
       {
         $match: {
           accountId: user.accountId,
           childId: {
-            $in: childrenObjects.map((c) => c.id),
+            $in: childrenObjects.map((c) => new ObjectID(c._id)),
           },
           albums: {
             $size: 0,
@@ -74,19 +81,18 @@ const getChildrenUnsortedPhotos = async (event) => {
       },
     ])
     .toArray();
-  const res = childrenObjects.map((child) => {
+  return childrenObjects.map((child) => {
     return {
-      _id: child.id, // todo: change to id,
+      _id: child._id, // todo: change to id,
       childName: child.name,
-      photos: unsortedPhotos.find((p) => p._id === child.id)?.photos || [],
+      photos: unsortedPhotos.find((p) => p._id === child._id)?.photos || [],
     };
   });
-  return res;
 };
 
 const getChildrenAlbums = async (event) => {
   const userId = event?.identity?.sub;
-  const { albumCollection, userCollection } = await connectToDatabase();
+  const { albumCollection, userCollection, childrenCollection } = await connectToDatabase();
   const user = await userCollection.findOne({ userId });
   const { accountId } = user;
   const albums = await albumCollection
@@ -94,20 +100,21 @@ const getChildrenAlbums = async (event) => {
       accountId,
     })
     .toArray();
-  const childrenObjects = user?.children;
+  const childrenObjects = await childrenCollection.find({
+    accountId: user.accountId
+  }).toArray();
   // need to create an object for each child
-  const noOwnerAlbums = albums.filter((album) => !album.childId);
   const childrenAlbums = childrenObjects.reduce((res, currentChild) => {
     const filteredAlbums = albums.filter(
-      (album) => album.childId === currentChild.id
+      (album) => album.childId === currentChild._id,
     );
     res.push({
-      id: currentChild.id,
+      id: currentChild._id,
       name: currentChild.name,
       albums: filteredAlbums,
     });
     return res;
-  }, noOwnerAlbums);
+  }, []);
   return childrenAlbums;
 };
 
@@ -116,7 +123,7 @@ const getPhotosForAlbum = async (event) => {
   const { photoCollection, albumCollection } = await connectToDatabase();
   const photos = await photoCollection
     .find({
-      childId,
+      childId: new ObjectID(childId),
       albums: {
         $in: [new ObjectID(albumId)],
       },
@@ -131,34 +138,43 @@ const getPhotosForAlbum = async (event) => {
 };
 
 const getUser = async (event) => {
-  const { userCollection } = await connectToDatabase();
-  const res = await userCollection.findOne({
+  const { userCollection, childrenCollection } = await connectToDatabase();
+  console.log('getUser method: ');
+  const user = await userCollection.findOne({
     userId: event?.identity?.sub,
   });
-  return res;
+  console.log('user-------->', user);
+  const children = await childrenCollection.find({ accountId: user.accountId }).toArray();
+  console.log('children-------->', children);
+  const res = { user };
+  res.children = children;
+  return {
+    ...user,
+    children,
+  };
+};
+
+const getChildren = async (event) => {
+  const { userCollection, childrenCollection } = await connectToDatabase();
+  const user = await userCollection.findOne({
+    userId: event?.identity?.sub,
+  });
+  return await childrenCollection.find({ accountId: user.accountId }).toArray();
 };
 
 const addChild = async (event) => {
-  const { userCollection } = await connectToDatabase();
-  const childId = uuidv4();
-  const res = await userCollection.findOneAndUpdate(
-    {
-      userId: event?.identity?.sub,
-    },
-    {
-      $push: {
-        children: {
-          id: childId,
-          name: event?.arguments?.input?.name,
-          age: event?.arguments?.input?.age,
-        },
-      },
-    },
-    {
-      returnDocument: 'after',
-    }
-  );
-  return res.value;
+  const { userCollection, childrenCollection } = await connectToDatabase();
+  const user = await userCollection.findOne({
+    userId: event?.identity?.sub,
+  });
+  // const childId = uuidv4();
+  await childrenCollection.insertOne({
+    name: event?.arguments?.input?.name,
+    accountId: user.accountId,
+  });
+  return await childrenCollection.find({
+    accountId: user.accountId
+  }).toArray();
 };
 
 const deleteUnsortedPhotos = async (event) => {
@@ -172,6 +188,8 @@ const deleteUnsortedPhotos = async (event) => {
   return await getChildrenUnsortedPhotos(event);
 };
 
+// Does this actually delete photos in a specific album?
+// It should not remove a photo from the collection, just the album
 const deletePhotosInAlbum = async (event) => {
   const { photoCollection } = await connectToDatabase();
   const { ids } = event?.arguments?.input;
@@ -180,7 +198,7 @@ const deletePhotosInAlbum = async (event) => {
       $in: ids.map((id) => new ObjectID(id)),
     },
   });
-  return await getPhotosForAlbum(event)
+  return await getPhotosForAlbum(event);
 };
 
 const assignPhotosToChild = async (event) => {
@@ -194,9 +212,9 @@ const assignPhotosToChild = async (event) => {
     },
     {
       $set: {
-        childId,
+        childId: new ObjectID(childId),
       },
-    }
+    },
   );
   return await getChildrenUnsortedPhotos(event);
 };
@@ -214,7 +232,7 @@ const addUnsortedPhotosToAlbum = async (event) => {
       $push: {
         albums: new ObjectID(albumId),
       },
-    }
+    },
   );
   return await getChildrenUnsortedPhotos(event);
 };
@@ -232,31 +250,28 @@ const reassignPhotosToChildAndAlbum = async (event) => {
     {
       $set: {
         albums: [new ObjectID(albumId)],
-        childId,
+        childId: new ObjectID(childId),
       },
-    }
+    },
   );
   return await photoCollection.find({
-    childId,
+    childId: new ObjectID(childId),
   }).toArray();
-  // return await getPhotosForAlbum(event);
 };
 
 const getAlbumsForChild = async (event) => {
-  const { albumCollection, userCollection } = await connectToDatabase();
+  const { albumCollection, childrenCollection } = await connectToDatabase();
   const { childId } = event?.arguments?.input;
   const albums = await albumCollection
     .find({
-      childId,
+      childId: new ObjectID(childId),
     })
     .toArray();
-  const { children } = await userCollection.findOne({
-    userId: event?.identity?.sub,
-  });
-  const childObj = children.find((c) => c.id === childId);
+  const child = await childrenCollection.findOne({
+    _id: new ObjectID(childId),
+  }).toArray();
   return {
-    id: childId,
-    name: childObj.name,
+    ...child,
     albums,
   };
 };
@@ -267,7 +282,7 @@ const createAlbum = async (event) => {
   const album = await albumCollection.insertOne({
     name,
     description,
-    childId,
+    childId: new ObjectID(childId),
     accountId,
   });
   if (album?.insertedId) {

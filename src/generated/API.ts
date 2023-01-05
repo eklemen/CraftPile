@@ -14,7 +14,7 @@ export type updatePhotoPropertiesInput = {
 
 export type Photo = {
   __typename: "Photo",
-  _id?: string | null,
+  _id: string,
   bucketName: string,
   objectKey: string,
   thumbnailKey: string,
@@ -32,20 +32,11 @@ export type addChildInput = {
   age?: number | null,
 };
 
-export type User = {
-  __typename: "User",
-  _id: string,
-  userId: string,
-  email: string,
-  accountId: string,
-  children:  Array<Child | null >,
-};
-
 export type Child = {
   __typename: "Child",
-  id: string,
+  _id: string,
   name: string,
-  age?: number | null,
+  accountId: string,
 };
 
 export type deletePhotosInAlbumInput = {
@@ -112,7 +103,7 @@ export type createAlbumInput = {
 
 export type ChildAlbums = {
   __typename: "ChildAlbums",
-  id: string,
+  _id: string,
   name: string,
   albums:  Array<Album >,
 };
@@ -133,6 +124,15 @@ export type getPhotosForAlbumInput = {
   childId?: string | null,
 };
 
+export type User = {
+  __typename: "User",
+  _id: string,
+  userId: string,
+  email: string,
+  accountId: string,
+  children:  Array<Child | null >,
+};
+
 export type getAlbumsForChildInput = {
   childId: string,
   limit?: number | null,
@@ -146,7 +146,7 @@ export type UpdatePhotoPropsMutationVariables = {
 export type UpdatePhotoPropsMutation = {
   updatePhotoProps?:  {
     __typename: "Photo",
-    _id?: string | null,
+    _id: string,
     bucketName: string,
     objectKey: string,
     thumbnailKey: string,
@@ -165,19 +165,12 @@ export type AddChildMutationVariables = {
 };
 
 export type AddChildMutation = {
-  addChild:  {
-    __typename: "User",
+  addChild:  Array< {
+    __typename: "Child",
     _id: string,
-    userId: string,
-    email: string,
+    name: string,
     accountId: string,
-    children:  Array< {
-      __typename: "Child",
-      id: string,
-      name: string,
-      age?: number | null,
-    } | null >,
-  },
+  } | null >,
 };
 
 export type DeletePhotosInAlbumMutationVariables = {
@@ -195,7 +188,7 @@ export type DeletePhotosInAlbumMutation = {
     posterImage?: string | null,
     photos:  Array< {
       __typename: "Photo",
-      _id?: string | null,
+      _id: string,
       bucketName: string,
       objectKey: string,
       thumbnailKey: string,
@@ -217,7 +210,7 @@ export type AssignPhotosToChildInAlbumsMutationVariables = {
 export type AssignPhotosToChildInAlbumsMutation = {
   assignPhotosToChildInAlbums:  Array< {
     __typename: "Photo",
-    _id?: string | null,
+    _id: string,
     bucketName: string,
     objectKey: string,
     thumbnailKey: string,
@@ -304,7 +297,7 @@ export type CreateAlbumMutationVariables = {
 export type CreateAlbumMutation = {
   createAlbum:  {
     __typename: "ChildAlbums",
-    id: string,
+    _id: string,
     name: string,
     albums:  Array< {
       __typename: "Album",
@@ -332,7 +325,7 @@ export type GetPhotosForAlbumQuery = {
     posterImage?: string | null,
     photos:  Array< {
       __typename: "Photo",
-      _id?: string | null,
+      _id: string,
       bucketName: string,
       objectKey: string,
       thumbnailKey: string,
@@ -356,9 +349,9 @@ export type GetUserQuery = {
     accountId: string,
     children:  Array< {
       __typename: "Child",
-      id: string,
+      _id: string,
       name: string,
-      age?: number | null,
+      accountId: string,
     } | null >,
   },
 };
@@ -366,7 +359,7 @@ export type GetUserQuery = {
 export type GetChildrenAlbumsQuery = {
   getChildrenAlbums:  Array< {
     __typename: "ChildAlbums",
-    id: string,
+    _id: string,
     name: string,
     albums:  Array< {
       __typename: "Album",
@@ -404,7 +397,7 @@ export type GetAlbumsForChildQueryVariables = {
 export type GetAlbumsForChildQuery = {
   getAlbumsForChild:  {
     __typename: "ChildAlbums",
-    id: string,
+    _id: string,
     name: string,
     albums:  Array< {
       __typename: "Album",

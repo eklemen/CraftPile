@@ -105,9 +105,9 @@ function ChildSelectModal({ isOpen, onClose, setPileData }: Props) {
               {userData?.getUser.children?.map((child) => (
                 <Radio
                   colorScheme="secondary"
-                  value={child?.id as string}
+                  value={child?._id as string}
                   my={6}
-                  key={child?.id}
+                  key={child?._id}
                 >
                   <Center bg="primary.200" w={50} h={50} rounded="full">
                     <Text fontSize={20} fontFamily="body" color="white">

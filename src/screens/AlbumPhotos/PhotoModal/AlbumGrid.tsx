@@ -124,7 +124,7 @@ function AlbumGrid({ loading, data, selectedPhoto, currentAlbumId, onClose }: Pr
       <CreateAlbumModal
         isOpen={showAlbumForm}
         onClose={() => setShowAlbumForm(false)}
-        childId={data?.getAlbumsForChild.id!}
+        childId={data?.getAlbumsForChild._id!}
       />
     </Row>
   );

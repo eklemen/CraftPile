@@ -48,7 +48,7 @@ function ViewAllAlbums({ route }: ViewAllAlbumsScreenNavigationProp) {
             <AlbumTile
               album={album}
               childName={childAlbum?.getAlbumsForChild.name}
-              childId={childAlbum?.getAlbumsForChild.id!}
+              childId={childAlbum?.getAlbumsForChild._id!}
               style={{
                 width: '50%',
                 overflow: 'hidden',

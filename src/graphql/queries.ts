@@ -35,9 +35,9 @@ export const getUser = /* GraphQL */ `
       email
       accountId
       children {
-        id
+        _id
         name
-        age
+        accountId
       }
     }
   }
@@ -45,7 +45,7 @@ export const getUser = /* GraphQL */ `
 export const getChildrenAlbums = /* GraphQL */ `
   query GetChildrenAlbums {
     getChildrenAlbums {
-      id
+      _id
       name
       albums {
         _id
@@ -77,7 +77,7 @@ export const getChildrenUnsortedPhotos = /* GraphQL */ `
 export const getAlbumsForChild = /* GraphQL */ `
   query GetAlbumsForChild($input: getAlbumsForChildInput!) {
     getAlbumsForChild(input: $input) {
-      id
+      _id
       name
       albums {
         _id
