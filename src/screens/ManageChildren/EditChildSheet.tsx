@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Actionsheet, Box, Center, FormControl, Input, Text } from 'native-base';
+import { Actionsheet, Box, Button, Center, FormControl, Input, Text } from 'native-base';
 import { Child } from '../../generated/API';
 import { FormObject } from '../../types/forms';
 
@@ -89,6 +89,16 @@ function EditChildSheet({ isOpen, onClose, selectedChild }: Props) {
                 <Text color="red.500">{formValues.name.error}</Text>
               ) : null}
             </FormControl>
+            <Button onPress={() => {
+              console.log('Save')
+            }}>
+              Save
+            </Button>
+            <Button onPress={() => {
+              console.log('Delete');
+            }}>
+              Delete
+            </Button>
           </Box>
         </Actionsheet.Content>
       </Actionsheet>
