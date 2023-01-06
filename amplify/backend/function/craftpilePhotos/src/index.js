@@ -109,7 +109,7 @@ const getChildrenAlbums = async (event) => {
       (album) => album.childId === currentChild._id,
     );
     res.push({
-      id: currentChild._id,
+      _id: currentChild._id,
       name: currentChild.name,
       albums: filteredAlbums,
     });

@@ -1,18 +1,17 @@
 import { useEffect } from 'react';
 import { Row, Center, Box, Button, IconButton } from 'native-base';
 import useCompData from '../../context/compData/useCompData';
-import * as domains from '../../context/constants';
-import { CameraCD, UserCD } from '../../context/constants';
+import { CAMERA } from '../../context/constants';
+import { CameraCD } from '../../context/constants';
 import CameraRoll from '../../appIcons/CameraRoll';
 import { gql, useQuery } from '@apollo/client';
 import { GetUserQuery } from '../../generated/API';
 import { getUser } from '../../graphql/queries';
 
 function CameraHeader() {
-  const { compData: authCompData } = useCompData<UserCD>(domains.AUTH);
   const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
   const { compData: cameraCompData, setData: setCameraCompData } =
-    useCompData<CameraCD>(domains.CAMERA);
+    useCompData<CameraCD>(CAMERA);
   useEffect(() => {
     setCameraCompData({
       selectedChild: userData?.getUser.children?.[0],

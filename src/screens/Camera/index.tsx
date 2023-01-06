@@ -13,13 +13,13 @@ import { AUTH, UserCD } from '../../context/constants';
 function CameraScreen() {
   const { loading, data: userData } = useQuery<GetUserQuery>(gql(getUser));
   const { setData: setAuthData } = useCompData<UserCD>(AUTH);
-  useEffect(() => {
-    if (!loading && userData?.getUser) {
-      setAuthData({
-        user: userData.getUser,
-      });
-    }
-  }, [userData, loading]);
+  // useEffect(() => {
+  //   if (!loading && userData?.getUser) {
+  //     setAuthData({
+  //       user: userData.getUser,
+  //     });
+  //   }
+  // }, [userData, loading]);
   return (
     <Box safeAreaTop flex={1} bg="primary.800">
       <StatusBar barStyle="light-content" />

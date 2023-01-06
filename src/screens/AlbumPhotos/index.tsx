@@ -33,7 +33,6 @@ function AlbumPhotos({ route, navigation }: AlbumPhotosScreenNavigationProp) {
       },
     },
   );
-  console.log('data?.getPhotosForAlbum?.photos?.length-------->', data?.getPhotosForAlbum?.photos?.length);
   return (
     <Column safeAreaTop mt={30} h='100%'>
       <Heading size='md' px={3} mb={3}>

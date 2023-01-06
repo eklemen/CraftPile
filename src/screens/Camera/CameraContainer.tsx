@@ -10,13 +10,14 @@ import { Box, Center, IconButton, Spinner } from 'native-base';
 import uuid from 'react-native-uuid';
 
 import useCompData from '../../context/compData/useCompData';
-import * as domains from '../../context/constants';
+import { AUTH, CAMERA } from '../../context/constants';
 import { GetUserQuery } from '../../generated/API';
 import { getUser } from '../../graphql/queries';
 import MockCamera from './MockCamera';
 import { cameraStyles as styles } from './styles';
 import { CameraCD, UserCD } from '../../context/constants';
 import Shutter from '../../appIcons/Shutter';
+import { gql, useQuery } from '@apollo/client';
 
 function CameraContainer() {
   const [saveImageError, setSaveImageError] = useState<{ message: string }>();
@@ -25,12 +26,12 @@ function CameraContainer() {
   const [cameraPermission, setCameraPermission] = useState<boolean>(false);
   const [galleryPermission, setGalleryPermission] = useState<boolean>(false);
   const [uploadingImg, setUploadingImg] = useState<boolean>(false);
-  const { compData: authCompData, setData: setAuthData } = useCompData<UserCD>(
-    domains.AUTH
+  const { setData: setAuthData } = useCompData<UserCD>(
+    AUTH
   );
+  const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
   const { compData: cameraCompData, setData: setCameraCompData } =
-    useCompData<CameraCD>(domains.CAMERA);
-  const [loading, setLoading] = useState<boolean>(true);
+    useCompData<CameraCD>(CAMERA);
 
   const askPermissions = async () => {
     const cameraPermission = await Camera.requestCameraPermissionsAsync();
@@ -50,31 +51,8 @@ function CameraContainer() {
   };
 
   useEffect(() => {
-    const getUserData = async () => {
-      const userData = (await API.graphql(
-        graphqlOperation(getUser)
-      )) as GraphQLResult<GetUserQuery>;
-      if (userData.data) {
-        setAuthData({ user: userData.data.getUser });
-      } else if (userData.errors) {
-        setAuthData({ user: undefined });
-      }
-      setLoading(false);
-    };
-    getUserData();
-    // TODO: make async useEffect correctly
     askPermissions();
   }, []);
-
-  useEffect(() => {
-    if (!loading) {
-      if (!authCompData?.user?.children?.length) {
-        navigation.navigate('Profile', {
-          screen: 'ManageChildren',
-        });
-      }
-    }
-  }, [loading]);
 
   if (!cameraPermission || !galleryPermission) {
     return <MockCamera />;
@@ -150,7 +128,7 @@ function CameraContainer() {
       const [extension] = imagePath.split('.').slice(-1);
       // should use the local file path instead of uuid
       const s3Path = `${
-        authCompData.user?.accountId
+        userData?.getUser.accountId
       }/${uuid.v4()}.${extension}`;
 
       await Storage.put(s3Path, blob, {

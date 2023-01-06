@@ -144,10 +144,7 @@ function PileActionDrawer() {
             w="100%"
             colorScheme="secondary"
             variant="ghost"
-            onPress={() => {
-              console.log('pileCompData-------->', pileCompData);
-              setPileData({ showChildSelectModal: true });
-            }}
+            onPress={() => setPileData({ showChildSelectModal: true })}
             disabled={disableDrawerBtn}
           >
             <Center flexDirection="row">

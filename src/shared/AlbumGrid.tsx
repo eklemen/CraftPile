@@ -29,7 +29,6 @@ function AlbumGrid({ loading, data, selectedPhotos, resetPileData }: Props) {
     >(gql(addUnsortedPhotosToAlbum));
   const addPhotosToAlbumHandler = async (albumId: string) => {
     const ids = Object.keys(selectedPhotos);
-    console.log('ids-------->', ids);
     if (ids.length) {
       await addPhotosToAlbum({
         variables: {

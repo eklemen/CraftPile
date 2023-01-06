@@ -65,7 +65,6 @@ function EditChildSheet({ isOpen, onClose, selectedChild }: Props) {
   }, [selectedChild?._id]);
   return (
       <Actionsheet isOpen={isOpen} onClose={() => {
-        console.log('initialFormState----------', initialFormState);
         setFormValues(initialFormState);
         return onClose();
       }}>
