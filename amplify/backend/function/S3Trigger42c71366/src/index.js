@@ -20,6 +20,7 @@ Amplify Params - DO NOT EDIT */
 
 const aws = require('aws-sdk');
 
+const ObjectID = require('mongodb').ObjectID;
 const { connectToDatabase } = require('/opt/dbConnect');
 
 exports.handler = async function (event, context) {
@@ -48,7 +49,7 @@ exports.handler = async function (event, context) {
       thumbnailKey: event.Records[0].s3.object.key.replace('public/', 'thumbnails/'),
       dateOfPhoto: new Date(),
       description: '',
-      childId: Metadata?.childid || null,
+      childId: Metadata?.childid ? new ObjectID(Metadata.childid): null,
       accountId,
       albums,
       tags: [],

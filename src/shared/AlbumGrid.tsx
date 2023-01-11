@@ -23,7 +23,7 @@ interface Props {
 
 function AlbumGrid({ loading, data, selectedPhotos, resetPileData }: Props) {
   const [showAlbumForm, setShowAlbumForm] = useState(false);
-  const [addPhotosToAlbum] = useMutation<
+  const [addPhotosToAlbum, { data: photoRes }] = useMutation<
     AddUnsortedPhotosToAlbumMutation,
     AddUnsortedPhotosToAlbumMutationVariables
     >(gql(addUnsortedPhotosToAlbum));
@@ -35,6 +35,7 @@ function AlbumGrid({ loading, data, selectedPhotos, resetPileData }: Props) {
           input: { ids, albumId },
         },
         onCompleted: () => {
+          console.log('photoRes-------->', photoRes);
           resetPileData({
             multiSelect: false,
             selectedPhotos: {},

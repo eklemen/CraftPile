@@ -106,22 +106,7 @@ function PileActionDrawer() {
       setPileData({ showAlbumSelectSheet: true });
     }
   };
-  const addPhotosToAlbumHandler = async (albumId: string) => {
-    const ids = Object.keys(pileCompData?.selectedPhotos);
-    if (ids.length) {
-      await addPhotosToAlbum({
-        variables: {
-          input: { ids, albumId },
-        },
-      });
-      resetPileData({
-        multiSelect: false,
-        selectedPhotos: {},
-        selectedPhoto: null,
-      });
-      setPileData({ showAlbumSelectSheet: false });
-    }
-  };
+
   return (
     <Animated.View style={[animatedDrawer, { marginTop: -32 }]}>
       <Row w="100%" h={73} bg="white">
@@ -192,8 +177,6 @@ function PileActionDrawer() {
       <PileAlbumSelectSheet
         isOpen={pileCompData.showAlbumSelectSheet}
         onClose={() => setPileData({ showAlbumSelectSheet: false })}
-        onAlbumSelect={addPhotosToAlbumHandler}
-        pileCompData={pileCompData}
       />
     </Animated.View>
   );

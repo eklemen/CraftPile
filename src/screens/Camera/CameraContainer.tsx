@@ -22,7 +22,6 @@ import { gql, useQuery } from '@apollo/client';
 function CameraContainer() {
   const [saveImageError, setSaveImageError] = useState<{ message: string }>();
   const [camera, setCamera] = useState<Camera>();
-  const navigation = useNavigation<any>();
   const [cameraPermission, setCameraPermission] = useState<boolean>(false);
   const [galleryPermission, setGalleryPermission] = useState<boolean>(false);
   const [uploadingImg, setUploadingImg] = useState<boolean>(false);

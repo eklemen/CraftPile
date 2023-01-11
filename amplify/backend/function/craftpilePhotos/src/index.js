@@ -45,19 +45,11 @@ const getChildrenUnsortedPhotos = async (event) => {
   const childrenObjects  = await childrenCollection.find({
     accountId: user.accountId
   }).toArray();
-  /*
-  find photos for account
-  and album size is 0
-
-   */
   const unsortedPhotos = await photoCollection
     .aggregate([
       {
         $match: {
           accountId: user.accountId,
-          childId: {
-            $in: childrenObjects.map((c) => new ObjectID(c._id)),
-          },
           albums: {
             $size: 0,
           },
@@ -81,11 +73,11 @@ const getChildrenUnsortedPhotos = async (event) => {
       },
     ])
     .toArray();
-  return childrenObjects.map((child) => {
+  return childrenObjects.map((c) => {
     return {
-      _id: child._id, // todo: change to id,
-      childName: child.name,
-      photos: unsortedPhotos.find((p) => p._id === child._id)?.photos || [],
+      _id: c._id,
+      childName: c.name,
+      photos: unsortedPhotos.find((u) => c._id.equals(u._id))?.photos || [],
     };
   });
 };
@@ -101,15 +93,15 @@ const getChildrenAlbums = async (event) => {
     })
     .toArray();
   const childrenObjects = await childrenCollection.find({
-    accountId: user.accountId
+    accountId
   }).toArray();
   // need to create an object for each child
   const childrenAlbums = childrenObjects.reduce((res, currentChild) => {
     const filteredAlbums = albums.filter(
-      (album) => album.childId === currentChild._id,
+      (album) => currentChild._id.equals(album.childId),
     );
     res.push({
-      _id: currentChild._id,
+      _id: new ObjectID(currentChild._id),
       name: currentChild.name,
       albums: filteredAlbums,
     });
@@ -139,13 +131,10 @@ const getPhotosForAlbum = async (event) => {
 
 const getUser = async (event) => {
   const { userCollection, childrenCollection } = await connectToDatabase();
-  console.log('getUser method: ');
   const user = await userCollection.findOne({
     userId: event?.identity?.sub,
   });
-  console.log('user-------->', user);
   const children = await childrenCollection.find({ accountId: user.accountId }).toArray();
-  console.log('children-------->', children);
   const res = { user };
   res.children = children;
   return {
@@ -269,7 +258,7 @@ const getAlbumsForChild = async (event) => {
     .toArray();
   const child = await childrenCollection.findOne({
     _id: new ObjectID(childId),
-  }).toArray();
+  });
   return {
     ...child,
     albums,

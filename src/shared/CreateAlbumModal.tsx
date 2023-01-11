@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import {
   Box,
-  Button,
+  Button, CheckIcon,
   Column,
   FormControl,
   Heading,
   Input,
   Modal,
-  Row,
+  Row, Select,
   Stack,
   Text,
   TextArea,
 } from 'native-base';
-import useCompData from '../context/compData/useCompData';
-import { AUTH, UserCD } from '../context/constants';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { createAlbum } from '../graphql/mutations';
 import {
@@ -27,12 +25,13 @@ import { FormObject } from '../types/forms';
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  childId: string;
+  childId?: string;
 }
 
 interface FormInput {
   name: FormObject;
   description: FormObject;
+  selectedChildId: FormObject;
 }
 
 const initialFormState: FormInput = {
@@ -42,6 +41,11 @@ const initialFormState: FormInput = {
     error: '',
   },
   description: {
+    touched: false,
+    value: '',
+    error: '',
+  },
+  selectedChildId: {
     touched: false,
     value: '',
     error: '',
@@ -57,14 +61,14 @@ function CreateAlbumModal({ isOpen, onClose, childId }: Props) {
   const [formValues, setFormValues] = useState<FormInput>(initialFormState);
   const onSubmit = async () => {
     console.log(formValues);
-    const { name, description } = formValues;
+    const { name, description, selectedChildId } = formValues;
     const { accountId } = userData?.getUser!;
     await addAlbum({
       variables: {
         input: {
           name: name.value,
           description: description.value,
-          childId,
+          childId: childId || selectedChildId.value,
           accountId,
         },
       },
@@ -135,6 +139,41 @@ function CreateAlbumModal({ isOpen, onClose, childId }: Props) {
                     value={formValues.description.value}
                   />
                 </FormControl>
+
+                {
+                  userData?.getUser?.children
+                  && userData.getUser.children.length > 1
+                    ? (
+                      <FormControl>
+                        <FormControl.Label>Child</FormControl.Label>
+                        <Select
+                          minWidth="200"
+                          accessibilityLabel="Select a child"
+                          placeholder="Child"
+                          size='xl'
+                          selectedValue={
+                            formValues.selectedChildId.value || (userData?.getUser?.children[0]?._id ?? '')
+                          }
+                          onValueChange={itemValue => handleChange('selectedChildId', itemValue)}
+                          _selectedItem={{
+                            endIcon: <CheckIcon size="5" />,
+                          }}
+                        >
+                          {
+                            userData?.getUser?.children &&
+                            userData.getUser.children.map((child) => (
+                              <Select.Item
+                                key={child!._id}
+                                label={child!.name}
+                                value={child!._id}
+                              />
+                            ))
+                          }
+                        </Select>
+                      </FormControl>
+                    )
+                    : null
+                }
               </Stack>
             </Box>
           </Column>

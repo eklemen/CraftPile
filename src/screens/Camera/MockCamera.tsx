@@ -21,7 +21,7 @@ function MockCamera() {
           <View>
             <Button
               variant="ghost"
-              onPress={() => navigation.navigate('ManageChildren')}
+              onPress={() => {}}
             >
               <Text style={styles.text}>Albums</Text>
             </Button>

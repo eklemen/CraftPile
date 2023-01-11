@@ -20,12 +20,12 @@
       "function": {
         "craftpilePhotos": {
           "deploymentBucketName": "amplify-craftpile-dev-214433-deployment",
-          "s3Key": "amplify-builds/craftpilePhotos-6f515275383358634331-build.zip",
+          "s3Key": "amplify-builds/craftpilePhotos-7666786d37614f764962-build.zip",
           "secretsPathAmplifyAppId": "d11bjp4lxch0p2"
         },
         "S3Trigger42c71366": {
           "deploymentBucketName": "amplify-craftpile-dev-214433-deployment",
-          "s3Key": "amplify-builds/S3Trigger42c71366-795736465449527a6169-build.zip",
+          "s3Key": "amplify-builds/S3Trigger42c71366-2b457643646f50367233-build.zip",
           "secretsPathAmplifyAppId": "d11bjp4lxch0p2"
         },
         "craftpile7a76396aPostConfirmation": {

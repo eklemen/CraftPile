@@ -1,7 +1,7 @@
 import { Button, Column, Heading, Modal, Row } from 'native-base';
-import { Image } from 'react-native-expo-image-cache';
-import { Dimensions, FlatList, StatusBar } from 'react-native';
+import { FlatList, StatusBar } from 'react-native';
 import { useQuery, gql, useMutation } from '@apollo/client';
+import { useFocusEffect } from '@react-navigation/native';
 
 import {
   AddUnsortedPhotosToAlbumMutation,
@@ -21,10 +21,9 @@ import {
 import PileActionDrawer from './PileActionDrawer';
 import Storage from '@aws-amplify/storage';
 import ChildSelectModal from '../../shared/ChildSelectModal';
-import PileActionBarSingle from './PileActionBarSingle';
-import PileAlbumSelectSheet from './PileAlbumSelectSheet';
 import { addUnsortedPhotosToAlbum } from '../../graphql/mutations';
 import PileImageViewModal from '../../shared/PileImageViewModal';
+import { useCallback } from 'react';
 
 interface Props {
   navigation: AlbumScreenNavigationProp;
@@ -40,6 +39,7 @@ function PileScreen({}: Props) {
     loading: pilePhotosLoading,
     data: { getChildrenUnsortedPhotos: pilePhotos } = {},
     error: pilePhotosError,
+    refetch: pilePhotosRefetch,
   } = useQuery<GetChildrenUnsortedPhotosQuery>(gql(getChildrenUnsortedPhotos), {
     onCompleted: async (data) => {
       const photosArray = data.getChildrenUnsortedPhotos
@@ -57,7 +57,17 @@ function PileScreen({}: Props) {
       }, {} as CachedUrlsCD);
       setCachedPhotos(obj);
     },
+    fetchPolicy: 'cache-and-network',
   });
+  useFocusEffect(
+    useCallback(() => {
+      let isActive = true;
+      pilePhotosRefetch();
+      return () => {
+        isActive = false;
+      };
+    }, [])
+  );
   const [addPhotosToAlbum] = useMutation<
     AddUnsortedPhotosToAlbumMutation,
     AddUnsortedPhotosToAlbumMutationVariables
@@ -86,24 +96,28 @@ function PileScreen({}: Props) {
       <StatusBar barStyle="dark-content" />
       <Row alignItems="center" justifyContent="space-between" px={3} mb={5}>
         <Heading fontSize={34}>Pile</Heading>
-        <Button
-          colorScheme="secondary"
-          size="sm"
-          rounded="full"
-          onPress={() => {
-            const payload: Partial<PileCD> = {
-              multiSelect: !pileCompData.multiSelect,
-            };
-            if (pileCompData.multiSelect) {
-              payload.selectedPhotos = {};
-              setPileData(payload);
-            } else {
-              setPileData(payload);
-            }
-          }}
-        >
-          {pileCompData.multiSelect ? 'Cancel' : 'Select'}
-        </Button>
+        {
+          isEmptyState ? null : (
+            <Button
+              colorScheme="secondary"
+              size="sm"
+              rounded="full"
+              onPress={() => {
+                const payload: Partial<PileCD> = {
+                  multiSelect: !pileCompData.multiSelect,
+                };
+                if (pileCompData.multiSelect) {
+                  payload.selectedPhotos = {};
+                  setPileData(payload);
+                } else {
+                  setPileData(payload);
+                }
+              }}
+            >
+              {pileCompData.multiSelect ? 'Cancel' : 'Select'}
+            </Button>
+          )
+        }
       </Row>
       {isEmptyState && (
         <Row>
