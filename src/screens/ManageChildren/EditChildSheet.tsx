@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 import { Actionsheet, Box, Button, Center, FormControl, Input, Text } from 'native-base';
 import { Child } from '../../generated/API';
 import { FormObject } from '../../types/forms';
@@ -63,11 +64,12 @@ function EditChildSheet({ isOpen, onClose, selectedChild }: Props) {
       }
     });
   }, [selectedChild?._id]);
+  const handleClose = () => {
+    setFormValues(initialFormState);
+    return onClose();
+  }
   return (
-      <Actionsheet isOpen={isOpen} onClose={() => {
-        setFormValues(initialFormState);
-        return onClose();
-      }}>
+      <Actionsheet isOpen={isOpen} onClose={handleClose}>
         <Actionsheet.Content>
           <Box w="100%"px={4} justifyContent="center" alignItems="center">
             <Center rounded='full' bg='secondary.100' h={70} w={70} my={4}>
@@ -88,14 +90,44 @@ function EditChildSheet({ isOpen, onClose, selectedChild }: Props) {
                 <Text color="red.500">{formValues.name.error}</Text>
               ) : null}
             </FormControl>
-            <Button onPress={() => {
-              console.log('Save')
-            }}>
+            <Button
+              variant="outline"
+              w="100%"
+              my={1}
+              colorScheme="primary"
+              isDisabled={selectedChild?.name === formValues.name.value}
+              onPress={() => {
+                console.log('Save')
+              }}>
               Save
             </Button>
-            <Button onPress={() => {
-              console.log('Delete');
-            }}>
+            <Button
+              variant="subtle"
+              w="100%"
+              my={1}
+              colorScheme="secondary"
+              onPress={() => {
+                Alert.alert(
+                  "Delete Child?",
+                  "This cannot be undone and will delete all photos for this child.",
+                  [
+                    {
+                      text: "Cancel",
+                      onPress: () => {
+                        console.log("Cancel Pressed")
+                      },
+                      style: "cancel"
+                    },
+                    {
+                      text: "Delete",
+                      onPress: () => {
+                        console.log("Delete Pressed")
+                        handleClose();
+                      }, style: "destructive" }
+                  ]
+                );
+              }}
+            >
               Delete
             </Button>
           </Box>

@@ -54,6 +54,7 @@ function ProfileNavs() {
       <ProfileStack.Screen
         name="ManageChildren"
         component={ManageChildren}
+        options={{ title: '' }}
       />
     </ProfileStack.Navigator>
   );
