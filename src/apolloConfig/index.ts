@@ -48,6 +48,12 @@ export const apolloClient = new ApolloClient({
           }
         }
       },
+      AddChild: {
+        merge: true,
+      },
+      DeleteChild: {
+        merge: true,
+      }
     },
   }),
 });

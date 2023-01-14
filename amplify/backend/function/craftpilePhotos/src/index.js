@@ -145,25 +145,49 @@ const getUser = async (event) => {
 
 const getChildren = async (event) => {
   const { userCollection, childrenCollection } = await connectToDatabase();
-  const user = await userCollection.findOne({
-    userId: event?.identity?.sub,
-  });
-  return await childrenCollection.find({ accountId: user.accountId }).toArray();
+  let accountId = event?.arguments?.input?.accountId;
+  if (!accountId) {
+    const user = await userCollection.findOne({
+      userId: event?.identity?.sub,
+    });
+    accountId = user.accountId;
+  }
+  const children =  await childrenCollection.find({
+    accountId,
+  }).toArray();
+  console.log('children-------->', children);
+  return children;
 };
 
 const addChild = async (event) => {
-  const { userCollection, childrenCollection } = await connectToDatabase();
-  const user = await userCollection.findOne({
-    userId: event?.identity?.sub,
-  });
-  // const childId = uuidv4();
-  await childrenCollection.insertOne({
-    name: event?.arguments?.input?.name,
-    accountId: user.accountId,
-  });
+  const { childrenCollection } = await connectToDatabase();
+  const { name, _id, accountId } = event?.arguments?.input;
+  if (_id) {
+    await childrenCollection.updateOne({
+      _id: new ObjectID(_id)
+    }, {
+      $set: {
+        name,
+      }
+    });
+  } else {
+    await childrenCollection.insertOne({
+      name: event?.arguments?.input?.name,
+      accountId,
+    });
+  }
   return await childrenCollection.find({
-    accountId: user.accountId
+    accountId,
   }).toArray();
+};
+
+const deleteChild = async (event) => {
+  const { childrenCollection } = await connectToDatabase();
+  const { _id } = event?.arguments?.input;
+  await childrenCollection.deleteOne({
+    _id: new ObjectID(_id),
+  });
+  return await getChildren(event);
 };
 
 const deleteUnsortedPhotos = async (event) => {
@@ -296,6 +320,7 @@ const resolvers = {
     // pile / unsorted photos
     addUnsortedPhotosToAlbum: (event) => addUnsortedPhotosToAlbum(event),
     deleteUnsortedPhotos: (event) => deleteUnsortedPhotos(event),
+    deleteChild: (event) => deleteChild(event),
   },
   Query: {
     getChildrenAlbums: (event) => getChildrenAlbums(event),

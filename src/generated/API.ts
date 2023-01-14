@@ -30,6 +30,8 @@ export type Photo = {
 export type addChildInput = {
   name: string,
   age?: number | null,
+  _id?: string | null,
+  accountId: string,
 };
 
 export type Child = {
@@ -37,6 +39,10 @@ export type Child = {
   _id: string,
   name: string,
   accountId: string,
+};
+
+export type deleteChildInput = {
+  _id: string,
 };
 
 export type deletePhotosInAlbumInput = {
@@ -166,6 +172,19 @@ export type AddChildMutationVariables = {
 
 export type AddChildMutation = {
   addChild:  Array< {
+    __typename: "Child",
+    _id: string,
+    name: string,
+    accountId: string,
+  } | null >,
+};
+
+export type DeleteChildMutationVariables = {
+  input?: deleteChildInput | null,
+};
+
+export type DeleteChildMutation = {
+  deleteChild:  Array< {
     __typename: "Child",
     _id: string,
     name: string,

@@ -28,6 +28,15 @@ export const addChild = /* GraphQL */ `
     }
   }
 `;
+export const deleteChild = /* GraphQL */ `
+  mutation DeleteChild($input: deleteChildInput) {
+    deleteChild(input: $input) {
+      _id
+      name
+      accountId
+    }
+  }
+`;
 export const deletePhotosInAlbum = /* GraphQL */ `
   mutation DeletePhotosInAlbum($input: deletePhotosInAlbumInput!) {
     deletePhotosInAlbum(input: $input) {

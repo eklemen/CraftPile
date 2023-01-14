@@ -1,18 +1,15 @@
 import {
   Center,
-  Container,
   Heading,
-  Input,
-  Button, Box, Text, Row, Column, Pressable,
+  Button,
+  Box,
+  Text,
+  Row,
+  Column,
 } from 'native-base';
 import { useState } from 'react';
-import { StyleSheet } from 'react-native';
 
-import useCompData from '../../context/compData/useCompData';
-import { AUTH } from '../../context/constants';
-import { AddChildMutation, Child, GetUserQuery } from '../../generated/API';
-import { addChild } from '../../graphql/mutations';
-import { MainStackParamList, ManageChildrenScreenNavigationProp } from '../../types/routes';
+import { Child, GetUserQuery } from '../../generated/API';
 import { gql, useQuery } from '@apollo/client';
 import { getUser } from '../../graphql/queries';
 import EditIcon from '../../appIcons/Edit';
@@ -23,26 +20,18 @@ interface Props {
 }
 
 function ManageChildren({ navigation }: Props) {
-  const { loading, data: userData } = useQuery<GetUserQuery>(gql(getUser));
+  const { loading: userLoading, data: userData } = useQuery<GetUserQuery>(gql(getUser));
   const [showEditChild, setShowEditChild] = useState<boolean>(false);
   const [selectedChild, setSelectedChild] = useState<Child>();
-
-  const formHandler = async (values: { childName: string; age: any }) => {
-    // const res = (await API.graphql(
-    //   graphqlOperation(addChild, {
-    //     input: { name: values.childName, age: parseInt(values.age) },
-    //   })
-    // )) as { data: AddChildMutation };
-    // setAuthData({ user: res?.data?.addChild });
-  };
-
+  const children = userData?.getUser?.children;
   return (
     <Box flex={1} safeAreaTop>
       <Heading textAlign='center' mb={6}>Manage children</Heading>
       <Row>
         <Column w='100%'>
           {
-            userData?.getUser?.children ? userData?.getUser?.children.map((child) => (
+            children
+              ? children.map((child) => (
               <Button
                 key={child!._id}
                 variant='ghost'
@@ -72,6 +61,33 @@ function ManageChildren({ navigation }: Props) {
                 </Row>
               </Button>),
             ) : null
+          }
+          {
+            !userLoading
+              ? (
+                <Button
+                  variant='ghost'
+                  w='100%'
+                  colorScheme="secondary"
+                  alignItems='center'
+                  justifyContent='flex-start'
+                  onPress={() => {
+                    setShowEditChild(true);
+                  }}
+                >
+                  <Row alignItems='center' w='100%'>
+                    <Box>
+                      <Heading ml={2}>
+                        Add Child
+                      </Heading>
+                    </Box>
+                    <Box ml='auto' mr={7}>
+                      <Heading size="2xl" color="secondary.400">+</Heading>
+                    </Box>
+                  </Row>
+                </Button>
+              )
+              : null
           }
         </Column>
       </Row>

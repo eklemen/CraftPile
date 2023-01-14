@@ -5,6 +5,12 @@
 input addChildInput {
   name: String!
   age: Int
+  _id: ID
+  accountId: String!
+}
+
+input deleteChildInput {
+  _id: ID!
 }
 
 input photoIdsInput {
@@ -161,6 +167,9 @@ type Mutation {
   @function(name: "craftpilePhotos-${env}")
 
   addChild(input: addChildInput): [Child]!
+  @function(name: "craftpilePhotos-${env}")
+
+  deleteChild(input: deleteChildInput): [Child]!
   @function(name: "craftpilePhotos-${env}")
 
 ################
