@@ -62,7 +62,6 @@ function CameraContainer() {
   ) => {
     try {
       if (pickerResult.cancelled) {
-        console.log('User canceled image picker');
         return;
       } else {
         await MediaLibrary.saveToLibraryAsync(pickerResult.uri);

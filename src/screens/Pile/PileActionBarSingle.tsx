@@ -31,7 +31,6 @@ function PileActionBarSingle({ selectedPhoto, setPileData }: any) {
   });
 
   const deleteHandler = async () => {
-    console.log('delete handler', selectedPhoto);
     await deletePhotos({
       variables: {
         input: { ids: [selectedPhoto?._id!] },

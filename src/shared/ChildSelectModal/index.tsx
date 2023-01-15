@@ -9,7 +9,7 @@ import {
   Row,
   Text,
 } from 'native-base';
-import { AUTH, PILE, PileCD, UserCD } from '../../context/constants';
+import { PILE, PileCD } from '../../context/constants';
 import useCompData from '../../context/compData/useCompData';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import {

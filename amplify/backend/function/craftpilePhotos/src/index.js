@@ -152,13 +152,12 @@ const getChildren = async (event) => {
     });
     accountId = user.accountId;
   }
-  const children =  await childrenCollection.find({
+  return await childrenCollection.find({
     accountId,
   }).toArray();
-  console.log('children-------->', children);
-  return children;
 };
 
+// Handles both adding and updating a child
 const addChild = async (event) => {
   const { childrenCollection } = await connectToDatabase();
   const { name, _id, accountId } = event?.arguments?.input;

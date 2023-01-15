@@ -96,6 +96,8 @@ function MainBottomNavScreens() {
           tabBarStyle: {
             backgroundColor: colors.primary['400'],
             borderTopColor: 'transparent',
+            height: 100,
+            paddingTop: 10,
           },
           tabBarActiveTintColor: colors.white,
           tabBarIcon: ({ focused, color }) => (
@@ -144,6 +146,7 @@ function MainBottomNavScreens() {
   );
 }
 
+// TODO: Delete this stack
 function AppNavs() {
   return (
     <AppStack.Navigator

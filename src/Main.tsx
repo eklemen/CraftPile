@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { LogBox, View } from 'react-native';
+import { LogBox, View, Text, Image } from 'react-native';
 import Amplify, { Auth } from 'aws-amplify';
 // @ts-ignore
 import { withAuthenticator } from 'aws-amplify-react-native';
 import * as Linking from 'expo-linking';
-import { NativeBaseProvider, extendTheme, Text, Box } from 'native-base';
+import { NativeBaseProvider, extendTheme } from 'native-base';
 import * as SplashScreen from 'expo-splash-screen';
 import {
   useFonts,
@@ -23,7 +23,7 @@ import { gql, useLazyQuery, useQuery } from '@apollo/client';
 
 import config from '../aws-exports';
 import { CompDataProvider } from './context/compData/compDataStore';
-import { AppNavs } from './navStacks/HomeStack';
+import { AppNavs, MainBottomNavScreens } from './navStacks/HomeStack';
 import { themeOverrides } from './styles';
 import { GetUserQuery } from './generated/API';
 import { getUser } from './graphql/queries';
@@ -120,25 +120,25 @@ const Main = ({}: Props) => {
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
-      await SplashScreen.hideAsync();
+      setTimeout(async () => {
+        await SplashScreen.hideAsync();
+      }, 500);
     }
   }, [appIsReady]);
-  if (!fontsLoaded) return <></>;
+  // if (!fontsLoaded) return <></>;
   if (!appIsReady) {
     return null;
   }
   return (
     <NativeBaseProvider theme={theme}>
-      <View onLayout={onLayoutRootView} style={{height: '100%'}}>
         <CompDataProvider>
           <NavigationContainer
             linking={linking}
-            fallback={<Box safeAreaTop><Text fontSize={34}>Loading...</Text></Box>}
+            onReady={onLayoutRootView}
           >
-            <AppNavs />
+            <MainBottomNavScreens />
           </NavigationContainer>
         </CompDataProvider>
-      </View>
     </NativeBaseProvider>
   );
 };

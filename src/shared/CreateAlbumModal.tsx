@@ -60,7 +60,6 @@ function CreateAlbumModal({ isOpen, onClose, childId }: Props) {
   >(gql(createAlbum));
   const [formValues, setFormValues] = useState<FormInput>(initialFormState);
   const onSubmit = async () => {
-    console.log(formValues);
     const { name, description, selectedChildId } = formValues;
     const { accountId } = userData?.getUser!;
     await addAlbum({
