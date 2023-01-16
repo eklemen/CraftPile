@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "CraftPile",
-    "slug": "CraftPile",
+    "slug": "craftpile",
     "scheme": "craftpile",
     "version": "1.0.0",
     "entryPoint": "App.js",
@@ -25,16 +25,17 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.ejklemen.CraftPile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "77da38c4-0ac6-4dc4-9da2-db5b4c000156"
+        "projectId": "ec7959b0-363b-4234-9427-590c939b461b"
       }
     }
   }

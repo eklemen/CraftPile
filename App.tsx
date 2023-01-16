@@ -8,4 +8,4 @@ const App = () => (
   <ApolloProvider client={apolloClient}><Main /></ApolloProvider>
     );
 
-export default registerRootComponent(App);
+export default App;

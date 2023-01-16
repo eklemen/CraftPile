@@ -43,5 +43,34 @@
         }
       }
     }
+  },
+  "production": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-craftpile-production-111911-authRole",
+      "UnauthRoleArn": "arn:aws:iam::466107528484:role/amplify-craftpile-production-111911-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::466107528484:role/amplify-craftpile-production-111911-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-craftpile-production-111911-deployment",
+      "UnauthRoleName": "amplify-craftpile-production-111911-unauthRole",
+      "StackName": "amplify-craftpile-production-111911",
+      "StackId": "arn:aws:cloudformation:us-east-1:466107528484:stack/amplify-craftpile-production-111911/83bf8ad0-95b9-11ed-b81a-120fac3d1493",
+      "AmplifyAppId": "d11bjp4lxch0p2"
+    },
+    "categories": {
+      "auth": {
+        "craftpile7a76396a": {}
+      },
+      "function": {
+        "craftpilePhotos": {
+          "secretsPathAmplifyAppId": "d11bjp4lxch0p2"
+        },
+        "S3Trigger42c71366": {
+          "secretsPathAmplifyAppId": "d11bjp4lxch0p2"
+        },
+        "craftpile7a76396aPostConfirmation": {
+          "secretsPathAmplifyAppId": "d11bjp4lxch0p2"
+        }
+      }
+    }
   }
 }
