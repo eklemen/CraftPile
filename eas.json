@@ -9,6 +9,7 @@
     "development": {
       "extends": "production",
       "distribution": "internal",
+      "node": "16.13.2",
       "android": {
         "gradleCommand": ":app:assembleDebug"
       },

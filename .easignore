@@ -82,7 +82,7 @@ buck-out/
 !debug.keystore
 
 # Bundle artifacts
-*.jsbundle
+# *.jsbundle
 
 # CocoaPods
 /ios/Pods/

@@ -1,6 +1,5 @@
 import { Center, Button } from 'native-base';
 import { useEffect } from 'react';
-import { View, Text } from 'react-native';
 
 import useCompData from '../../context/compData/useCompData';
 import * as domains from '../../context/constants';
@@ -15,6 +14,7 @@ function ChildSelectSidebar() {
     domains.CAMERA
   );
   useEffect(() => {
+    // TODO: get children from gql
     setCameraCompData({
       selectedChild: authCompData?.user?.children?.[0] as Child,
     });

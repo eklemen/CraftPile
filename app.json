@@ -19,6 +19,9 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "packagerOpts": {
+      "config": "metro.config.js"
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ejklemen.CraftPile"
