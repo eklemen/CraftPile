@@ -54,7 +54,8 @@
       "UnauthRoleName": "amplify-craftpile-production-111911-unauthRole",
       "StackName": "amplify-craftpile-production-111911",
       "StackId": "arn:aws:cloudformation:us-east-1:466107528484:stack/amplify-craftpile-production-111911/83bf8ad0-95b9-11ed-b81a-120fac3d1493",
-      "AmplifyAppId": "d11bjp4lxch0p2"
+      "AmplifyAppId": "d11bjp4lxch0p2",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-craftpile-production-111911-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
       "auth": {
@@ -62,13 +63,27 @@
       },
       "function": {
         "craftpilePhotos": {
-          "secretsPathAmplifyAppId": "d11bjp4lxch0p2"
+          "secretsPathAmplifyAppId": "d11bjp4lxch0p2",
+          "deploymentBucketName": "amplify-craftpile-production-111911-deployment",
+          "s3Key": "amplify-builds/craftpilePhotos-37647179533266533245-build.zip"
         },
         "S3Trigger42c71366": {
-          "secretsPathAmplifyAppId": "d11bjp4lxch0p2"
+          "secretsPathAmplifyAppId": "d11bjp4lxch0p2",
+          "deploymentBucketName": "amplify-craftpile-production-111911-deployment",
+          "s3Key": "amplify-builds/S3Trigger42c71366-2b457643646f50367233-build.zip"
         },
         "craftpile7a76396aPostConfirmation": {
-          "secretsPathAmplifyAppId": "d11bjp4lxch0p2"
+          "secretsPathAmplifyAppId": "d11bjp4lxch0p2",
+          "deploymentBucketName": "amplify-craftpile-production-111911-deployment",
+          "s3Key": "amplify-builds/craftpile7a76396aPostConfirmation-673473646877396d5347-build.zip"
+        },
+        "craftpiledbConnectLayer": {
+          "deploymentBucketName": "amplify-craftpile-production-111911-deployment",
+          "s3Key": "amplify-builds/craftpiledbConnectLayer-LambdaLayerVersiona0fcddac-build.zip"
+        },
+        "craftpileV3ClientSDK": {
+          "deploymentBucketName": "amplify-craftpile-production-111911-deployment",
+          "s3Key": "amplify-builds/craftpileV3ClientSDK-LambdaLayerVersionb21e7a23-build.zip"
         }
       }
     }

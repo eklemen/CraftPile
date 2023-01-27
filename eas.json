@@ -1,6 +1,7 @@
 {
   "cli": {
-    "version": ">= 2.3.0"
+    "version": ">= 2.3.0",
+    "promptToConfigurePushNotifications": false
   },
   "build": {
     "production": {
@@ -9,7 +10,6 @@
     "development": {
       "extends": "production",
       "distribution": "internal",
-      "node": "16.13.2",
       "android": {
         "gradleCommand": ":app:assembleDebug"
       },
@@ -23,7 +23,6 @@
       "distribution": "internal",
       "node": "16.13.2",
       "ios": {
-        "buildConfiguration": "Debug",
         "image": "latest"
       },
       "android": {
@@ -32,7 +31,6 @@
     }
   },
   "submit": {
-    "production": {
-    }
+    "production": {}
   }
 }
