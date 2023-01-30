@@ -5,14 +5,14 @@
       "resourceName": "craftpileV3ClientSDK",
       "version": "Always choose latest version",
       "isLatestVersionSelected": true,
-      "env": "production"
+      "env": "dev"
     },
     {
       "type": "ProjectLayer",
       "resourceName": "craftpiledbConnectLayer",
       "version": "Always choose latest version",
       "isLatestVersionSelected": true,
-      "env": "production"
+      "env": "dev"
     }
   ],
   "secretNames": [

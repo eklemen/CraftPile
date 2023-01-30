@@ -8,7 +8,11 @@ import { gql, useQuery } from '@apollo/client';
 import { GetUserQuery } from '../../generated/API';
 import { getUser } from '../../graphql/queries';
 
-function CameraHeader() {
+interface Props {
+  askGalleryPermissions: () => Promise<void>;
+}
+
+function CameraHeader({ askGalleryPermissions }: Props) {
   const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
   const { compData: cameraCompData, setData: setCameraCompData } =
     useCompData<CameraCD>(CAMERA);
@@ -21,11 +25,19 @@ function CameraHeader() {
     <Center bg="primary.800" w="100%" h={70}>
       <Row justifyContent="center">
         <Box flex={1}>
-          <IconButton variant="ghost" icon={<CameraRoll color="white" />} />
+          <IconButton
+            variant="ghost"
+            icon={<CameraRoll color="white" />}
+            onPress={() => {
+              console.log('asking...');
+              askGalleryPermissions();
+            }}
+          />
         </Box>
         <Row flex={3} alignContent="center" justifyContent="center">
           {userData?.getUser.children!.map((child) => {
-            const isSelected = child!._id === cameraCompData?.selectedChild?._id;
+            const isSelected =
+              child!._id === cameraCompData?.selectedChild?._id;
             return (
               <Button
                 key={child!._id}

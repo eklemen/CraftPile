@@ -1,34 +1,20 @@
-import { Entypo } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { Button } from 'native-base';
-import { View, Text } from 'react-native';
+import { Button, Box, Text, Heading } from 'native-base';
 
-import { cameraStyles as styles } from './styles';
+interface Props {
+  askPermissions: () => Promise<void>
+}
 
-function MockCamera() {
-  const navigation = useNavigation<any>();
+function MockCamera({ askPermissions }: Props) {
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.camera, { backgroundColor: 'black' }]}>
-        <View style={styles.buttonContainer}>
-          <Button variant="ghost" onPress={() => {}}>
-            <Text style={styles.text}>Photos</Text>
-          </Button>
-          <Button variant="ghost" onPress={() => {}}>
-            <Entypo name="circle" size={64} color="white" />
-          </Button>
-          <View>
-            <Button
-              variant="ghost"
-              onPress={() => {}}
-            >
-              <Text style={styles.text}>Albums</Text>
-            </Button>
-          </View>
-        </View>
-      </View>
-    </View>
+    <Box safeAreaTop p={5} display="flex" alignItems="center">
+      <Heading color="white">Craftpile needs permissions to the camera to work.</Heading>
+      <Box w={150} mt={4}>
+        <Button variant="outline" colorScheme="primary" onPress={askPermissions}>
+          Enable Camera
+        </Button>
+      </Box>
+    </Box>
   );
 }
 

@@ -8,7 +8,7 @@
       "resourceName": "craftpiledbConnectLayer",
       "version": "Always choose latest version",
       "isLatestVersionSelected": true,
-      "env": "production"
+      "env": "dev"
     }
   ]
 }

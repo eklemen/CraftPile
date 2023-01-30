@@ -21,7 +21,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ejklemen.CraftPile"
+      "bundleIdentifier": "com.ejklemen.CraftPile",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to take images of children's artwork."
+      }
     },
     "android": {
       "adaptiveIcon": {
