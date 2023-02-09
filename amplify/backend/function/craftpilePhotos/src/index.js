@@ -23,11 +23,13 @@ const { Parameters } = await (new aws.SSM())
 
 Parameters will be of the form { Name: 'secretName', Value: 'secretValue', ... }[]
 */
-const { connectToDatabase } = require('/opt/dbConnect');
+const { connectToDatabase, evar, crdb } = require('/opt/dbConnect');
 const ObjectID = require('mongodb').ObjectID;
 const { v4: uuidv4 } = require('uuid');
 // const aws = require('aws-sdk');
 // const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
+console.log('crdb-------->', crdb);
+console.log('evar-------->', evar);
 const updatePhotoProps = async (event) => {
     var _a;
     const _b = (_a = event === null || event === void 0 ? void 0 : event.arguments) === null || _a === void 0 ? void 0 : _a.input, { id: photoId } = _b, rest = __rest(_b, ["id"]);

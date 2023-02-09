@@ -4,9 +4,13 @@
   "main": "index.js",
   "dependencies": {
     "mongodb": "^4.9.1",
+    "pg": "^8.9.0",
+    "reflect-metadata": "0.1.13",
+    "typeorm": "0.3.11",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/node": "18.8.4",
     "aws-sdk": "^2.1214.0"
   }
 }

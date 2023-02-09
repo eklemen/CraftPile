@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+require("reflect-metadata");
 const { MongoClient } = require('mongodb');
 const aws = require('aws-sdk');
 let cachedDb = null;
@@ -7,10 +10,18 @@ const connectToDatabase = async () => {
     // }
     const { Parameters } = await new aws.SSM()
         .getParameters({
-        Names: ['mongo_uri'].map((secretName) => process.env[secretName]),
+        Names: [
+            'mongo_uri', // 0
+        ].map((secretName) => process.env[secretName]),
         WithDecryption: true,
     })
         .promise();
+    try {
+        // cachedDatasource = await dataSource.initialize();
+    }
+    catch (err) {
+        console.log('Error connecting to client::::-------->', err);
+    }
     const client = new MongoClient(Parameters[0].Value);
     // Specify which database we want to use
     const db = await client.db('craftpile');

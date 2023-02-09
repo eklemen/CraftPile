@@ -20,7 +20,7 @@
     }
   },
   "Resources": {
-    "LambdaLayerVersion0b8f12c7": {
+    "LambdaLayerVersione97a6c30": {
       "Type": "AWS::Lambda::LayerVersion",
       "Properties": {
         "CompatibleRuntimes": {
@@ -51,19 +51,19 @@
       "DeletionPolicy": "Delete",
       "UpdateReplacePolicy": "Retain"
     },
-    "LambdaLayerPermissionPrivate0b8f12c7": {
+    "LambdaLayerPermissionPrivatee97a6c30": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
         "LayerVersionArn": {
-          "Ref": "LambdaLayerVersion0b8f12c7"
+          "Ref": "LambdaLayerVersione97a6c30"
         },
         "Principal": {
           "Ref": "AWS::AccountId"
         }
       }
     },
-    "LambdaLayerVersionf1d1bc3a": {
+    "LambdaLayerVersion3846bd9f": {
       "Type": "AWS::Lambda::LayerVersion",
       "Properties": {
         "CompatibleRuntimes": [
@@ -73,9 +73,9 @@
           "S3Bucket": {
             "Ref": "deploymentBucketName"
           },
-          "S3Key": "amplify-builds/craftpiledbConnectLayer-LambdaLayerVersionf1d1bc3a-build.zip"
+          "S3Key": "amplify-builds/craftpiledbConnectLayer-LambdaLayerVersion3846bd9f-build.zip"
         },
-        "Description": "Updated layer version 2023-01-05T03:52:49.816Z",
+        "Description": "Updated layer version 2023-02-07T01:47:48.335Z",
         "LayerName": {
           "Fn::Sub": [
             "craftpiledbConnectLayer-${env}",
@@ -90,17 +90,17 @@
       "DeletionPolicy": "Delete",
       "UpdateReplacePolicy": "Retain"
     },
-    "LambdaLayerPermissionPrivatef1d1bc3a": {
+    "LambdaLayerPermissionPrivate3846bd9f": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": "arn:aws:lambda:us-east-1:466107528484:layer:craftpiledbConnectLayer-dev:6",
+        "LayerVersionArn": "arn:aws:lambda:us-east-1:466107528484:layer:craftpiledbConnectLayer-dev:14",
         "Principal": {
           "Ref": "AWS::AccountId"
         }
       }
     },
-    "LambdaLayerVersion5b56b890": {
+    "LambdaLayerVersion39ae47b5": {
       "Type": "AWS::Lambda::LayerVersion",
       "Properties": {
         "CompatibleRuntimes": [
@@ -110,9 +110,9 @@
           "S3Bucket": {
             "Ref": "deploymentBucketName"
           },
-          "S3Key": "amplify-builds/craftpiledbConnectLayer-LambdaLayerVersion5b56b890-build.zip"
+          "S3Key": "amplify-builds/craftpiledbConnectLayer-LambdaLayerVersion39ae47b5-build.zip"
         },
-        "Description": "Updated layer version 2023-01-05T03:14:48.930Z",
+        "Description": "Updated layer version 2023-02-06T01:55:51.350Z",
         "LayerName": {
           "Fn::Sub": [
             "craftpiledbConnectLayer-${env}",
@@ -127,17 +127,17 @@
       "DeletionPolicy": "Delete",
       "UpdateReplacePolicy": "Retain"
     },
-    "LambdaLayerPermissionPrivate5b56b890": {
+    "LambdaLayerPermissionPrivate39ae47b5": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": "arn:aws:lambda:us-east-1:466107528484:layer:craftpiledbConnectLayer-dev:5",
+        "LayerVersionArn": "arn:aws:lambda:us-east-1:466107528484:layer:craftpiledbConnectLayer-dev:13",
         "Principal": {
           "Ref": "AWS::AccountId"
         }
       }
     },
-    "LambdaLayerVersion231e11f7": {
+    "LambdaLayerVersion37da42bc": {
       "Type": "AWS::Lambda::LayerVersion",
       "Properties": {
         "CompatibleRuntimes": [
@@ -147,9 +147,9 @@
           "S3Bucket": {
             "Ref": "deploymentBucketName"
           },
-          "S3Key": "amplify-builds/craftpiledbConnectLayer-LambdaLayerVersion231e11f7-build.zip"
+          "S3Key": "amplify-builds/craftpiledbConnectLayer-LambdaLayerVersion37da42bc-build.zip"
         },
-        "Description": "Updated layer version 2022-09-20T16:20:47.552Z",
+        "Description": "Updated layer version 2023-02-06T01:43:22.084Z",
         "LayerName": {
           "Fn::Sub": [
             "craftpiledbConnectLayer-${env}",
@@ -164,17 +164,17 @@
       "DeletionPolicy": "Delete",
       "UpdateReplacePolicy": "Retain"
     },
-    "LambdaLayerPermissionPrivate231e11f7": {
+    "LambdaLayerPermissionPrivate37da42bc": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": "arn:aws:lambda:us-east-1:466107528484:layer:craftpiledbConnectLayer-dev:4",
+        "LayerVersionArn": "arn:aws:lambda:us-east-1:466107528484:layer:craftpiledbConnectLayer-dev:12",
         "Principal": {
           "Ref": "AWS::AccountId"
         }
       }
     },
-    "LambdaLayerVersion84f1012f": {
+    "LambdaLayerVersion8c1aed87": {
       "Type": "AWS::Lambda::LayerVersion",
       "Properties": {
         "CompatibleRuntimes": [
@@ -184,9 +184,9 @@
           "S3Bucket": {
             "Ref": "deploymentBucketName"
           },
-          "S3Key": "amplify-builds/craftpiledbConnectLayer-LambdaLayerVersion84f1012f-build.zip"
+          "S3Key": "amplify-builds/craftpiledbConnectLayer-LambdaLayerVersion8c1aed87-build.zip"
         },
-        "Description": "Updated layer version 2022-09-19T01:38:05.705Z",
+        "Description": "Updated layer version 2023-02-04T02:53:02.447Z",
         "LayerName": {
           "Fn::Sub": [
             "craftpiledbConnectLayer-${env}",
@@ -201,17 +201,17 @@
       "DeletionPolicy": "Delete",
       "UpdateReplacePolicy": "Retain"
     },
-    "LambdaLayerPermissionPrivate84f1012f": {
+    "LambdaLayerPermissionPrivate8c1aed87": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": "arn:aws:lambda:us-east-1:466107528484:layer:craftpiledbConnectLayer-dev:3",
+        "LayerVersionArn": "arn:aws:lambda:us-east-1:466107528484:layer:craftpiledbConnectLayer-dev:11",
         "Principal": {
           "Ref": "AWS::AccountId"
         }
       }
     },
-    "LambdaLayerVersion8feef660": {
+    "LambdaLayerVersionafb4e069": {
       "Type": "AWS::Lambda::LayerVersion",
       "Properties": {
         "CompatibleRuntimes": [
@@ -221,9 +221,9 @@
           "S3Bucket": {
             "Ref": "deploymentBucketName"
           },
-          "S3Key": "amplify-builds/craftpiledbConnectLayer-LambdaLayerVersion8feef660-build.zip"
+          "S3Key": "amplify-builds/craftpiledbConnectLayer-LambdaLayerVersionafb4e069-build.zip"
         },
-        "Description": "Updated layer version 2022-09-16T00:44:15.017Z",
+        "Description": "Updated layer version 2023-02-04T02:30:15.965Z",
         "LayerName": {
           "Fn::Sub": [
             "craftpiledbConnectLayer-${env}",
@@ -238,17 +238,17 @@
       "DeletionPolicy": "Delete",
       "UpdateReplacePolicy": "Retain"
     },
-    "LambdaLayerPermissionPrivate8feef660": {
+    "LambdaLayerPermissionPrivateafb4e069": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": "arn:aws:lambda:us-east-1:466107528484:layer:craftpiledbConnectLayer-dev:2",
+        "LayerVersionArn": "arn:aws:lambda:us-east-1:466107528484:layer:craftpiledbConnectLayer-dev:10",
         "Principal": {
           "Ref": "AWS::AccountId"
         }
       }
     },
-    "LambdaLayerVersion0af8c51a": {
+    "LambdaLayerVersion76bd735a": {
       "Type": "AWS::Lambda::LayerVersion",
       "Properties": {
         "CompatibleRuntimes": [
@@ -258,9 +258,9 @@
           "S3Bucket": {
             "Ref": "deploymentBucketName"
           },
-          "S3Key": "amplify-builds/craftpiledbConnectLayer-LambdaLayerVersion0af8c51a-build.zip"
+          "S3Key": "amplify-builds/craftpiledbConnectLayer-LambdaLayerVersion76bd735a-build.zip"
         },
-        "Description": "Updated layer version 2022-09-13T15:13:44.597Z",
+        "Description": "Updated layer version 2023-02-04T02:15:30.015Z",
         "LayerName": {
           "Fn::Sub": [
             "craftpiledbConnectLayer-${env}",
@@ -275,11 +275,48 @@
       "DeletionPolicy": "Delete",
       "UpdateReplacePolicy": "Retain"
     },
-    "LambdaLayerPermissionPrivate0af8c51a": {
+    "LambdaLayerPermissionPrivate76bd735a": {
       "Type": "AWS::Lambda::LayerVersionPermission",
       "Properties": {
         "Action": "lambda:GetLayerVersion",
-        "LayerVersionArn": "arn:aws:lambda:us-east-1:466107528484:layer:craftpiledbConnectLayer-dev:1",
+        "LayerVersionArn": "arn:aws:lambda:us-east-1:466107528484:layer:craftpiledbConnectLayer-dev:9",
+        "Principal": {
+          "Ref": "AWS::AccountId"
+        }
+      }
+    },
+    "LambdaLayerVersion7a43b7d5": {
+      "Type": "AWS::Lambda::LayerVersion",
+      "Properties": {
+        "CompatibleRuntimes": [
+          "nodejs14.x"
+        ],
+        "Content": {
+          "S3Bucket": {
+            "Ref": "deploymentBucketName"
+          },
+          "S3Key": "amplify-builds/craftpiledbConnectLayer-LambdaLayerVersion7a43b7d5-build.zip"
+        },
+        "Description": "Updated layer version 2023-02-04T01:49:51.358Z",
+        "LayerName": {
+          "Fn::Sub": [
+            "craftpiledbConnectLayer-${env}",
+            {
+              "env": {
+                "Ref": "env"
+              }
+            }
+          ]
+        }
+      },
+      "DeletionPolicy": "Delete",
+      "UpdateReplacePolicy": "Retain"
+    },
+    "LambdaLayerPermissionPrivate7a43b7d5": {
+      "Type": "AWS::Lambda::LayerVersionPermission",
+      "Properties": {
+        "Action": "lambda:GetLayerVersion",
+        "LayerVersionArn": "arn:aws:lambda:us-east-1:466107528484:layer:craftpiledbConnectLayer-dev:8",
         "Principal": {
           "Ref": "AWS::AccountId"
         }
@@ -289,7 +326,7 @@
   "Outputs": {
     "Arn": {
       "Value": {
-        "Ref": "LambdaLayerVersion0b8f12c7"
+        "Ref": "LambdaLayerVersione97a6c30"
       }
     }
   }
