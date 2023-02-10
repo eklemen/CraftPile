@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+model account {
+  id         String   @id(map: "PK_54115ee388cdb6d86bb4bf5b2ea") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+  album      album[]
+  child      child[]
+  photo      photo[]
+  user       user[]
+}
+
+model album {
+  id          String   @id(map: "PK_58e0b4b8a31bb897e6959fe3206") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  description String
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime @default(now()) @db.Timestamptz(6)
+  child_id    String?  @db.Uuid
+  account_id  String?  @db.Uuid
+  child       child?   @relation(fields: [child_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_1bf2b7ed66a63f71b91d8571098")
+  account     account? @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ea367410f387b9ad69f6605a5a5")
+  photo       photo[]
+
+  @@index([child_id], map: "IDX_1bf2b7ed66a63f71b91d857109")
+  @@index([account_id], map: "IDX_ea367410f387b9ad69f6605a5a")
+}
+
+model child {
+  id            String   @id(map: "PK_4609b9b323ca37c6bc435ec4b6b") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String
+  date_of_birth String
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime @default(now()) @db.Timestamptz(6)
+  account_id    String?  @db.Uuid
+  album         album[]
+  account       account? @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_39cd4ce66d0b0a7728e1226df96")
+  photo         photo[]
+
+  @@index([account_id], map: "IDX_39cd4ce66d0b0a7728e1226df9")
+}
+
+model migrations {
+  id        BigInt @id(map: "PK_8c82d7f526340ab734260ea46be") @default(sequence())
+  timestamp BigInt
+  name      String
+}
+
+model photo {
+  id            String   @id(map: "PK_723fa50bf70dcfd06fb5a44d4ff") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  bucket_name   String
+  object_key    String
+  thumbnail_key String
+  description   String
+  date_of_photo DateTime @db.Timestamp(6)
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime @default(now()) @db.Timestamptz(6)
+  child_id      String?  @db.Uuid
+  album_id      String?  @db.Uuid
+  account_id    String?  @db.Uuid
+  account       account? @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_b5a8898edc58430004a66f68625")
+  child         child?   @relation(fields: [child_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_e20a7909d568260051f092f9461")
+  album         album?   @relation(fields: [album_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ffd437288f0decc45db033e648f")
+
+  @@index([account_id], map: "IDX_b5a8898edc58430004a66f6862")
+  @@index([child_id], map: "IDX_e20a7909d568260051f092f946")
+  @@index([album_id], map: "IDX_ffd437288f0decc45db033e648")
+}
+
+model user {
+  id         String   @id(map: "PK_cace4a159ff9f2512dd42373760") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email      String
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+  account_id String?  @db.Uuid
+  account    account? @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_6acfec7285fdf9f463462de3e9f")
+
+  @@index([account_id], map: "IDX_6acfec7285fdf9f463462de3e9")
+}
