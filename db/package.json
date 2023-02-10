@@ -13,6 +13,8 @@
   },
   "scripts": {
     "typeorm": "typeorm-ts-node-commonjs",
-    "typeorm:migrate": "yarn typeorm migration:run -- -d ./datasource.ts"
+    "typeorm:migrate": "yarn typeorm migration:run -d ./datasource.ts",
+    "typeorm:revert": "yarn typeorm migration:revert -d ./datasource.ts",
+    "typeorm:ls": "yarn typeorm migration:show -d ./datasource.ts"
   }
 }
