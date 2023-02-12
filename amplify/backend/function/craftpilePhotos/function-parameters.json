@@ -3,26 +3,20 @@
     {
       "type": "ProjectLayer",
       "resourceName": "craftpileV3ClientSDK",
+      "env": "dev",
       "version": "Always choose latest version",
-      "isLatestVersionSelected": true,
-      "env": "dev"
+      "isLatestVersionSelected": true
     },
     {
       "type": "ProjectLayer",
       "resourceName": "craftpiledbConnectLayer",
+      "env": "dev",
       "version": "Always choose latest version",
-      "isLatestVersionSelected": true,
-      "env": "dev"
+      "isLatestVersionSelected": true
     }
   ],
   "secretNames": [
     "mongo_uri",
-    "db_host",
-    "db_name",
-    "db_port",
-    "db_username",
-    "db_password",
-    "db_uri_string",
-    "db_cert_uri"
+    "db_username"
   ]
 }

@@ -1,3 +1,4 @@
+"use strict";
 var __rest = (this && this.__rest) || function (s, e) {
     var t = {};
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
@@ -9,6 +10,10 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 /*
 Use the following code to retrieve configured secrets from SSM:
 
@@ -16,20 +21,16 @@ const aws = require('aws-sdk');
 
 const { Parameters } = await (new aws.SSM())
   .getParameters({
-    Names: ["mongo_uri"].map(secretName => process.env[secretName]),
+    Names: ["mongo_uri","db_username"].map(secretName => process.env[secretName]),
     WithDecryption: true,
   })
   .promise();
 
 Parameters will be of the form { Name: 'secretName', Value: 'secretValue', ... }[]
 */
-const { connectToDatabase, evar, crdb } = require('/opt/dbConnect');
+const { connectToDatabase } = require('/opt/dbConnect');
+const dataSource_1 = __importDefault(require("./dataSource"));
 const ObjectID = require('mongodb').ObjectID;
-const { v4: uuidv4 } = require('uuid');
-// const aws = require('aws-sdk');
-// const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
-console.log('crdb-------->', crdb);
-console.log('evar-------->', evar);
 const updatePhotoProps = async (event) => {
     var _a;
     const _b = (_a = event === null || event === void 0 ? void 0 : event.arguments) === null || _a === void 0 ? void 0 : _a.input, { id: photoId } = _b, rest = __rest(_b, ["id"]);
@@ -136,6 +137,9 @@ const getPhotosForAlbum = async (event) => {
 const getUser = async (event) => {
     var _a;
     const { userCollection, childrenCollection } = await connectToDatabase();
+    const db = await dataSource_1.default();
+    console.log('db-------->', db);
+    console.log('db.isInitialized------->', db.isInitialized);
     const user = await userCollection.findOne({
         userId: (_a = event === null || event === void 0 ? void 0 : event.identity) === null || _a === void 0 ? void 0 : _a.sub,
     });
@@ -327,6 +331,7 @@ const resolvers = {
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event, context) => {
+    context.callbackWaitsForEmptyEventLoop = false;
     const typeHandler = resolvers[event.typeName];
     if (typeHandler) {
         const resolver = typeHandler[event.fieldName];

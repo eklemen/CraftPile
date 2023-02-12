@@ -1,27 +1,26 @@
-import { DataSource, DataSourceOptions } from 'typeorm';
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
+const typeorm_1 = require('typeorm');
 const aws = require('aws-sdk');
-
 const getDb = async () => {
+  var _a;
   const { Parameters } = await new aws.SSM()
     .getParameters({
       Names: [
-        'db_host', // 0
-        'db_name', // 1
-        'db_port', // 2
-        'db_username', // 3
-        'db_password', // 4
-        'db_uri_string', // 5
+        'db_host',
+        'db_name',
+        'db_username',
+        'db_password',
         'db_cert', // 6
       ].map((secretName) => process.env[secretName]),
       WithDecryption: true,
     })
     .promise();
-
   console.log('Parameters-------->', Parameters);
-  const options: DataSourceOptions = {
+  const options = {
     type: 'cockroachdb',
     host: Parameters[0].Value,
-    port: parseInt(Parameters[2].Value ?? '26257'),
+    port: 26257,
     database: Parameters[1].Value,
     username: Parameters[3].Value,
     password: Parameters[4].Value,
@@ -30,11 +29,8 @@ const getDb = async () => {
       ca: Parameters[6].Value,
     },
   };
-
   console.log('Datasource options', options);
-
-  const dataSource: DataSource = new DataSource(options);
-
+  const dataSource = new typeorm_1.DataSource(options);
   if (dataSource.isInitialized) {
     console.log('Datasource is initialized');
     return dataSource;
@@ -43,4 +39,4 @@ const getDb = async () => {
     return await dataSource.initialize();
   }
 };
-export default getDb;
+exports.default = getDb;

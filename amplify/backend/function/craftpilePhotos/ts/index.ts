@@ -12,14 +12,10 @@ const { Parameters } = await (new aws.SSM())
 
 Parameters will be of the form { Name: 'secretName', Value: 'secretValue', ... }[]
 */
-const { connectToDatabase, evar, crdb } = require('/opt/dbConnect');
+const { connectToDatabase } = require('/opt/dbConnect');
+import getDb from './dataSource';
 
 const ObjectID = require('mongodb').ObjectID;
-const { v4: uuidv4 } = require('uuid');
-// const aws = require('aws-sdk');
-// const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
-console.log('crdb-------->', crdb);
-console.log('evar-------->', evar);
 
 const updatePhotoProps = async (event) => {
   const { id: photoId, ...rest } = event?.arguments?.input;
@@ -139,6 +135,9 @@ const getPhotosForAlbum = async (event) => {
 
 const getUser = async (event) => {
   const { userCollection, childrenCollection } = await connectToDatabase();
+  const db = await getDb();
+  console.log('db-------->', db);
+  console.log('db.isInitialized------->', db.isInitialized);
   const user = await userCollection.findOne({
     userId: event?.identity?.sub,
   });
@@ -352,6 +351,7 @@ const resolvers = {
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event, context) => {
+  context.callbackWaitsForEmptyEventLoop = false;
   const typeHandler = resolvers[event.typeName];
   if (typeHandler) {
     const resolver = typeHandler[event.fieldName];
