@@ -9,6 +9,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+amplify/**/
 
 # macOS
 .DS_Store
