@@ -10,6 +10,7 @@ npm-debug.*
 *.orig.*
 web-build/
 amplify/**/
+src/generated
 
 # macOS
 .DS_Store

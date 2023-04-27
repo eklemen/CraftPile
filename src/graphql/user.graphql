@@ -1,0 +1,31 @@
+query GetUserOnLogin {
+  getUser {
+    id,
+    email,
+    account {
+      id
+      children {
+        id
+        name
+        albums {
+          id
+        }
+      }
+    }
+  }
+}
+
+######### Auth #########
+
+# Since this returns a token, the user doesn't need to login
+mutation Registration($input: AuthUserInput) {
+  registerUser (input: $input) {
+    authToken
+  }
+}
+
+mutation Login($input: AuthUserInput) {
+  login (input: $input) {
+    authToken
+  }
+}
