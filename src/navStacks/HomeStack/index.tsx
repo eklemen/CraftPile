@@ -9,7 +9,8 @@ import AlbumScreen from '../../screens/Albums';
 import PileScreen from '../../screens/Pile';
 import {
   AlbumStackParamList,
-  MainStackParamList, ProfileStackParamList,
+  MainStackParamList,
+  ProfileStackParamList,
   RootStackParamList,
 } from '../../types/routes';
 import CameraIcon from '../../appIcons/CameraIcon';
@@ -18,62 +19,72 @@ import PileIcon from '../../appIcons/PileIcon';
 import ProfileIcon from '../../appIcons/ProfileIcon';
 import AlbumPhotos from '../../screens/AlbumPhotos';
 import ViewAllAlbums from '../../screens/ViewAllAlbums';
-import { gql, useQuery } from '@apollo/client';
-import { GetUserQuery } from '../../generated/API';
-import { getUser } from '../../graphql/queries';
+import Login from '../../screens/Login';
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
 const MainBottomNav = createBottomTabNavigator<MainStackParamList>();
-const AlbumStack = createNativeStackNavigator<AlbumStackParamList>();
-const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
-const ManageChildrenStack = createNativeStackNavigator<any>();
-
-function AlbumNavs() {
+// const AlbumStack = createNativeStackNavigator<AlbumStackParamList>();
+// const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
+// const ManageChildrenStack = createNativeStackNavigator<any>();
+// // TODO: Add types for this navigator
+const AuthStack = createNativeStackNavigator<any>();
+//
+// function AlbumNavs() {
+//   return (
+//     <AlbumStack.Navigator
+//       screenOptions={{ headerShown: false }}
+//       initialRouteName="AlbumScreen"
+//     >
+//       <AlbumStack.Screen name="AlbumScreen" component={AlbumScreen} />
+//       <AlbumStack.Screen name="ViewAllAlbums" component={ViewAllAlbums} />
+//       <AlbumStack.Screen name="AlbumPhotos" component={AlbumPhotos} />
+//     </AlbumStack.Navigator>
+//   );
+// }
+//
+// function ProfileNavs() {
+//   return (
+//     <ProfileStack.Navigator initialRouteName="ProfileScreen">
+//       <ProfileStack.Screen
+//         name="ProfileScreen"
+//         component={ProfileScreen}
+//         options={{ headerShown: false }}
+//       />
+//       <ProfileStack.Screen
+//         name="ManageChildren"
+//         component={ManageChildren}
+//         options={{ title: '' }}
+//       />
+//     </ProfileStack.Navigator>
+//   );
+// }
+//
+function AuthNavs() {
   return (
-    <AlbumStack.Navigator
+    <AuthStack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="AlbumScreen"
+      initialRouteName="LoginScreen"
     >
-      <AlbumStack.Screen name="AlbumScreen" component={AlbumScreen} />
-      <AlbumStack.Screen name="ViewAllAlbums" component={ViewAllAlbums} />
-      <AlbumStack.Screen name="AlbumPhotos" component={AlbumPhotos} />
-    </AlbumStack.Navigator>
-  );
-}
-
-function ProfileNavs() {
-  return (
-    <ProfileStack.Navigator
-      initialRouteName="ProfileScreen"
-    >
-      <ProfileStack.Screen
-        name="ProfileScreen"
-        component={ProfileScreen}
-        options={{ headerShown: false }}
-      />
-      <ProfileStack.Screen
-        name="ManageChildren"
-        component={ManageChildren}
-        options={{ title: '' }}
-      />
-    </ProfileStack.Navigator>
+      <AuthStack.Screen name="LoginScreen" component={Login} />
+    </AuthStack.Navigator>
   );
 }
 
 function MainBottomNavScreens() {
   const { colors, fontConfig } = useTheme();
-  const {data: userData } = useQuery<GetUserQuery>(gql(getUser));
-  if (!userData?.getUser.children?.length) {
-    return (
-      <ManageChildrenStack.Navigator>
-        <ManageChildrenStack.Screen
-          name="ManageChildren"
-          component={ManageChildren}
-          options={{ headerShown: false }}
-        />
-      </ManageChildrenStack.Navigator>
-    );
-  }
+  // TODO: Replace with graphql query for user
+  const userData = { getUser: { children: [{}] } };
+  // if (!userData?.getUser.children?.length) {
+  //   return (
+  //     <ManageChildrenStack.Navigator>
+  //       <ManageChildrenStack.Screen
+  //         name="ManageChildren"
+  //         component={ManageChildren}
+  //         options={{ headerShown: false }}
+  //       />
+  //     </ManageChildrenStack.Navigator>
+  //   );
+  // }
   return (
     <MainBottomNav.Navigator
       screenOptions={{
@@ -86,7 +97,7 @@ function MainBottomNavScreens() {
         },
         headerShown: false,
       }}
-      initialRouteName='Camera'
+      initialRouteName="Camera"
     >
       <MainBottomNav.Screen
         name="Camera"
@@ -118,44 +129,45 @@ function MainBottomNavScreens() {
           tabBarAccessibilityLabel: 'Pile',
         }}
       />
-      <MainBottomNav.Screen
-        name="Albums"
-        component={AlbumNavs}
-        options={{
-          tabBarIcon: ({ focused, color }) => (
-            <AlbumIcon size={26} focused={focused} color={color} />
-          ),
-          tabBarActiveTintColor: colors.secondary['500'],
-          tabBarInactiveTintColor: colors.primary['500'],
-          tabBarAccessibilityLabel: 'Albums',
-        }}
-      />
-      <MainBottomNav.Screen
-        name="Profile"
-        component={ProfileNavs}
-        options={{
-          tabBarIcon: ({ focused, color }) => (
-            <ProfileIcon size={30} focused={focused} color={color} />
-          ),
-          tabBarActiveTintColor: colors.secondary['500'],
-          tabBarInactiveTintColor: colors.primary['500'],
-          tabBarAccessibilityLabel: 'Profile',
-        }}
-      />
+      {/*<MainBottomNav.Screen*/}
+      {/*  name="Albums"*/}
+      {/*  component={AlbumNavs}*/}
+      {/*  options={{*/}
+      {/*    tabBarIcon: ({ focused, color }) => (*/}
+      {/*      <AlbumIcon size={26} focused={focused} color={color} />*/}
+      {/*    ),*/}
+      {/*    tabBarActiveTintColor: colors.secondary['500'],*/}
+      {/*    tabBarInactiveTintColor: colors.primary['500'],*/}
+      {/*    tabBarAccessibilityLabel: 'Albums',*/}
+      {/*  }}*/}
+      {/*/>*/}
+      {/*<MainBottomNav.Screen*/}
+      {/*  name="Profile"*/}
+      {/*  component={ProfileNavs}*/}
+      {/*  options={{*/}
+      {/*    tabBarIcon: ({ focused, color }) => (*/}
+      {/*      <ProfileIcon size={30} focused={focused} color={color} />*/}
+      {/*    ),*/}
+      {/*    tabBarActiveTintColor: colors.secondary['500'],*/}
+      {/*    tabBarInactiveTintColor: colors.primary['500'],*/}
+      {/*    tabBarAccessibilityLabel: 'Profile',*/}
+      {/*  }}*/}
+      {/*/>*/}
     </MainBottomNav.Navigator>
   );
 }
 
-// TODO: Delete this stack
 function AppNavs() {
+  const isAuthenticated = true;
   return (
-    <AppStack.Navigator
-      screenOptions={{ headerShown: false }}
-      initialRouteName="MainStack"
-    >
-      <AppStack.Screen name="MainStack" component={MainBottomNavScreens} />
+    <AppStack.Navigator screenOptions={{ headerShown: false }}>
+      {isAuthenticated ? (
+        <AppStack.Screen name="AuthStack" component={AuthNavs} />
+      ) : (
+        <AppStack.Screen name="MainStack" component={MainBottomNavScreens} />
+      )}
     </AppStack.Navigator>
   );
 }
 
-export { MainBottomNavScreens, AppNavs };
+export { AppNavs };

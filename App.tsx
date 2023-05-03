@@ -5,7 +5,9 @@ import { apolloClient } from './src/apolloConfig';
 import { ApolloProvider } from '@apollo/client';
 
 const App = () => (
-  <ApolloProvider client={apolloClient}><Main /></ApolloProvider>
-    );
+  <ApolloProvider client={apolloClient}>
+    <Main />
+  </ApolloProvider>
+);
 
 export default registerRootComponent(App);

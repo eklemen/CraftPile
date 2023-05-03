@@ -8,6 +8,7 @@ export type RootStackParamList = {
   Landing: undefined;
   ManageChildren: undefined;
   MainStack: BottomTabNavigationProp<MainStackParamList>;
+  AuthStack: undefined;
 };
 
 export type AlbumStackParamList = {
@@ -27,7 +28,7 @@ export type AlbumStackParamList = {
 export type ProfileStackParamList = {
   ProfileScreen: undefined;
   ManageChildren: undefined;
-}
+};
 
 export type MainStackParamList = {
   Camera: undefined;

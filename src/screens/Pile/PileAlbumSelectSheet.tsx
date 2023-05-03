@@ -10,13 +10,7 @@ import {
 } from 'native-base';
 import lodashKeys from 'lodash.keys';
 import isEmpty from 'lodash.isempty';
-import { gql, useLazyQuery } from '@apollo/client';
 import { PILE, PileCD } from '../../context/constants';
-import {
-  GetAlbumsForChildQuery,
-  GetAlbumsForChildQueryVariables,
-} from '../../generated/API';
-import { getAlbumsForChild } from '../../graphql/queries';
 import AlbumGrid from '../../shared/AlbumGrid';
 import useCompData from '../../context/compData/useCompData';
 
@@ -25,14 +19,9 @@ interface Props {
   onClose: () => void;
 }
 
-function PileAlbumSelectSheet({
-  isOpen,
-  onClose,
-}: Props) {
-  const {
-    compData: pileCompData,
-    clearComp: resetPileData,
-  } = useCompData<PileCD>(PILE);
+function PileAlbumSelectSheet({ isOpen, onClose }: Props) {
+  const { compData: pileCompData, clearComp: resetPileData } =
+    useCompData<PileCD>(PILE);
   const getChildId = (): string => {
     if (pileCompData.multiSelect && !isEmpty(pileCompData.selectedPhotos)) {
       const key = lodashKeys(pileCompData.selectedPhotos)[0];
@@ -43,19 +32,19 @@ function PileAlbumSelectSheet({
       return '';
     }
   };
-  const [getAlbums, { loading, data, error }] = useLazyQuery<
-    GetAlbumsForChildQuery,
-    GetAlbumsForChildQueryVariables
-  >(gql(getAlbumsForChild));
+  // const [getAlbums, { loading, data, error }] = useLazyQuery<
+  //   GetAlbumsForChildQuery,
+  //   GetAlbumsForChildQueryVariables
+  // >(gql(getAlbumsForChild));
   useEffect(() => {
     if (isOpen) {
-      getAlbums({
-        variables: {
-          input: {
-            childId: getChildId(),
-          },
-        },
-      });
+      // getAlbums({
+      //   variables: {
+      //     input: {
+      //       childId: getChildId(),
+      //     },
+      //   },
+      // });
     }
   }, [isOpen]);
   return (
@@ -66,7 +55,7 @@ function PileAlbumSelectSheet({
             Add to album
           </Heading>
           <Row alignItems="center" mb={4}>
-            <Skeleton isLoaded={!loading}>
+            <Skeleton isLoaded={true /*!loading*/}>
               <Box
                 h={35}
                 w={35}
@@ -79,13 +68,14 @@ function PileAlbumSelectSheet({
                 <Text color="white">P</Text>
               </Box>
               <Heading size="md">
-                {`${data?.getAlbumsForChild?.name}'s album`}
+                {/*{`${data?.getAlbumsForChild?.name}'s album`}*/}
+                {'Album name'}
               </Heading>
             </Skeleton>
           </Row>
           <AlbumGrid
-            loading={loading}
-            data={data}
+            loading={false /*loading*/}
+            data={[] /*data?.getAlbumsForChild?.albums || []*/}
             selectedPhotos={pileCompData.selectedPhotos}
             resetPileData={resetPileData}
           />
