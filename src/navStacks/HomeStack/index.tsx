@@ -162,9 +162,9 @@ function AppNavs() {
   return (
     <AppStack.Navigator screenOptions={{ headerShown: false }}>
       {isAuthenticated ? (
-        <AppStack.Screen name="AuthStack" component={AuthNavs} />
-      ) : (
         <AppStack.Screen name="MainStack" component={MainBottomNavScreens} />
+      ) : (
+        <AppStack.Screen name="AuthStack" component={AuthNavs} />
       )}
     </AppStack.Navigator>
   );
