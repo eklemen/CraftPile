@@ -31,6 +31,7 @@ const httpLink = new HttpLink({
 // ]);
 export const apolloClient = new ApolloClient({
   // link,
+  uri: "https://craftpile-app.azurewebsites.net/graphql",
   cache: new InMemoryCache({
     typePolicies: {
       ChildUnsortedPhotos: {

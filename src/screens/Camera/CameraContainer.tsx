@@ -11,8 +11,8 @@ import uuid from 'react-native-uuid';
 
 import useCompData from '../../context/compData/useCompData';
 import { AUTH, CAMERA } from '../../context/constants';
-import { GetUserQuery } from '../../generated/API';
-import { getUser } from '../../graphql/queries';
+// import { GetUserQuery } from '../../generated/API';
+// import { getUser } from '../../graphql/queries';
 import MockCamera from './MockCamera';
 import { cameraStyles as styles } from './styles';
 import { CameraCD } from '../../context/constants';
@@ -26,7 +26,7 @@ function CameraContainer() {
   const [cameraPermission, setCameraPermission] = useState<boolean>(false);
   const [galleryPermission, setGalleryPermission] = useState<boolean>(false);
   const [uploadingImg, setUploadingImg] = useState<boolean>(false);
-  const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
+  // const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
   const { compData: cameraCompData, setData: setCameraCompData } =
     useCompData<CameraCD>(CAMERA);
 
@@ -121,7 +121,8 @@ function CameraContainer() {
       const blob = await response.blob();
       const [extension] = imagePath.split('.').slice(-1);
       // should use the local file path instead of uuid
-      const s3Path = `${userData?.getUser.accountId}/${uuid.v4()}.${extension}`;
+      const s3Path = `${"Banana".getUser.accountId}/${uuid.v4()}.${extension}`;
+      // const s3Path = `${userData?.getUser.accountId}/${uuid.v4()}.${extension}`;
 
       await Storage.put(s3Path, blob, {
         contentType: 'image/jpeg',

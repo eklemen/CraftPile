@@ -20,6 +20,8 @@ import ProfileIcon from '../../appIcons/ProfileIcon';
 import AlbumPhotos from '../../screens/AlbumPhotos';
 import ViewAllAlbums from '../../screens/ViewAllAlbums';
 import Login from '../../screens/Login';
+import Register from '../../screens/Register';
+import VerificationCode from '../../screens/VerificationCode';
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
 const MainBottomNav = createBottomTabNavigator<MainStackParamList>();
@@ -61,111 +63,115 @@ const AuthStack = createNativeStackNavigator<any>();
 //
 function AuthNavs() {
   return (
+
     <AuthStack.Navigator
       screenOptions={{ headerShown: false }}
       initialRouteName="LoginScreen"
     >
       <AuthStack.Screen name="LoginScreen" component={Login} />
+
+      
+
     </AuthStack.Navigator>
   );
 }
 
-function MainBottomNavScreens() {
-  const { colors, fontConfig } = useTheme();
-  // TODO: Replace with graphql query for user
-  const userData = { getUser: { children: [{}] } };
-  // if (!userData?.getUser.children?.length) {
-  //   return (
-  //     <ManageChildrenStack.Navigator>
-  //       <ManageChildrenStack.Screen
-  //         name="ManageChildren"
-  //         component={ManageChildren}
-  //         options={{ headerShown: false }}
-  //       />
-  //     </ManageChildrenStack.Navigator>
-  //   );
-  // }
-  return (
-    <MainBottomNav.Navigator
-      screenOptions={{
-        tabBarStyle: {
-          borderTopColor: 'transparent',
-        },
-        tabBarLabelStyle: {
-          fontFamily: fontConfig?.Nunito[500].normal,
-          fontSize: 14,
-        },
-        headerShown: false,
-      }}
-      initialRouteName="Camera"
-    >
-      <MainBottomNav.Screen
-        name="Camera"
-        component={Camera}
-        options={{
-          headerShown: false,
-          tabBarStyle: {
-            backgroundColor: colors.primary['400'],
-            borderTopColor: 'transparent',
-            height: 100,
-            paddingTop: 10,
-          },
-          tabBarActiveTintColor: colors.white,
-          tabBarIcon: ({ focused, color }) => (
-            <CameraIcon size={30} focused={focused} color={color} />
-          ),
-          tabBarAccessibilityLabel: 'Camera',
-        }}
-      />
-      <MainBottomNav.Screen
-        name="Pile"
-        component={PileScreen}
-        options={{
-          tabBarIcon: ({ focused, color }) => (
-            <PileIcon size={30} focused={focused} color={color} />
-          ),
-          tabBarActiveTintColor: colors.secondary['500'],
-          tabBarInactiveTintColor: colors.primary['500'],
-          tabBarAccessibilityLabel: 'Pile',
-        }}
-      />
-      {/*<MainBottomNav.Screen*/}
-      {/*  name="Albums"*/}
-      {/*  component={AlbumNavs}*/}
-      {/*  options={{*/}
-      {/*    tabBarIcon: ({ focused, color }) => (*/}
-      {/*      <AlbumIcon size={26} focused={focused} color={color} />*/}
-      {/*    ),*/}
-      {/*    tabBarActiveTintColor: colors.secondary['500'],*/}
-      {/*    tabBarInactiveTintColor: colors.primary['500'],*/}
-      {/*    tabBarAccessibilityLabel: 'Albums',*/}
-      {/*  }}*/}
-      {/*/>*/}
-      {/*<MainBottomNav.Screen*/}
-      {/*  name="Profile"*/}
-      {/*  component={ProfileNavs}*/}
-      {/*  options={{*/}
-      {/*    tabBarIcon: ({ focused, color }) => (*/}
-      {/*      <ProfileIcon size={30} focused={focused} color={color} />*/}
-      {/*    ),*/}
-      {/*    tabBarActiveTintColor: colors.secondary['500'],*/}
-      {/*    tabBarInactiveTintColor: colors.primary['500'],*/}
-      {/*    tabBarAccessibilityLabel: 'Profile',*/}
-      {/*  }}*/}
-      {/*/>*/}
-    </MainBottomNav.Navigator>
-  );
-}
+// function MainBottomNavScreens() {
+//   const { colors, fontConfig } = useTheme();
+//   // TODO: Replace with graphql query for user
+//   const userData = { getUser: { children: [{}] } };
+//   // if (!userData?.getUser.children?.length) {
+//   //   return (
+//   //     <ManageChildrenStack.Navigator>
+//   //       <ManageChildrenStack.Screen
+//   //         name="ManageChildren"
+//   //         component={ManageChildren}
+//   //         options={{ headerShown: false }}
+//   //       />
+//   //     </ManageChildrenStack.Navigator>
+//   //   );
+//   // }
+//   return (
+//     <MainBottomNav.Navigator
+//       screenOptions={{
+//         tabBarStyle: {
+//           borderTopColor: 'transparent',
+//         },
+//         tabBarLabelStyle: {
+//           fontFamily: fontConfig?.Nunito[500].normal,
+//           fontSize: 14,
+//         },
+//         headerShown: false,
+//       }}
+//       initialRouteName="Camera"
+//     >
+//       <MainBottomNav.Screen
+//         name="Camera"
+//         component={Camera}
+//         options={{
+//           headerShown: false,
+//           tabBarStyle: {
+//             backgroundColor: colors.primary['400'],
+//             borderTopColor: 'transparent',
+//             height: 100,
+//             paddingTop: 10,
+//           },
+//           tabBarActiveTintColor: colors.white,
+//           tabBarIcon: ({ focused, color }) => (
+//             <CameraIcon size={30} focused={focused} color={color} />
+//           ),
+//           tabBarAccessibilityLabel: 'Camera',
+//         }}
+//       />
+//       <MainBottomNav.Screen
+//         name="Pile"
+//         component={PileScreen}
+//         options={{
+//           tabBarIcon: ({ focused, color }) => (
+//             <PileIcon size={30} focused={focused} color={color} />
+//           ),
+//           tabBarActiveTintColor: colors.secondary['500'],
+//           tabBarInactiveTintColor: colors.primary['500'],
+//           tabBarAccessibilityLabel: 'Pile',
+//         }}
+//       />
+//       {/*<MainBottomNav.Screen*/}
+//       {/*  name="Albums"*/}
+//       {/*  component={AlbumNavs}*/}
+//       {/*  options={{*/}
+//       {/*    tabBarIcon: ({ focused, color }) => (*/}
+//       {/*      <AlbumIcon size={26} focused={focused} color={color} />*/}
+//       {/*    ),*/}
+//       {/*    tabBarActiveTintColor: colors.secondary['500'],*/}
+//       {/*    tabBarInactiveTintColor: colors.primary['500'],*/}
+//       {/*    tabBarAccessibilityLabel: 'Albums',*/}
+//       {/*  }}*/}
+//       {/*/>*/}
+//       {/*<MainBottomNav.Screen*/}
+//       {/*  name="Profile"*/}
+//       {/*  component={ProfileNavs}*/}
+//       {/*  options={{*/}
+//       {/*    tabBarIcon: ({ focused, color }) => (*/}
+//       {/*      <ProfileIcon size={30} focused={focused} color={color} />*/}
+//       {/*    ),*/}
+//       {/*    tabBarActiveTintColor: colors.secondary['500'],*/}
+//       {/*    tabBarInactiveTintColor: colors.primary['500'],*/}
+//       {/*    tabBarAccessibilityLabel: 'Profile',*/}
+//       {/*  }}*/}
+//       {/*/>*/}
+//     </MainBottomNav.Navigator>
+//   );
+// }
 
 function AppNavs() {
-  const isAuthenticated = true;
+  const isAuthenticated = false;
   return (
     <AppStack.Navigator screenOptions={{ headerShown: false }}>
-      {isAuthenticated ? (
-        <AppStack.Screen name="MainStack" component={MainBottomNavScreens} />
-      ) : (
-        <AppStack.Screen name="AuthStack" component={AuthNavs} />
-      )}
+      <AppStack.Screen name="AuthStack" component={AuthNavs} />
+      <AppStack.Screen name="Register" component={Register} />
+      <AppStack.Screen name="VerificationCode" component={VerificationCode} />
+
+
     </AppStack.Navigator>
   );
 }
