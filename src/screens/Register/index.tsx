@@ -30,7 +30,7 @@ function Register() {
       
       // Assuming the registration was successful and you have a response field called `success`
       if (res.data?.registerUser?.success) {
-        navigation.navigate('VerificationCode'); // Replace 'VerificationCode' with the correct name of the component or route
+        navigation.navigate('VerificationCode', { email: data.email });     
       } else {
         throw new Error('Registration failed'); // Throw an error if registration was not successful
       }

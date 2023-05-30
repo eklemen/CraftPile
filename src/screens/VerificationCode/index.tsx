@@ -1,12 +1,11 @@
 import React from 'react';
 import { Box, Heading, Center, FormControl, Input, Button, VStack, Alert } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
-import { RootStackParamList } from '../../types/routes';
-
+import { useMutation } from '@apollo/client';
+import { VERIFY_CONFIRMATION_CODE } from '../../generated/graphql';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-
-
+import { RootStackParamList } from '../../types/routes';
 
 type VerificationCodeScreenRouteProp = RouteProp<RootStackParamList, 'VerificationCode'>;
 type VerificationCodeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'VerificationCode'>;
@@ -16,17 +15,31 @@ interface VerificationCodeProps {
   navigation: VerificationCodeScreenNavigationProp;
 }
 
-
-
-interface VerificationCodeProps {
-  onSubmit: (data: { code: string }) => void;
+interface VerificationCodeFormValues {
+  code: string;
 }
 
-const VerificationCode: React.FC<VerificationCodeProps> = ({ onSubmit, route, navigation }) => {
-  const { control, handleSubmit, formState: { errors } } = useForm<{ code: string }>();
+const VerificationCode: React.FC<VerificationCodeProps> = ({ route }) => {
+  const { email } = route.params;
 
-  const handleFormSubmit = (data: { code: string }) => {
-    onSubmit(data);
+  const { control, handleSubmit, formState: { errors } } = useForm<VerificationCodeFormValues>();
+
+  const [verifyConfirmationCode, { loading, error, data }] = useMutation(VERIFY_CONFIRMATION_CODE);
+
+  const onSubmit = async (formData: VerificationCodeFormValues) => {
+    try {
+      const input = {
+        email,
+        code: formData.code,
+      };
+
+      const response = await verifyConfirmationCode({ variables: { input } });
+
+      // Handle the response and perform necessary actions
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -48,7 +61,7 @@ const VerificationCode: React.FC<VerificationCodeProps> = ({ onSubmit, route, na
             />
             {errors.code && <FormControl.ErrorMessage>{errors.code.message}</FormControl.ErrorMessage>}
           </FormControl>
-          <Button mt="2" colorScheme="primary" onPress={handleSubmit(handleFormSubmit)}>Submit</Button>
+          <Button mt="2" colorScheme="primary" onPress={handleSubmit(onSubmit)}>Submit</Button>
         </VStack>
       </Box>
     </Center>

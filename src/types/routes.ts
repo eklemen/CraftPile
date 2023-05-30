@@ -13,7 +13,7 @@ export type RootStackParamList = {
   Login: undefined;
   Home: undefined
   Register: undefined;
-  VerificationCode: undefined
+  VerificationCode: undefined;
 };
 
 export type AlbumStackParamList = {
