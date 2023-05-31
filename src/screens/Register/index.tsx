@@ -19,7 +19,7 @@ function Register() {
   const navigation = useNavigation();
 
   const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-  const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+  const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
 
   const onSubmit = async (data: AuthUserInput) => {
     const { email, password, passwordConfirmation } = data;
@@ -91,7 +91,7 @@ function Register() {
               )}
               rules={{
                 required: { value: true, message: "Password is required" },
-                pattern: { value: passwordPattern, message: "Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, and one number" }
+                pattern: { value: passwordPattern, message: "Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character [!@#$%^&*]" }
               }}
             />
             {errors.password && <FormControl.ErrorMessage>{errors.password.message}</FormControl.ErrorMessage>}

@@ -14,7 +14,7 @@ interface FormProps {
 
 
 const Login: React.FC = () => {
-  const { control, handleSubmit, formState: { errors } } = useForm<FormProps>();
+  const { control, handleSubmit, formState: { errors, isDirty, isValid } } = useForm<FormProps>();
   const [login, { data, loading, error }] = useLoginMutation();
   const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -22,7 +22,8 @@ const Login: React.FC = () => {
   const navigation = useNavigation<any>();
 
   const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-  const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+  const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+
 
   const onSubmit = async (data: AuthUserInput) => {
     try {
@@ -56,6 +57,7 @@ const Login: React.FC = () => {
   const handleRegister = () => {
     navigation.navigate('Register'); // Replace 'Register' with the name of your registration screen or route
   };
+  const isFormValid = !errors.email && !errors.password; // Check if both email and password fields have no errors
 
   return (
 <ImageBackground
@@ -108,7 +110,7 @@ const Login: React.FC = () => {
               {errors.password && <FormControl.ErrorMessage>{errors.password.message}</FormControl.ErrorMessage>}
             </FormControl>
             {errorMessage ? <Text color="red.500">{errorMessage}</Text> : null}
-            <Button mt="2" colorScheme="primary" onPress={handleSubmit(onSubmit)}>Login</Button>
+            <Button mt="2" colorScheme="primary" onPress={handleSubmit(onSubmit)} isDisabled={!isDirty || !isValid}>Login</Button>
             <HStack mt="6" justifyContent="center">
               <TouchableOpacity onPress={handleRegister}>
                 <Heading mt="1" _dark={{ color: 'blue.200' }} color="blue.600" fontWeight="medium" size="xs">
