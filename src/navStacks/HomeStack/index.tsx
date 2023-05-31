@@ -22,6 +22,7 @@ import ViewAllAlbums from '../../screens/ViewAllAlbums';
 import Login from '../../screens/Login';
 import Register from '../../screens/Register';
 import VerificationCode from '../../screens/VerificationCode';
+import Home from '../../screens/Home'
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
 const MainBottomNav = createBottomTabNavigator<MainStackParamList>();
@@ -69,8 +70,9 @@ function AuthNavs() {
       initialRouteName="LoginScreen"
     >
       <AuthStack.Screen name="LoginScreen" component={Login} />
-
-      
+      <AuthStack.Screen name="Register" component={Register} />
+      <AuthStack.Screen name="VerificationCode" component={VerificationCode} />
+      <AuthStack.Screen name="Home" component={Home} />
 
     </AuthStack.Navigator>
   );
@@ -168,8 +170,7 @@ function AppNavs() {
   return (
     <AppStack.Navigator screenOptions={{ headerShown: false }}>
       <AppStack.Screen name="AuthStack" component={AuthNavs} />
-      <AppStack.Screen name="Register" component={Register} />
-      <AppStack.Screen name="VerificationCode" component={VerificationCode} />
+
 
 
     </AppStack.Navigator>

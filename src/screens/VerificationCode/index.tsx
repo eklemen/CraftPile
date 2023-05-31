@@ -19,7 +19,7 @@ interface VerificationCodeFormValues {
   code: string;
 }
 
-const VerificationCode: React.FC<VerificationCodeProps> = ({ route }) => {
+const VerificationCode = ({ route }) => {
   const { email } = route.params;
 
   const { control, handleSubmit, formState: { errors } } = useForm<VerificationCodeFormValues>();

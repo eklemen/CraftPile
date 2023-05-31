@@ -11,7 +11,7 @@ export type RootStackParamList = {
   AuthStack: undefined;
   // Added login and home for testing purposes
   Login: undefined;
-  Home: undefined
+  Home: undefined;
   Register: undefined;
   VerificationCode: undefined;
 };
