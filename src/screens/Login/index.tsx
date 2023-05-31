@@ -1,5 +1,6 @@
-import { Box, Heading, Center, FormControl, Input, Button, VStack, HStack, Link } from 'native-base';
+import { Box, Heading, Center, FormControl, Input, Button, VStack, HStack, Link, Text } from 'native-base';
 import { useForm, Controller } from 'react-hook-form';
+import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useLoginMutation, AuthUserInput } from '../../generated/graphql';
 import { TouchableOpacity, ImageBackground } from 'react-native';
@@ -15,6 +16,7 @@ interface FormProps {
 const Login: React.FC = () => {
   const { control, handleSubmit, formState: { errors } } = useForm<FormProps>();
   const [login, { data, loading, error }] = useLoginMutation();
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
 
   const navigation = useNavigation<any>();
@@ -32,20 +34,25 @@ const Login: React.FC = () => {
           },
         },
       });
-      console.log(res.data?.login.data , 'data Response') // Data response object
+      console.log(res.data?.login.data, 'data Response') // Data response object
       
       const { refreshToken, idToken } = res.data?.login.data // Get tokens from Response
       
       if (idToken && refreshToken) {
         await SecureStore.setItemAsync('idToken', idToken); // Store the tokens in SecureStore       
-        await SecureStore.setItemAsync('refreshToken', refreshToken); 
+        await SecureStore.setItemAsync('refreshToken', refreshToken);
+        setErrorMessage('') // Clear error message
         navigation.navigate('Home'); // Navigate to the home screen on success
       }
     } catch (error) {
-      console.log(error);
+      console.log(error,'rrorrrr');
+      if (error && error.message) {
+        setErrorMessage(error.message); // Set the specific error message for display
+      } else {
+        setErrorMessage('An error occurred. Please try again.'); // Fallback error message
+      }
     }
   };
-
   const handleRegister = () => {
     navigation.navigate('Register'); // Replace 'Register' with the name of your registration screen or route
   };
@@ -100,6 +107,7 @@ const Login: React.FC = () => {
               </Link>
               {errors.password && <FormControl.ErrorMessage>{errors.password.message}</FormControl.ErrorMessage>}
             </FormControl>
+            {errorMessage ? <Text color="red.500">{errorMessage}</Text> : null}
             <Button mt="2" colorScheme="primary" onPress={handleSubmit(onSubmit)}>Login</Button>
             <HStack mt="6" justifyContent="center">
               <TouchableOpacity onPress={handleRegister}>
