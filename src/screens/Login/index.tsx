@@ -3,7 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useLoginMutation, AuthUserInput } from '../../generated/graphql';
-import { TouchableOpacity, ImageBackground } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 
 interface FormProps {
@@ -60,10 +60,6 @@ const Login: React.FC = () => {
   const isFormValid = !errors.email && !errors.password; // Check if both email and password fields have no errors
 
   return (
-<ImageBackground
-      source={require('../../../assets/bg-image.png')}
-      style={{ flex: 1, justifyContent: 'center' }}
-    >
       <Center flex={1} py="10">
         <Box w="90%">
           <Heading size="lg" fontWeight="600" color="coolGray.800" _dark={{ color: 'warmGray.50' }}>
@@ -121,7 +117,6 @@ const Login: React.FC = () => {
           </VStack>
         </Box>
       </Center>
-      </ImageBackground>
   );
 };
 
