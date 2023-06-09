@@ -1,9 +1,3 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { LogBox } from 'react-native';
-import * as Linking from 'expo-linking';
-import { NativeBaseProvider, extendTheme } from 'native-base';
-import * as SplashScreen from 'expo-splash-screen';
 import {
   useFonts,
   Montserrat_300Light,
@@ -15,11 +9,18 @@ import {
   Nunito_400Regular,
   Nunito_700Bold,
 } from '@expo-google-fonts/nunito';
+import { NavigationContainer } from '@react-navigation/native';
+import * as Linking from 'expo-linking';
+import * as SplashScreen from 'expo-splash-screen';
+import { NativeBaseProvider, extendTheme } from 'native-base';
+import React, { useCallback, useEffect, useState } from 'react';
+import { LogBox } from 'react-native';
 
+import { AuthProvider } from './context/authContext/authContextStore';
 import { CompDataProvider } from './context/compData/compDataStore';
-import { AppNavs, MainBottomNavScreens } from './navStacks/HomeStack';
-import { themeOverrides } from './styles';
 import { useGetUserOnLoginLazyQuery } from './generated/graphql';
+import { AppNavs } from './navStacks/HomeStack';
+import { themeOverrides } from './styles';
 // import RCTAsyncStorage from '@react-native-async-storage/async-storage';
 //
 // Promise.resolve(RCTAsyncStorage.clear()).then(() => {
@@ -78,11 +79,13 @@ const Main = ({}: Props) => {
   }
   return (
     <NativeBaseProvider theme={theme}>
-      <CompDataProvider>
-        <NavigationContainer linking={linking} onReady={onLayoutRootView}>
-          <AppNavs />
-        </NavigationContainer>
-      </CompDataProvider>
+      <AuthProvider>
+        <CompDataProvider>
+          <NavigationContainer linking={linking} onReady={onLayoutRootView}>
+            <AppNavs />
+          </NavigationContainer>
+        </CompDataProvider>
+      </AuthProvider>
     </NativeBaseProvider>
   );
 };

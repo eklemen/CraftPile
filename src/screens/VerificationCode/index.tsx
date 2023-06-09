@@ -1,51 +1,62 @@
-import React from 'react';
-import { Box, Heading, Center, FormControl, Input, Button, VStack, Alert } from 'native-base';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import {
+  Box,
+  Heading,
+  Center,
+  FormControl,
+  Input,
+  Button,
+  VStack,
+} from 'native-base';
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { useMutation } from '@apollo/client';
-import { VERIFY_CONFIRMATION_CODE } from '../../generated/graphql';
-import { RouteProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../types/routes';
 
-type VerificationCodeScreenRouteProp = RouteProp<RootStackParamList, 'VerificationCode'>;
-type VerificationCodeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'VerificationCode'>;
-
-interface VerificationCodeProps {
-  route: VerificationCodeScreenRouteProp;
-  navigation: VerificationCodeScreenNavigationProp;
-}
+import { useVerifyConfirmationCodeMutation } from '../../generated/graphql';
 
 interface VerificationCodeFormValues {
   code: string;
 }
 
-const VerificationCode = ({ route }) => {
-  const { email } = route.params;
+const VerificationCode = () => {
+  const [validationError, setValidationError] = useState<string>('');
+  const { params } = useRoute<any>();
+  const { navigate } = useNavigation<any>();
+  const { email } = params;
 
-  const { control, handleSubmit, formState: { errors } } = useForm<VerificationCodeFormValues>();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<VerificationCodeFormValues>();
 
-  const [verifyConfirmationCode, { loading, error, data }] = useMutation(VERIFY_CONFIRMATION_CODE);
+  const [verifyConfirmationCode, { loading }] =
+    useVerifyConfirmationCodeMutation({
+      onCompleted(res) {
+        if (res.verifyConfirmationCode?.error) {
+          setValidationError('Incorrect confirmation code.');
+        } else {
+          navigate('LoginScreen');
+        }
+      },
+    });
 
   const onSubmit = async (formData: VerificationCodeFormValues) => {
-    try {
-      const input = {
-        email,
-        code: formData.code,
-      };
-
-      const response = await verifyConfirmationCode({ variables: { input } });
-
-      // Handle the response and perform necessary actions
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+    const input = {
+      email,
+      code: formData.code,
+    };
+    await verifyConfirmationCode({ variables: { input } });
   };
 
   return (
     <Center flex={1} py="10">
       <Box w="90%">
-        <Heading size="lg" fontWeight="600" color="coolGray.800" _dark={{ color: 'warmGray.50' }}>
+        <Heading
+          size="lg"
+          fontWeight="600"
+          color="coolGray.800"
+          _dark={{ color: 'warmGray.50' }}
+        >
           Email Verification
         </Heading>
         <VStack space={3} mt="5">
@@ -55,13 +66,39 @@ const VerificationCode = ({ route }) => {
               control={control}
               name="code"
               render={({ field: { onChange, onBlur, value } }) => (
-                <Input onChangeText={onChange} onBlur={onBlur} value={value} keyboardType="number-pad" />
+                <Input
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  keyboardType="number-pad"
+                />
               )}
-              rules={{ required: { value: true, message: 'Verification code is required' } }}
+              rules={{
+                required: {
+                  value: true,
+                  message: 'Verification code is required',
+                },
+              }}
             />
-            {errors.code && <FormControl.ErrorMessage>{errors.code.message}</FormControl.ErrorMessage>}
+            {errors.code ? (
+              <FormControl.ErrorMessage>
+                {errors.code.message}
+              </FormControl.ErrorMessage>
+            ) : null}
+            {validationError ? (
+              <FormControl.ErrorMessage>
+                {validationError}
+              </FormControl.ErrorMessage>
+            ) : null}
           </FormControl>
-          <Button mt="2" colorScheme="primary" onPress={handleSubmit(onSubmit)}>Submit</Button>
+          <Button
+            mt="2"
+            colorScheme="primary"
+            onPress={handleSubmit(onSubmit)}
+            isLoading={loading}
+          >
+            Submit
+          </Button>
         </VStack>
       </Box>
     </Center>
