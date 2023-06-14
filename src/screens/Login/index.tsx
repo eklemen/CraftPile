@@ -14,7 +14,6 @@ import {
 } from 'native-base';
 import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { TouchableOpacity } from 'react-native';
 
 import { useAuth } from '../../context/authContext/useAuth';
 import { useLoginMutation, AuthUserInput } from '../../generated/graphql';
@@ -25,6 +24,9 @@ interface FormProps {
 }
 
 const Login: React.FC = () => {
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const navigation = useNavigation();
+  const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
   const {
     control,
     handleSubmit,
@@ -49,9 +51,7 @@ const Login: React.FC = () => {
       }
     },
   });
-  const [errorMessage, setErrorMessage] = useState<string>('');
-  const navigation = useNavigation<any>();
-  const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+ 
 
   const onSubmit = async (data: AuthUserInput) => {
     await login({
@@ -154,7 +154,7 @@ const Login: React.FC = () => {
             mt="2"
             colorScheme="primary"
             onPress={handleSubmit(onSubmit)}
-            isDisabled={!isDirty || !isValid}
+            // isDisabled={!isDirty || !isValid}
           >
             Login
           </Button>

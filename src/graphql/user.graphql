@@ -43,3 +43,20 @@ mutation VerifyConfirmationCode($input: ConfirmationCodeInput) {
     error
   }
 }
+
+query GetUser{
+    getUser {
+            id
+            email
+            account {
+                id
+                children {
+                    id
+                    name
+                    albums {
+                        id
+                    }
+                }
+            }
+    }
+}

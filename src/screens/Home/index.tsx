@@ -6,7 +6,7 @@ const Home: React.FC = () => {
   const navigation = useNavigation<any>();
 
   const handleLogin = () => {
-    navigation.navigate('LoginScreen'); 
+    navigation.navigate('Login'); 
   };
 
   const handleRegister = () => {
