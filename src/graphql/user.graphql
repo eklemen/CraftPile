@@ -20,12 +20,26 @@ query GetUserOnLogin {
 # Since this returns a token, the user doesn't need to login
 mutation Registration($input: AuthUserInput) {
   registerUser (input: $input) {
-    authToken
+    success
+    error
   }
 }
 
 mutation Login($input: AuthUserInput) {
   login (input: $input) {
-    authToken
+    data {
+      accessToken
+      idToken
+      expiresIn
+      refreshToken
+    }
+    error
+  }
+}
+
+mutation VerifyConfirmationCode($input: ConfirmationCodeInput) {
+  verifyConfirmationCode (input: $input) {
+    success
+    error
   }
 }

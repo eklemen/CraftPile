@@ -20,6 +20,9 @@ import ProfileIcon from '../../appIcons/ProfileIcon';
 import AlbumPhotos from '../../screens/AlbumPhotos';
 import ViewAllAlbums from '../../screens/ViewAllAlbums';
 import Login from '../../screens/Login';
+import Register from '../../screens/Register';
+import VerificationCode from '../../screens/VerificationCode';
+import Home from '../../screens/Home';
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
 const MainBottomNav = createBottomTabNavigator<MainStackParamList>();
@@ -66,6 +69,8 @@ function AuthNavs() {
       initialRouteName="LoginScreen"
     >
       <AuthStack.Screen name="LoginScreen" component={Login} />
+      <AuthStack.Screen name="Register" component={Register} />
+      <AuthStack.Screen name="VerificationCode" component={VerificationCode} />
     </AuthStack.Navigator>
   );
 }
@@ -158,7 +163,7 @@ function MainBottomNavScreens() {
 }
 
 function AppNavs() {
-  const isAuthenticated = true;
+  const isAuthenticated = false;
   return (
     <AppStack.Navigator screenOptions={{ headerShown: false }}>
       {isAuthenticated ? (

@@ -3527,10 +3527,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-string-parser@npm:^7.21.5":
-  version: 7.21.5
-  resolution: "@babel/helper-string-parser@npm:7.21.5"
-  checksum: 36c0ded452f3858e67634b81960d4bde1d1cd2a56b82f4ba2926e97864816021c885f111a7cf81de88a0ed025f49d84a393256700e9acbca2d99462d648705d8
+"@babel/helper-string-parser@npm:^7.22.5":
+  version: 7.22.5
+  resolution: "@babel/helper-string-parser@npm:7.22.5"
+  checksum: 836851ca5ec813077bbb303acc992d75a360267aa3b5de7134d220411c852a6f17de7c0d0b8c8dcc0f567f67874c00f4528672b2a4f1bc978a3ada64c8c78467
   languageName: node
   linkType: hard
 
@@ -3538,6 +3538,13 @@ __metadata:
   version: 7.19.1
   resolution: "@babel/helper-validator-identifier@npm:7.19.1"
   checksum: 0eca5e86a729162af569b46c6c41a63e18b43dbe09fda1d2a3c8924f7d617116af39cac5e4cd5d431bb760b4dca3c0970e0c444789b1db42bcf1fa41fbad0a3a
+  languageName: node
+  linkType: hard
+
+"@babel/helper-validator-identifier@npm:^7.22.5":
+  version: 7.22.5
+  resolution: "@babel/helper-validator-identifier@npm:7.22.5"
+  checksum: 7f0f30113474a28298c12161763b49de5018732290ca4de13cdaefd4fd0d635a6fe3f6686c37a02905fb1e64f21a5ee2b55140cf7b070e729f1bd66866506aea
   languageName: node
   linkType: hard
 
@@ -4801,13 +4808,13 @@ __metadata:
   linkType: hard
 
 "@babel/types@npm:^7.8.3":
-  version: 7.22.4
-  resolution: "@babel/types@npm:7.22.4"
+  version: 7.22.5
+  resolution: "@babel/types@npm:7.22.5"
   dependencies:
-    "@babel/helper-string-parser": ^7.21.5
-    "@babel/helper-validator-identifier": ^7.19.1
+    "@babel/helper-string-parser": ^7.22.5
+    "@babel/helper-validator-identifier": ^7.22.5
     to-fast-properties: ^2.0.0
-  checksum: ffe36bb4f4a99ad13c426a98c3b508d70736036cae4e471d9c862e3a579847ed4f480686af0fce2633f6f7c0f0d3bf02da73da36e7edd3fde0b2061951dcba9a
+  checksum: c13a9c1dc7d2d1a241a2f8363540cb9af1d66e978e8984b400a20c4f38ba38ca29f06e26a0f2d49a70bad9e57615dac09c35accfddf1bb90d23cd3e0a0bab892
   languageName: node
   linkType: hard
 
@@ -11172,7 +11179,7 @@ __metadata:
     eslint-config-universe: ^11.1.0
     expo: ~46.0.13
     expo-blur: ~11.2.0
-    expo-camera: ~12.4.0
+    expo-camera: ~12.5.0
     expo-cli: ^6.0.5
     expo-community-flipper: ^46.0.1
     expo-font: ~10.2.0
@@ -11192,7 +11199,7 @@ __metadata:
     react: 18.0.0
     react-dom: 18.0.0
     react-hook-form: ^7.39.1
-    react-native: 0.69.6
+    react-native: 0.69.9
     react-native-dotenv: ^3.4.8
     react-native-expo-image-cache: ^4.1.0
     react-native-image-viewing: ^0.2.2
@@ -12884,16 +12891,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-camera@npm:~12.4.0":
-  version: 12.4.0
-  resolution: "expo-camera@npm:12.4.0"
+"expo-camera@npm:~12.5.0":
+  version: 12.5.0
+  resolution: "expo-camera@npm:12.5.0"
   dependencies:
     "@expo/config-plugins": ~5.0.0
     "@koale/useworker": ^4.0.2
     invariant: ^2.2.4
   peerDependencies:
     expo: "*"
-  checksum: 184a97f32b9be2a5a727d489984f7bd78cdc8728c7ebeda0acfc50bb068b92bbbe486ccd1390a87993a363de7d103a7f39c31ec34131705279251758b0c4c9cb
+  checksum: 3595418ac5c2065593da5c924473db81d9983d7c1aee02332100612d71b3b270184fd8fcbf873dbadbe0189aed3b992d8d52b018d5d02edb0328da7d296c5a87
   languageName: node
   linkType: hard
 
@@ -20492,9 +20499,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native@npm:0.69.6":
-  version: 0.69.6
-  resolution: "react-native@npm:0.69.6"
+"react-native@npm:0.69.9":
+  version: 0.69.9
+  resolution: "react-native@npm:0.69.9"
   dependencies:
     "@jest/create-cache-key-function": ^27.0.1
     "@react-native-community/cli": ^8.0.4
@@ -20533,7 +20540,7 @@ __metadata:
     react: 18.0.0
   bin:
     react-native: cli.js
-  checksum: d050b9f0389362368cd1286c02dd46cd84def9fcbf4774dcedd5cbc3aa9ad594de48f22c5458ec257c07646d79722256bc837b25205c3a52752d5c5b6a7873f4
+  checksum: 5499e29acc39ce34309bc3e2713a5be37e14f86d5cade7e3449b422ad25d66e9d38a9267ddfeae79453ca1bfd5571c2ac0c23f5142b6a2fa7a3897a7786f5c1b
   languageName: node
   linkType: hard
 
