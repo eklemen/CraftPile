@@ -23,12 +23,14 @@ import Login from '../../screens/Login';
 import Register from '../../screens/Register';
 import VerificationCode from '../../screens/VerificationCode';
 import Home from '../../screens/Home';
+import { useAuth } from '../../context/authContext/useAuth';
+import { useGetUserQuery } from '../../generated/graphql';
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
 const MainBottomNav = createBottomTabNavigator<MainStackParamList>();
 // const AlbumStack = createNativeStackNavigator<AlbumStackParamList>();
 // const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
-// const ManageChildrenStack = createNativeStackNavigator<any>();
+const ManageChildrenStack = createNativeStackNavigator<any>();
 // // TODO: Add types for this navigator
 const AuthStack = createNativeStackNavigator<any>();
 //
@@ -77,8 +79,20 @@ function AuthNavs() {
 
 function MainBottomNavScreens() {
   const { colors, fontConfig } = useTheme();
+  const { data: userData, loading: userDataLoading, error: userDataError } = useGetUserQuery();
+
   // TODO: Replace with graphql query for user
-  const userData = { getUser: { children: [{}] } };
+  if (!userData?.getUser?.account?.children?.length) {
+    return (
+        <ManageChildrenStack.Navigator>
+         <ManageChildrenStack.Screen
+           name="ManageChildren"
+           component={ManageChildren}
+           options={{ headerShown: false }}
+         />
+       </ManageChildrenStack.Navigator>
+    );
+  }
   // if (!userData?.getUser.children?.length) {
   //   return (
   //     <ManageChildrenStack.Navigator>
@@ -90,6 +104,7 @@ function MainBottomNavScreens() {
   //     </ManageChildrenStack.Navigator>
   //   );
   // }
+  
   return (
     <MainBottomNav.Navigator
       screenOptions={{
@@ -163,10 +178,10 @@ function MainBottomNavScreens() {
 }
 
 function AppNavs() {
-  const isAuthenticated = false;
+  const { isLoggedIn } = useAuth(); 
   return (
     <AppStack.Navigator screenOptions={{ headerShown: false }}>
-      {isAuthenticated ? (
+      {isLoggedIn ? (
         <AppStack.Screen name="MainStack" component={MainBottomNavScreens} />
       ) : (
         <AppStack.Screen name="AuthStack" component={AuthNavs} />
@@ -176,3 +191,5 @@ function AppNavs() {
 }
 
 export { AppNavs };
+
+
