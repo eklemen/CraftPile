@@ -1,34 +1,36 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from 'native-base';
 
-import Camera from '../../screens/Camera';
-import ManageChildren from '../../screens/ManageChildren';
-import ProfileScreen from '../../screens/Profile';
+import AlbumIcon from '../../appIcons/AlbumIcon';
+import CameraIcon from '../../appIcons/CameraIcon';
+import PileIcon from '../../appIcons/PileIcon';
+import ProfileIcon from '../../appIcons/ProfileIcon';
+import { useAuth } from '../../context/authContext/useAuth';
+import { useGetUserQuery } from '../../generated/graphql';
+import AlbumPhotos from '../../screens/AlbumPhotos';
 import AlbumScreen from '../../screens/Albums';
+import Camera from '../../screens/Camera';
+import Home from '../../screens/Home';
+import Login from '../../screens/Login';
+import ManageChildren from '../../screens/ManageChildren';
 import PileScreen from '../../screens/Pile';
+import ProfileScreen from '../../screens/Profile';
+import Register from '../../screens/Register';
+import VerificationCode from '../../screens/VerificationCode';
+import ViewAllAlbums from '../../screens/ViewAllAlbums';
 import {
   AlbumStackParamList,
   MainStackParamList,
   ProfileStackParamList,
   RootStackParamList,
 } from '../../types/routes';
-import CameraIcon from '../../appIcons/CameraIcon';
-import AlbumIcon from '../../appIcons/AlbumIcon';
-import PileIcon from '../../appIcons/PileIcon';
-import ProfileIcon from '../../appIcons/ProfileIcon';
-import AlbumPhotos from '../../screens/AlbumPhotos';
-import ViewAllAlbums from '../../screens/ViewAllAlbums';
-import Login from '../../screens/Login';
-import Register from '../../screens/Register';
-import VerificationCode from '../../screens/VerificationCode';
-import Home from '../../screens/Home';
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
 const MainBottomNav = createBottomTabNavigator<MainStackParamList>();
 // const AlbumStack = createNativeStackNavigator<AlbumStackParamList>();
 // const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
-// const ManageChildrenStack = createNativeStackNavigator<any>();
+const ManageChildrenStack = createNativeStackNavigator<any>();
 // // TODO: Add types for this navigator
 const AuthStack = createNativeStackNavigator<any>();
 //
@@ -77,8 +79,20 @@ function AuthNavs() {
 
 function MainBottomNavScreens() {
   const { colors, fontConfig } = useTheme();
+  const { data: userData } = useGetUserQuery();
+
   // TODO: Replace with graphql query for user
-  const userData = { getUser: { children: [{}] } };
+  if (!userData?.getUser?.data?.account?.children?.length) {
+    return (
+      <ManageChildrenStack.Navigator>
+        <ManageChildrenStack.Screen
+          name="ManageChildren"
+          component={ManageChildren}
+          options={{ headerShown: false }}
+        />
+      </ManageChildrenStack.Navigator>
+    );
+  }
   // if (!userData?.getUser.children?.length) {
   //   return (
   //     <ManageChildrenStack.Navigator>
@@ -90,6 +104,7 @@ function MainBottomNavScreens() {
   //     </ManageChildrenStack.Navigator>
   //   );
   // }
+
   return (
     <MainBottomNav.Navigator
       screenOptions={{
@@ -163,10 +178,10 @@ function MainBottomNavScreens() {
 }
 
 function AppNavs() {
-  const isAuthenticated = false;
+  const { isLoggedIn } = useAuth();
   return (
     <AppStack.Navigator screenOptions={{ headerShown: false }}>
-      {isAuthenticated ? (
+      {isLoggedIn ? (
         <AppStack.Screen name="MainStack" component={MainBottomNavScreens} />
       ) : (
         <AppStack.Screen name="AuthStack" component={AuthNavs} />

@@ -1,3 +1,4 @@
+import { useLazyQuery, useQuery } from '@apollo/client';
 import { useNavigation } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 import {
@@ -12,11 +13,12 @@ import {
   Link,
   Text,
 } from 'native-base';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 import { useAuth } from '../../context/authContext/useAuth';
-import { useLoginMutation, AuthUserInput } from '../../generated/graphql';
+import { useLoginMutation, AuthUserInput, GetUserDocument } from '../../generated/graphql';
+
 
 interface FormProps {
   email: string;
@@ -27,12 +29,16 @@ const Login: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const navigation = useNavigation();
   const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+
+
+
   const {
     control,
     handleSubmit,
     formState: { errors, isDirty, isValid },
   } = useForm<FormProps>();
   const { setLoggedIn } = useAuth();
+  
   const [login, { data, loading, error }] = useLoginMutation({
     async onCompleted(data) {
       if (data?.login?.error) {
@@ -47,13 +53,15 @@ const Login: React.FC = () => {
           ]);
           setLoggedIn();
           navigation.navigate('MainStack');
+
+
         }
       }
     },
   });
- 
 
   const onSubmit = async (data: AuthUserInput) => {
+    
     await login({
       variables: {
         input: {
@@ -61,6 +69,7 @@ const Login: React.FC = () => {
           password: data.password,
         },
       },
+ 
     });
   };
   const handleRegister = () => {
