@@ -1,5 +1,6 @@
 overwrite: true
-schema: "http://localhost:3000/graphql"
+#schema: "http://localhost:3000/graphql"
+schema: "https://craftpile-app.azurewebsites.net/graphql"
 documents: "src/**/*.graphql"
 generates:
   src/generated/graphql.tsx:

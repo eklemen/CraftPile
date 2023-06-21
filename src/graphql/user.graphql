@@ -1,20 +1,3 @@
-query GetUserOnLogin {
-  getUser {
-    id,
-    email,
-    account {
-      id
-      children {
-        id
-        name
-        albums {
-          id
-        }
-      }
-    }
-  }
-}
-
 ######### Auth #########
 
 # Since this returns a token, the user doesn't need to login
@@ -45,18 +28,21 @@ mutation VerifyConfirmationCode($input: ConfirmationCodeInput) {
 }
 
 query GetUser{
-    getUser {
+  getUser {
+    data {
+      id
+      email
+      account {
+        id
+        children {
+          id
+          name
+          albums {
             id
-            email
-            account {
-                id
-                children {
-                    id
-                    name
-                    albums {
-                        id
-                    }
-                }
-            }
+          }
+        }
+      }
     }
+    error
+  }
 }
