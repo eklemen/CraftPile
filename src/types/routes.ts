@@ -9,6 +9,7 @@ export type RootStackParamList = {
   ManageChildren: undefined;
   MainStack: BottomTabNavigationProp<MainStackParamList>;
   AuthStack: undefined;
+  AddChild: undefined;
   // Added login and home for testing purposes
   Login: undefined;
   Home: undefined;

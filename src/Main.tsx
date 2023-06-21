@@ -18,7 +18,7 @@ import { LogBox } from 'react-native';
 
 import { AuthProvider } from './context/authContext/authContextStore';
 import { CompDataProvider } from './context/compData/compDataStore';
-import { useGetUserOnLoginLazyQuery } from './generated/graphql';
+import {  useGetUserOutputLazyQuery } from './generated/graphql';
 import { AppNavs } from './navStacks/HomeStack';
 import { themeOverrides } from './styles';
 // import RCTAsyncStorage from '@react-native-async-storage/async-storage';
@@ -42,7 +42,7 @@ const Main = ({}: Props) => {
     Nunito_400Regular,
     Nunito_700Bold,
   });
-  const [getUser] = useGetUserOnLoginLazyQuery();
+  const [getUser] = useGetUserOutputLazyQuery();
   const linking = {
     prefixes: [prefix],
   };
@@ -91,3 +91,5 @@ const Main = ({}: Props) => {
 };
 
 export default Main;
+
+

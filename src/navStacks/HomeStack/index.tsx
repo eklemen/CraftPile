@@ -23,6 +23,8 @@ import Login from '../../screens/Login';
 import Register from '../../screens/Register';
 import VerificationCode from '../../screens/VerificationCode';
 import Home from '../../screens/Home';
+import { useAuth } from '../../context/authContext/authContextStore';
+import AddChild from '../../screens/ManageChildren/AddChild';
 
 const AppStack = createNativeStackNavigator<RootStackParamList>();
 const MainBottomNav = createBottomTabNavigator<MainStackParamList>();
@@ -163,11 +165,11 @@ function MainBottomNavScreens() {
 }
 
 function AppNavs() {
-  const isAuthenticated = false;
+  const { isLoggedIn } = useAuth()
   return (
     <AppStack.Navigator screenOptions={{ headerShown: false }}>
-      {isAuthenticated ? (
-        <AppStack.Screen name="MainStack" component={MainBottomNavScreens} />
+      {isLoggedIn ? (
+        <AppStack.Screen name="MainStack" component={ManageChildren} />
       ) : (
         <AppStack.Screen name="AuthStack" component={AuthNavs} />
       )}

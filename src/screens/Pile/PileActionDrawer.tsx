@@ -14,16 +14,16 @@ import { PILE, PileCD } from '../../context/constants';
 import SwitchIcon from '../../appIcons/SwitchIcon';
 import AlbumAddIcon from '../../appIcons/AlbumAddIcon';
 import useCompData from '../../context/compData/useCompData';
-import {
-  AddUnsortedPhotosToAlbumMutation,
-  AddUnsortedPhotosToAlbumMutationVariables,
-  DeleteUnsortedPhotosMutation,
-  DeleteUnsortedPhotosMutationVariables,
-} from '../../generated/API';
-import {
-  addUnsortedPhotosToAlbum,
-  deleteUnsortedPhotos,
-} from '../../graphql/mutations';
+// import {
+//   AddUnsortedPhotosToAlbumMutation,
+//   AddUnsortedPhotosToAlbumMutationVariables,
+//   DeleteUnsortedPhotosMutation,
+//   DeleteUnsortedPhotosMutationVariables,
+// } from '../../generated/API';
+// import {
+//   addUnsortedPhotosToAlbum,
+//   deleteUnsortedPhotos,
+// } from '../../graphql/mutations';
 import PileAlbumSelectSheet from './PileAlbumSelectSheet';
 
 function PileActionDrawer() {
@@ -34,15 +34,15 @@ function PileActionDrawer() {
   } = useCompData<PileCD>(PILE);
   const [disableDrawerBtn, setDisableDrawerBtn] = useState(false);
 
-  const [deletePhotos] = useMutation<
-    DeleteUnsortedPhotosMutation,
-    DeleteUnsortedPhotosMutationVariables
-  >(gql(deleteUnsortedPhotos));
+  // const [deletePhotos] = useMutation<
+  //   DeleteUnsortedPhotosMutation,
+  //   DeleteUnsortedPhotosMutationVariables
+  // >(gql(deleteUnsortedPhotos));
 
-  const [addPhotosToAlbum] = useMutation<
-    AddUnsortedPhotosToAlbumMutation,
-    AddUnsortedPhotosToAlbumMutationVariables
-  >(gql(addUnsortedPhotosToAlbum));
+  // const [addPhotosToAlbum] = useMutation<
+  //   AddUnsortedPhotosToAlbumMutation,
+  //   AddUnsortedPhotosToAlbumMutationVariables
+  // >(gql(addUnsortedPhotosToAlbum));
 
   // animation
   const drawerPosition = useSharedValue(70);
@@ -87,25 +87,25 @@ function PileActionDrawer() {
 
   const deleteHandler = async () => {
     const ids = Object.keys(pileCompData?.selectedPhotos);
-    if (ids) {
-      await deletePhotos({
-        variables: {
-          input: { ids },
-        },
-      });
+    // if (ids) {
+    //   await deletePhotos({
+    //     variables: {
+    //       input: { ids },
+    //     },
+    //   });
       // resetPileData({
       //   multiSelect: false,
       //   selectedPhotos: {},
       //   selectedPhoto: null,
       // });
-    }
+    // }
   };
-  const openAlbumSelect = async () => {
-    const ids = lodashKeys(pileCompData?.selectedPhotos);
-    if (ids.length) {
-      setPileData({ showAlbumSelectSheet: true });
-    }
-  };
+  // const openAlbumSelect = async () => {
+  //   const ids = lodashKeys(pileCompData?.selectedPhotos);
+  //   if (ids.length) {
+  //     setPileData({ showAlbumSelectSheet: true });
+  //   }
+  // };
 
   return (
     <Animated.View style={[animatedDrawer, { marginTop: -32 }]}>
@@ -156,7 +156,7 @@ function PileActionDrawer() {
             w="100%"
             colorScheme="secondary"
             variant="ghost"
-            onPress={openAlbumSelect}
+            // onPress={openAlbumSelect}
             disabled={disableDrawerBtn}
           >
             <Center flexDirection="row">

@@ -12,13 +12,13 @@ import {
 import { PILE, PileCD } from '../../context/constants';
 import useCompData from '../../context/compData/useCompData';
 import { gql, useMutation, useQuery } from '@apollo/client';
-import {
-  AssignPhotosToChildMutation,
-  AssignPhotosToChildMutationVariables,
-  GetUserQuery,
-} from '../../generated/API';
-import { assignPhotosToChild } from '../../graphql/mutations';
-import { getUser } from '../../graphql/queries';
+// import {
+//   AssignPhotosToChildMutation,
+//   AssignPhotosToChildMutationVariables,
+//   GetUserQuery,
+// } from '../../generated/API';
+// import { assignPhotosToChild } from '../../graphql/mutations';
+// import { getUser } from '../../graphql/queries';
 
 interface Props {
   isOpen: boolean;
@@ -27,12 +27,12 @@ interface Props {
 }
 
 function ChildSelectModal({ isOpen, onClose, setPileData }: Props) {
-  const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
+  // const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
   const { compData: pileCompData } = useCompData<PileCD>(PILE);
-  const [assignPhotos, { loading, error }] = useMutation<
-    AssignPhotosToChildMutation,
-    AssignPhotosToChildMutationVariables
-  >(gql(assignPhotosToChild));
+  // const [assignPhotos, { loading, error }] = useMutation<
+  //   AssignPhotosToChildMutation,
+  //   AssignPhotosToChildMutationVariables
+  // >(gql(assignPhotosToChild));
   const [radioValue, setRadioValue] = useState<string>();
   const [initialChildId, setInitialChildId] = useState<string>();
   useEffect(() => {
@@ -52,20 +52,20 @@ function ChildSelectModal({ isOpen, onClose, setPileData }: Props) {
     }
   }, [pileCompData.selectedPhotos, pileCompData.selectedPhoto]);
 
-  const handleSave = async () => {
-    if (initialChildId !== radioValue) {
-      const ids = pileCompData.multiSelect
-        ? Object.keys(pileCompData.selectedPhotos)
-        : [pileCompData.selectedPhoto?._id!];
-      await assignPhotos({
-        variables: {
-          input: {
-            ids: ids || [],
-            childId: radioValue!,
-          },
-        },
-      });
-    }
+  // const handleSave = async () => {
+  //   if (initialChildId !== radioValue) {
+  //     const ids = pileCompData.multiSelect
+  //       ? Object.keys(pileCompData.selectedPhotos)
+  //       : [pileCompData.selectedPhoto?._id!];
+  //     await assignPhotos({
+  //       variables: {
+  //         input: {
+  //           ids: ids || [],
+  //           childId: radioValue!,
+  //         },
+  //       },
+  //     });
+  //   }
     // resetPileData({
     //   multiSelect: false,
     //   selectedPhotos: {},
@@ -77,8 +77,8 @@ function ChildSelectModal({ isOpen, onClose, setPileData }: Props) {
       showChildSelectModal: false,
       selectedPhoto: null,
     });
-  };
-  if (!radioValue) return null;
+  // };
+  // if (!radioValue) return null;
   return (
     <Modal
       isOpen={isOpen}
@@ -102,7 +102,7 @@ function ChildSelectModal({ isOpen, onClose, setPileData }: Props) {
                 setRadioValue(nextValue);
               }}
             >
-              {userData?.getUser.children?.map((child) => (
+              {/* {userData?.getUser.children?.map((child) => (
                 <Radio
                   colorScheme="secondary"
                   value={child?._id as string}
@@ -118,7 +118,7 @@ function ChildSelectModal({ isOpen, onClose, setPileData }: Props) {
                     {child?.name}
                   </Text>
                 </Radio>
-              ))}
+              ))} */}
             </Radio.Group>
           </Column>
         </Modal.Body>
@@ -127,8 +127,8 @@ function ChildSelectModal({ isOpen, onClose, setPileData }: Props) {
             colorScheme="secondary"
             flex={1}
             h={70}
-            onPress={handleSave}
-            isLoading={loading}
+            // onPress={handleSave}
+            // isLoading={loading}
           >
             <Text color="white" fontFamily="body" fontSize={28}>
               Save

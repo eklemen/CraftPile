@@ -1,70 +1,56 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, VStack } from 'native-base';
+import { useForm } from 'react-hook-form';
+import { Input, Button, VStack, Text } from 'native-base';
+import { useCreateChildMutation, CreateChildMutationVariables } from '../../generated/graphql';
 
-interface AddChildProps {
-  onAddChild: (data: ChildFormData) => void;
-  onCancel: () => void;
-}
-
-interface ChildFormData {
+interface ChildData {
   name: string;
-  album: {
-    id: number;
-  };
+  dateOfBirth: string;
+  // Other child data fields
 }
 
-const AddChild: React.FC<AddChildProps> = ({ onAddChild, onCancel }) => {
-  const { control, handleSubmit, formState: { errors }, reset } = useForm<ChildFormData>();
+const AddChild = () => {
+  const { handleSubmit, register, formState: { errors } } = useForm<ChildData>();
+  const [createChild, { loading, error }] = useCreateChildMutation();
 
-  const onSubmit = (data: ChildFormData) => {
-    console.log('Child Name:', data.name);
-    console.log('Album Object:', data.album);
-    reset();
+  const onSubmit = async (data: ChildData) => {
+    try {
+      await createChild({
+        variables: {
+          input: data,
+        },
+      });
+      console.log(data)
+      // Handle success response and update UI accordingly
+    } catch (error) {
+      // Handle error and update UI accordingly
+    }
   };
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Add Child</Text>
-      <Controller
-        control={control}
-        name="name"
-        rules={{ required: 'Name is required' }}
-        defaultValue=""
-        render={({ field: { onChange, onBlur, value } }) => (
-          <>
-            <Text>Name:</Text>
-            <Input
-              onChangeText={onChange}
-              onBlur={onBlur}
-              value={value}
-            />
-            {errors.name && <Text>{errors.name.message}</Text>}
-          </>
-        )}
+    <VStack space={4} alignItems="center">
+      {/* Render child data input fields */}
+      <Text>Name:</Text>
+      <Input
+        type="text"
+        {...register('name', { required: 'Name is required' })}
+        placeholder="Name"
       />
-      <Controller
-        control={control}
-        name="album.id"
-        rules={{ required: 'Album ID is required' }}
-        defaultValue=""
-        render={({ field: { onChange, onBlur, value } }) => (
-          <>
-            <Text>Album ID:</Text>
-            <Input
-              onChangeText={onChange}
-              onBlur={onBlur}
-              value={value.toString()}
-              keyboardType="numeric"
-            />
-            {errors.album?.id && <Text>{errors.album.id.message}</Text>}
-          </>
-        )}
+      {errors.name && <Text>{errors.name.message}</Text>}
+      <Text>Date of Birth:</Text>
+      <Input
+        type="text"
+        {...register('dateOfBirth')}
+        placeholder="Date of Birth"
       />
-      <Button onPress={handleSubmit(onSubmit)}>Add</Button>
-      <Button onPress={onCancel}>Cancel</Button>
-    </View>
+      {errors.dateOfBirth && <Text>{errors.dateOfBirth.message}</Text>}
+      {/* Other child data input fields */}
+
+      <Button onPress={handleSubmit(onSubmit)} disabled={loading}>
+        {loading ? 'Creating...' : 'Create Child'}
+      </Button>
+
+      {error && <Text>Error: {error.message}</Text>}
+    </VStack>
   );
 };
 

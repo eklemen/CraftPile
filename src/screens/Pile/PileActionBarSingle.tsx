@@ -14,36 +14,36 @@ import { PILE, PileCD } from '../../context/constants';
 import SwitchIcon from '../../appIcons/SwitchIcon';
 import AlbumAddIcon from '../../appIcons/AlbumAddIcon';
 import useCompData from '../../context/compData/useCompData';
-import {
-  DeleteUnsortedPhotosMutation,
-  DeleteUnsortedPhotosMutationVariables,
-} from '../../generated/API';
-import { deleteUnsortedPhotos } from '../../graphql/mutations';
+// import {
+//   DeleteUnsortedPhotosMutation,
+//   DeleteUnsortedPhotosMutationVariables,
+// } from '../../generated/API';
+// import { deleteUnsortedPhotos } from '../../graphql/mutations';
 
 function PileActionBarSingle({ selectedPhoto, setPileData }: any) {
   const { clearComp: resetPileData } = useCompData<PileCD>(PILE);
 
-  const [deletePhotos] = useMutation<
-    DeleteUnsortedPhotosMutation,
-    DeleteUnsortedPhotosMutationVariables
-  >(gql(deleteUnsortedPhotos), {
-    onError: (err) => console.log(err),
-  });
+  // const [deletePhotos] = useMutation<
+  //   DeleteUnsortedPhotosMutation,
+  //   DeleteUnsortedPhotosMutationVariables
+  // >(gql(deleteUnsortedPhotos), {
+  //   onError: (err) => console.log(err),
+  // });
 
   const deleteHandler = async () => {
-    await deletePhotos({
-      variables: {
-        input: { ids: [selectedPhoto?._id!] },
-      },
-      // onError: (err) => console.log('-=-=-=-=-', err),
-    });
-    setPileData({
-      multiSelect: false,
-      selectedPhotos: {},
-      selectedPhoto: null,
-      showAlbumSelectSheet: false,
-      showChildSelectModal: false,
-    });
+    // await deletePhotos({
+    //   variables: {
+    //     input: { ids: [selectedPhoto?._id!] },
+    //   },
+    //   // onError: (err) => console.log('-=-=-=-=-', err),
+    // });
+    // setPileData({
+    //   multiSelect: false,
+    //   selectedPhotos: {},
+    //   selectedPhoto: null,
+    //   showAlbumSelectSheet: false,
+    //   showChildSelectModal: false,
+    // });
   };
   const openAlbumSelectSheet = () => {
     setPileData({ showAlbumSelectModal: true });
