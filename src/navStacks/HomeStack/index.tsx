@@ -6,8 +6,8 @@ import AlbumIcon from '../../appIcons/AlbumIcon';
 import CameraIcon from '../../appIcons/CameraIcon';
 import PileIcon from '../../appIcons/PileIcon';
 import ProfileIcon from '../../appIcons/ProfileIcon';
-import { useAuth } from '../../context/authContext/useAuth';
-import { useGetUserQuery } from '../../generated/graphql';
+import { useAuth } from '../../context/authContext/authContextStore';
+import { useGetUserOutputQuery } from '../../generated/graphql';
 import AlbumPhotos from '../../screens/AlbumPhotos';
 import AlbumScreen from '../../screens/Albums';
 import Camera from '../../screens/Camera';
@@ -79,10 +79,10 @@ function AuthNavs() {
 
 function MainBottomNavScreens() {
   const { colors, fontConfig } = useTheme();
-  const { data: userData } = useGetUserQuery();
+  const { data: userData } = useGetUserOutputQuery();
 
   // TODO: Replace with graphql query for user
-  if (!userData?.getUser?.data?.account?.children?.length) {
+  if (!userData?.getUser?.account?.children?.length) {
     return (
       <ManageChildrenStack.Navigator>
         <ManageChildrenStack.Screen

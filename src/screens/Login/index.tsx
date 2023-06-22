@@ -16,8 +16,8 @@ import {
 import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
-import { useAuth } from '../../context/authContext/useAuth';
-import { useLoginMutation, AuthUserInput, GetUserDocument } from '../../generated/graphql';
+import { useAuth } from '../../context/authContext/authContextStore';
+import { useLoginMutation, AuthUserInput, } from '../../generated/graphql';
 
 
 interface FormProps {
@@ -41,11 +41,11 @@ const Login: React.FC = () => {
   
   const [login, { data, loading, error }] = useLoginMutation({
     async onCompleted(data) {
-      if (data?.login?.error) {
+      if (!data?.login) {
         setErrorMessage('Error logging in, check credentials and try again.');
       } else {
         setErrorMessage('');
-        const { refreshToken, idToken } = data?.login?.data!;
+        const { refreshToken, idToken } = data?.login;
         if (idToken && refreshToken) {
           await Promise.all([
             SecureStore.setItemAsync('idToken', idToken),
