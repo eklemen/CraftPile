@@ -29,22 +29,32 @@ interface AuthContextValue {
   isLoggedIn: boolean;
   setLoggedIn: () => void;
   setLoggedOut: () => void;
+  emailContext: string | null;
+  setEmailContext: any;
+
 }
+
 
 export const AuthContext = createContext<AuthContextValue>({
   isLoggedIn: false,
   setLoggedIn: () => {},
-  setLoggedOut: () => {},
+  setLoggedOut: () => { },
+  emailContext: null,
+  setEmailContext: () => {}
 });
+
 
 export function useAuth(): AuthContextValue {
   return useContext(AuthContext);
 }
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
- 
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const [emailContext, setEmailContext] = useState<string>("");
+
+
 
   const setLoggedIn = () => {
     setIsLoggedIn(true);
@@ -55,13 +65,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     SecureStore.deleteItemAsync('idToken');
   };
 
- 
+
 
 
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, setLoggedIn, setLoggedOut }}
+      value={{ isLoggedIn, setLoggedIn, setLoggedOut, emailContext, setEmailContext}}
     >
       {children}
     </AuthContext.Provider>

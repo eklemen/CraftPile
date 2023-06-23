@@ -10,9 +10,9 @@ import {
   HStack,
   Text,
 } from 'native-base';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { TouchableOpacity } from 'react-native';
+import { AuthContext, useAuth } from '../../context/authContext/authContextStore';
 
 import {
   useRegistrationMutation,
@@ -26,6 +26,10 @@ interface FormProps {
 }
 
 function Register() {
+  
+  const { setEmailContext } = useAuth();
+
+
   const {
     control,
     handleSubmit,
@@ -51,7 +55,6 @@ function Register() {
   const onSubmit = async (data: AuthUserInput) => {
     const { email, password } = data;
 
-    try {
       await register({
         variables: {
           input: {
@@ -60,14 +63,11 @@ function Register() {
           },
         },
       });
-    } catch (error) {
-      if (error && error.message) {
-        setErrorMessage(error.message); // Set the specific error message for display
-      } else {
-        setErrorMessage('An error occurred. Please try again.'); // Fallback error message
-      }
-    }
-  };
+      setEmailContext(email)
+    };
+
+
+   
 
   const backToLogin = () => {
     navigation.navigate('LoginScreen');

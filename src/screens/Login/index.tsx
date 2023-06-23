@@ -1,4 +1,3 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
 import { useNavigation } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 import {
@@ -13,7 +12,7 @@ import {
   Link,
   Text,
 } from 'native-base';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 import { useAuth } from '../../context/authContext/authContextStore';
