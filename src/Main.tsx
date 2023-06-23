@@ -19,7 +19,6 @@ import { LogBox } from 'react-native';
 
 import { AuthProvider } from './context/authContext/authContextStore';
 import { CompDataProvider } from './context/compData/compDataStore';
-import { GetUserOutput, useGetUserOutputLazyQuery } from './generated/graphql';
 import { AppNavs } from './navStacks/HomeStack';
 import { themeOverrides } from './styles';
 // import RCTAsyncStorage from '@react-native-async-storage/async-storage';
@@ -43,7 +42,6 @@ const Main = ({}: Props) => {
     Nunito_400Regular,
     Nunito_700Bold,
   });
-  const [getUser] = useGetUserOutputLazyQuery();
   const linking = {
     prefixes: [prefix],
   };
@@ -52,10 +50,6 @@ const Main = ({}: Props) => {
     async function prepare() {
       try {
         await SplashScreen.preventAutoHideAsync();
-        const { data: userData } = await getUser();
-        // setAuthData({
-        //   user: userData!.getUser,
-        // });
       } catch (e) {
         console.warn(e);
       } finally {
@@ -80,13 +74,13 @@ const Main = ({}: Props) => {
   }
   return (
     <NativeBaseProvider theme={theme}>
-      <AuthProvider>
-        <CompDataProvider>
-          <NavigationContainer linking={linking} onReady={onLayoutRootView}>
+      <CompDataProvider>
+        <NavigationContainer linking={linking} onReady={onLayoutRootView}>
+          <AuthProvider>
             <AppNavs />
-          </NavigationContainer>
-        </CompDataProvider>
-      </AuthProvider>
+          </AuthProvider>
+        </NavigationContainer>
+      </CompDataProvider>
     </NativeBaseProvider>
   );
 };

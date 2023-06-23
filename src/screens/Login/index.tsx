@@ -15,9 +15,12 @@ import {
 import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
-import { useAuth } from '../../context/authContext/authContextStore';
-import { useLoginMutation, AuthUserInput, } from '../../generated/graphql';
-
+import { useAuth } from '../../context/authContext/useAuth';
+import {
+  useLoginMutation,
+  AuthUserInput,
+  GetUserDocument,
+} from '../../generated/graphql';
 
 interface FormProps {
   email: string;
@@ -26,10 +29,8 @@ interface FormProps {
 
 const Login: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-
-
 
   const {
     control,
@@ -37,7 +38,7 @@ const Login: React.FC = () => {
     formState: { errors, isDirty, isValid },
   } = useForm<FormProps>();
   const { setLoggedIn } = useAuth();
-  
+
   const [login, { data, loading, error }] = useLoginMutation({
     async onCompleted(data) {
       if (!data?.login) {
@@ -52,15 +53,13 @@ const Login: React.FC = () => {
           ]);
           setLoggedIn();
           navigation.navigate('MainStack');
-
-
         }
       }
     },
   });
 
   const onSubmit = async (data: AuthUserInput) => {
-    
+
     await login({
       variables: {
         input: {
@@ -68,7 +67,7 @@ const Login: React.FC = () => {
           password: data.password,
         },
       },
- 
+
     });
   };
   const handleRegister = () => {
@@ -162,6 +161,7 @@ const Login: React.FC = () => {
             mt="2"
             colorScheme="primary"
             onPress={handleSubmit(onSubmit)}
+            isLoading={loading}
             // isDisabled={!isDirty || !isValid}
           >
             Login

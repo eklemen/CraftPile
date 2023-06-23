@@ -1,6 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from 'native-base';
+import { useEffect } from 'react';
 
 import AlbumIcon from '../../appIcons/AlbumIcon';
 import CameraIcon from '../../appIcons/CameraIcon';
@@ -179,6 +181,21 @@ function MainBottomNavScreens() {
 
 function AppNavs() {
   const { isLoggedIn } = useAuth();
+  const navigation = useNavigation<any>();
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'MainStack' }],
+      });
+    } else {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'AuthStack' }],
+      });
+    }
+  }, [isLoggedIn]);
+
   return (
     <AppStack.Navigator screenOptions={{ headerShown: false }}>
       {isLoggedIn ? (
