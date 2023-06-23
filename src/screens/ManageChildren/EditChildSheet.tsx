@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { Actionsheet, Box, Button, Center, FormControl, Heading, Input, Text } from 'native-base';
-import {
-  AddChildMutation, AddChildMutationVariables,
-  Child, DeleteChildMutation, DeleteChildMutationVariables,
-  GetUserQuery, User,
-} from '../../generated/API';
+// import {
+//   AddChildMutation, AddChildMutationVariables,
+//   Child, DeleteChildMutation, DeleteChildMutationVariables,
+//   GetUserQuery, User,
+// } from '../../generated/API';
 import { FormObject } from '../../types/forms';
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { addChild, deleteChild } from '../../graphql/mutations';
-import { getUser } from '../../graphql/queries';
+// import { addChild, deleteChild } from '../../graphql/mutations';
+// import { getUser } from '../../graphql/queries';
 
 interface FormInput {
   name: FormObject;
@@ -18,7 +18,7 @@ interface FormInput {
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  selectedChild?: Child;
+  selectedChild?: any;
 }
 
 const initialFormState: FormInput = {
@@ -37,18 +37,18 @@ function EditChildSheet({ isOpen, onClose, selectedChild }: Props) {
       error: '',
     },
   });
-  const {
-    data: userData,
-    refetch: refetchUser
-  } = useQuery<GetUserQuery>(gql(getUser));
-  const [updateChild] = useMutation<AddChildMutation,
-    AddChildMutationVariables>(gql(addChild), {
-    onError: (err) => console.log(err),
-  });
-  const [removeChild] = useMutation<DeleteChildMutation,
-    DeleteChildMutationVariables>(gql(deleteChild), {
-    onError: (err) => console.log(err),
-  });
+  // const {
+  //   data: userData,
+  //   refetch: refetchUser
+  // } = useQuery<GetUserQuery>(gql(getUser));
+  // const [updateChild] = useMutation<AddChildMutation,
+  //   AddChildMutationVariables>(gql(addChild), {
+  //   onError: (err) => console.log(err),
+  // });
+  // const [removeChild] = useMutation<DeleteChildMutation,
+  //   DeleteChildMutationVariables>(gql(deleteChild), {
+  //   onError: (err) => console.log(err),
+  // });
   const handleChange = (name: keyof FormInput, value: FormObject['value']) => {
     setFormValues({
       ...formValues,
@@ -90,59 +90,59 @@ function EditChildSheet({ isOpen, onClose, selectedChild }: Props) {
     return onClose();
   };
   const handleEditChild = async () => {
-    const input: AddChildMutationVariables['input'] = {
-      name: formValues.name.value,
-      accountId: userData?.getUser.accountId!,
-    };
-    // update child
-    if (selectedChild) {
-      input!._id = selectedChild._id;
-      await updateChild({
-        variables: {
-          input,
-        },
-      });
-    } else {
-      // add child
-      await updateChild({
-        variables: {
-          input,
-        },
-        update: (cache, { data: mutationRes }) => {
-          const userObj: GetUserQuery | null = cache.readQuery({ query: gql(getUser) });
-          if (userObj && mutationRes?.addChild) {
-            cache.writeQuery({
-              query: gql(getUser),
-              data: {
-                getUser: {
-                  ...userObj.getUser,
-                  children: mutationRes!.addChild,
-                },
-              },
-            });
-          } else {
-            refetchUser();
-          }
-        },
-      });
-    }
+    // const input: AddChildMutationVariables['input'] = {
+    //   name: formValues.name.value,
+    //   accountId: userData?.getUser.accountId!,
+    // };
+    // // update child
+    // if (selectedChild) {
+    //   input!._id = selectedChild._id;
+    //   await updateChild({
+    //     variables: {
+    //       input,
+    //     },
+    //   });
+    // } else {
+    //   // add child
+    //   await updateChild({
+    //     variables: {
+    //       input,
+    //     },
+    //     update: (cache, { data: mutationRes }) => {
+    //       const userObj: GetUserQuery | null = cache.readQuery({ query: gql(getUser) });
+    //       if (userObj && mutationRes?.addChild) {
+    //         cache.writeQuery({
+    //           query: gql(getUser),
+    //           data: {
+    //             getUser: {
+    //               ...userObj.getUser,
+    //               children: mutationRes!.addChild,
+    //             },
+    //           },
+    //         });
+    //       } else {
+    //         refetchUser();
+    //       }
+    //     },
+    //   });
+    // }
     handleClose();
   };
   const handleDelete = async () => {
-    if (selectedChild) {
-      await removeChild({
-        variables: {
-          input: {
-            _id: selectedChild._id,
-          },
-        },
-        update(cache) {
-          const normalizedId = cache.identify({ _id: selectedChild._id, __typename: 'Child' });
-          cache.evict({ id: normalizedId });
-          cache.gc();
-        }
-      });
-    }
+    // if (selectedChild) {
+    //   await removeChild({
+    //     variables: {
+    //       input: {
+    //         _id: selectedChild._id,
+    //       },
+    //     },
+    //     update(cache) {
+    //       const normalizedId = cache.identify({ _id: selectedChild._id, __typename: 'Child' });
+    //       cache.evict({ id: normalizedId });
+    //       cache.gc();
+    //     }
+    //   });
+    // }
     handleClose();
   };
   const disableSave = (selectedChild?.name === formValues.name.value) || !formValues.name.value;

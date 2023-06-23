@@ -1,19 +1,128 @@
-import { Center, Heading, Button, Box, Text, Row, Column } from 'native-base';
-import { useState } from 'react';
 
+import { Box, Button, Center, Column, Heading, Row, Text, Input, VStack, FormControl, HStack } from 'native-base';
+import React, { useState, useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import EditIcon from '../../appIcons/Edit';
-import EditChildSheet from './EditChildSheet';
+import { CreateChildInput, useCreateChildMutation } from '../../generated/graphql';
+// import EditChildSheet from './EditChildSheet';
+import * as SecureStore from 'expo-secure-store';
 
 interface Props {}
 
-function ManageChildren({}: Props) {
+interface ChildData {
+  name: string;
+  dateOfBirth: string;
+}
+
+
+
+
+function ManageChildren({ }: Props) {
+  const { handleSubmit, control, formState: { errors } } = useForm<ChildData>();
   const { loading: userLoading, data: userData } = {
     loading: false,
     data: { getUser: { children: [] } },
   };
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [showEditChild, setShowEditChild] = useState<boolean>(false);
   const [selectedChild, setSelectedChild] = useState<any>(); // TODO: add type
+  const [showAddChildForm, setShowAddChildForm] = useState<boolean>(false);
   const children = userData?.getUser?.children;
+  
+
+
+  const [createChildMutation, { data, loading, error }] = useCreateChildMutation({
+    async onCompleted(data) {
+      if (!data?.createChild) {
+        setErrorMessage('Error logging in, check credentials and try again.');
+        console.log('error details', data);
+      } else {
+        setErrorMessage('');
+        console.log('success', data);
+      }
+    },
+  });
+  
+
+
+  const onSubmit = async (data: CreateChildInput) => {
+    console.log(data, 'data', userData, 'userData')
+    await createChildMutation({
+      variables: {
+        input: {
+          dateOfBirth: data.dateOfBirth,
+          name: data.name,
+        }
+      },
+    });
+  };
+
+  const renderAddChildForm = () => {
+    if (!showAddChildForm) {
+      return null;
+    }
+
+    return (
+      <VStack space={3} mt="5">
+        <FormControl>
+            <FormControl.Label>Name</FormControl.Label>
+            <Controller
+              control={control}
+              name="name"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  autoCapitalize="none"
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                />
+              )}
+            />
+            {errors?.name && (
+              <FormControl.ErrorMessage _text={{ fontSize: 'xs' }}>
+                {errors?.name?.message}
+              </FormControl.ErrorMessage>
+            )}
+          </FormControl>
+          <FormControl>
+            <FormControl.Label>Date of Birth</FormControl.Label>
+            <Controller
+              control={control}
+              name="dateOfBirth"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                />
+              )}
+              
+            />
+            {errors?.dateOfBirth && (
+              <FormControl.ErrorMessage>
+                {errors?.dateOfBirth?.message}
+              </FormControl.ErrorMessage>
+            )}
+          </FormControl>
+          {errorMessage ? (
+            <FormControl.ErrorMessage _text={{ fontSize: 'xs' }}>
+              {errorMessage}
+            </FormControl.ErrorMessage>
+          ) : null}
+          
+          <HStack mt="6" justifyContent="center">
+          <Button
+            mt="2"
+            colorScheme="primary"
+            onPress={handleSubmit(onSubmit)}
+          >
+            Add Child
+          </Button>
+          </HStack>
+        </VStack>
+    );
+  };
+
   return (
     <Box flex={1} safeAreaTop>
       <Heading textAlign="center" mb={6}>
@@ -22,7 +131,7 @@ function ManageChildren({}: Props) {
       <Row>
         <Column w="100%">
           {children.length
-            ? children.map((child) => (
+            ? children.map((child: any) => (
                 <Button
                   key={child!._id}
                   variant="ghost"
@@ -42,13 +151,13 @@ function ManageChildren({}: Props) {
                       w={70}
                       my={4}
                     >
-                      <Text fontSize={40}>
+                      {/* <Text fontSize={40}>
                         {child?.name.charAt(0).toUpperCase()}
-                      </Text>
+                      </Text> */}
                     </Center>
-                    <Box>
+                    {/* <Box>
                       <Heading ml={4}>{child?.name}</Heading>
-                    </Box>
+                    </Box> */}
                     <Box ml="auto" mr={7}>
                       <EditIcon />
                     </Box>
@@ -64,7 +173,7 @@ function ManageChildren({}: Props) {
               alignItems="center"
               justifyContent="flex-start"
               onPress={() => {
-                setShowEditChild(true);
+                setShowAddChildForm(true);
               }}
             >
               <Row alignItems="center" w="100%">
@@ -79,16 +188,17 @@ function ManageChildren({}: Props) {
               </Row>
             </Button>
           ) : null}
+          {renderAddChildForm()}
         </Column>
       </Row>
-      <EditChildSheet
+      {/* <EditChildSheet
         isOpen={showEditChild}
         selectedChild={selectedChild}
         onClose={() => {
           setShowEditChild(false);
           setSelectedChild(undefined);
         }}
-      />
+      /> */}
     </Box>
   );
 }

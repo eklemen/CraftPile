@@ -14,10 +14,13 @@ import {
 } from 'native-base';
 import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { TouchableOpacity } from 'react-native';
 
 import { useAuth } from '../../context/authContext/useAuth';
-import { useLoginMutation, AuthUserInput } from '../../generated/graphql';
+import {
+  useLoginMutation,
+  AuthUserInput,
+  GetUserDocument,
+} from '../../generated/graphql';
 
 interface FormProps {
   email: string;
@@ -25,19 +28,24 @@ interface FormProps {
 }
 
 const Login: React.FC = () => {
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const navigation = useNavigation<any>();
+  const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+
   const {
     control,
     handleSubmit,
     formState: { errors, isDirty, isValid },
   } = useForm<FormProps>();
   const { setLoggedIn } = useAuth();
+
   const [login, { data, loading, error }] = useLoginMutation({
     async onCompleted(data) {
-      if (data?.login?.error) {
+      if (!data?.login) {
         setErrorMessage('Error logging in, check credentials and try again.');
       } else {
         setErrorMessage('');
-        const { refreshToken, idToken } = data?.login?.data!;
+        const { refreshToken, idToken } = data?.login;
         if (idToken && refreshToken) {
           await Promise.all([
             SecureStore.setItemAsync('idToken', idToken),
@@ -49,11 +57,9 @@ const Login: React.FC = () => {
       }
     },
   });
-  const [errorMessage, setErrorMessage] = useState<string>('');
-  const navigation = useNavigation<any>();
-  const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
   const onSubmit = async (data: AuthUserInput) => {
+
     await login({
       variables: {
         input: {
@@ -61,6 +67,7 @@ const Login: React.FC = () => {
           password: data.password,
         },
       },
+
     });
   };
   const handleRegister = () => {
@@ -154,7 +161,8 @@ const Login: React.FC = () => {
             mt="2"
             colorScheme="primary"
             onPress={handleSubmit(onSubmit)}
-            isDisabled={!isDirty || !isValid}
+            isLoading={loading}
+            // isDisabled={!isDirty || !isValid}
           >
             Login
           </Button>

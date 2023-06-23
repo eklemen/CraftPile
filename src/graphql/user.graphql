@@ -1,17 +1,35 @@
-query GetUserOnLogin {
+query GetUser {
   getUser {
-    id,
-    email,
+    id
+    email
     account {
       id
       children {
         id
         name
-        albums {
-          id
-        }
       }
     }
+  }
+}
+
+#query GetChildren{
+#  getChildren {
+#    account {
+#      id
+#      children {
+#        id
+#        name
+#        dateOfBirth
+#      }
+#    }
+#  }
+#}
+
+mutation CreateChild($input: CreateChildInput!) {
+  createChild(input: $input) {
+    id
+    name
+    dateOfBirth
   }
 }
 
@@ -19,26 +37,23 @@ query GetUserOnLogin {
 
 # Since this returns a token, the user doesn't need to login
 mutation Registration($input: AuthUserInput) {
-  registerUser (input: $input) {
+  registerUser(input: $input) {
     success
     error
   }
 }
 
 mutation Login($input: AuthUserInput) {
-  login (input: $input) {
-    data {
-      accessToken
-      idToken
-      expiresIn
-      refreshToken
-    }
-    error
+  login(input: $input) {
+    accessToken
+    idToken
+    expiresIn
+    refreshToken
   }
 }
 
 mutation VerifyConfirmationCode($input: ConfirmationCodeInput) {
-  verifyConfirmationCode (input: $input) {
+  verifyConfirmationCode(input: $input) {
     success
     error
   }

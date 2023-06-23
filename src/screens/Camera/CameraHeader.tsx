@@ -5,21 +5,21 @@ import { CAMERA } from '../../context/constants';
 import { CameraCD } from '../../context/constants';
 import CameraRoll from '../../appIcons/CameraRoll';
 import { gql, useQuery } from '@apollo/client';
-import { GetUserQuery } from '../../generated/API';
-import { getUser } from '../../graphql/queries';
+// import { GetUserQuery } from '../../generated/API';
+// import { getUser } from '../../graphql/queries';
 
 interface Props {
   askGalleryPermissions: () => Promise<void>;
 }
 
 function CameraHeader({ askGalleryPermissions }: Props) {
-  const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
+  // const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
   const { compData: cameraCompData, setData: setCameraCompData } =
     useCompData<CameraCD>(CAMERA);
   useEffect(() => {
-    setCameraCompData({
-      selectedChild: userData?.getUser.children?.[0],
-    });
+    // setCameraCompData({
+    //   selectedChild: userData?.getUser.children?.[0],
+    // });
   }, []);
   return (
     <Center bg="primary.800" w="100%" h={70}>
@@ -34,7 +34,7 @@ function CameraHeader({ askGalleryPermissions }: Props) {
             }}
           />
         </Box>
-        <Row flex={3} alignContent="center" justifyContent="center">
+        {/* <Row flex={3} alignContent="center" justifyContent="center">
           {userData?.getUser.children!.map((child) => {
             const isSelected =
               child!._id === cameraCompData?.selectedChild?._id;
@@ -59,7 +59,7 @@ function CameraHeader({ askGalleryPermissions }: Props) {
               </Button>
             );
           })}
-        </Row>
+        </Row> */}
         <Box flex={1} />
       </Row>
     </Center>

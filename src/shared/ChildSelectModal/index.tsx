@@ -12,13 +12,13 @@ import {
 import { PILE, PileCD } from '../../context/constants';
 import useCompData from '../../context/compData/useCompData';
 import { gql, useMutation, useQuery } from '@apollo/client';
-import {
-  AssignPhotosToChildMutation,
-  AssignPhotosToChildMutationVariables,
-  GetUserQuery,
-} from '../../generated/API';
-import { assignPhotosToChild } from '../../graphql/mutations';
-import { getUser } from '../../graphql/queries';
+// import {
+//   AssignPhotosToChildMutation,
+//   AssignPhotosToChildMutationVariables,
+//   GetUserQuery,
+// } from '../../generated/API';
+// import { assignPhotosToChild } from '../../graphql/mutations';
+// import { getUser } from '../../graphql/queries';
 
 interface Props {
   isOpen: boolean;
@@ -27,12 +27,12 @@ interface Props {
 }
 
 function ChildSelectModal({ isOpen, onClose, setPileData }: Props) {
-  const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
+  // const { data: userData } = useQuery<GetUserQuery>(gql(getUser));
   const { compData: pileCompData } = useCompData<PileCD>(PILE);
-  const [assignPhotos, { loading, error }] = useMutation<
-    AssignPhotosToChildMutation,
-    AssignPhotosToChildMutationVariables
-  >(gql(assignPhotosToChild));
+  // const [assignPhotos, { loading, error }] = useMutation<
+  //   AssignPhotosToChildMutation,
+  //   AssignPhotosToChildMutationVariables
+  // >(gql(assignPhotosToChild));
   const [radioValue, setRadioValue] = useState<string>();
   const [initialChildId, setInitialChildId] = useState<string>();
   useEffect(() => {
@@ -57,14 +57,14 @@ function ChildSelectModal({ isOpen, onClose, setPileData }: Props) {
       const ids = pileCompData.multiSelect
         ? Object.keys(pileCompData.selectedPhotos)
         : [pileCompData.selectedPhoto?._id!];
-      await assignPhotos({
-        variables: {
-          input: {
-            ids: ids || [],
-            childId: radioValue!,
-          },
-        },
-      });
+      // await assignPhotos({
+      //   variables: {
+      //     input: {
+      //       ids: ids || [],
+      //       childId: radioValue!,
+      //     },
+      //   },
+      // });
     }
     // resetPileData({
     //   multiSelect: false,
@@ -102,7 +102,7 @@ function ChildSelectModal({ isOpen, onClose, setPileData }: Props) {
                 setRadioValue(nextValue);
               }}
             >
-              {userData?.getUser.children?.map((child) => (
+              {/* {userData?.getUser.children?.map((child) => (
                 <Radio
                   colorScheme="secondary"
                   value={child?._id as string}
@@ -118,7 +118,7 @@ function ChildSelectModal({ isOpen, onClose, setPileData }: Props) {
                     {child?.name}
                   </Text>
                 </Radio>
-              ))}
+              ))} */}
             </Radio.Group>
           </Column>
         </Modal.Body>
@@ -128,7 +128,7 @@ function ChildSelectModal({ isOpen, onClose, setPileData }: Props) {
             flex={1}
             h={70}
             onPress={handleSave}
-            isLoading={loading}
+            // isLoading={loading}
           >
             <Text color="white" fontFamily="body" fontSize={28}>
               Save
