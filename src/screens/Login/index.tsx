@@ -73,6 +73,9 @@ const Login: React.FC = () => {
   const handleRegister = () => {
     navigation.navigate('Register');
   };
+  const handleForgotPassword = () => {
+    navigation.navigate('ForgotPassword');
+  };
 
   return (
     <Center flex={1} py="10">
@@ -142,7 +145,8 @@ const Login: React.FC = () => {
             <Link
               _text={{ fontSize: 'xs', fontWeight: '500', color: 'indigo.500' }}
               alignSelf="flex-end"
-              mt="1"
+              mt="1" 
+              onPress={handleForgotPassword} 
             >
               Forgot Password
             </Link>

@@ -1,44 +1,30 @@
-query GetUserOutput {
+query GetUser {
   getUser {
+    id
+    email
+    account {
       id
-      email
-      account {
+      children {
         id
-        children {
-          id
-          name
-          dateOfBirth
-          albums {
-            id
-            name
-            description
-            photos {
-              id
-              bucketName
-              objectKey
-              thumbnailKey
-              presignedUrl
-              description
-              dateOfPhoto
-            }
-          }
+        name
       }
     }
   }
 }
 
-query GetChildren{
-    getChildren {
-            account {
-                id
-                children {
-                    id
-                    name
-                    dateOfBirth
-                }
-            }
-    }
-}
+
+#query GetChildren{
+#  getChildren {
+#    account {
+#      id
+#      children {
+#        id
+#        name
+#        dateOfBirth
+#      }
+#    }
+#  }
+#}
 
 mutation CreateChild($input: CreateChildInput!) {
   createChild(input: $input) {
@@ -46,6 +32,20 @@ mutation CreateChild($input: CreateChildInput!) {
     name
     dateOfBirth
   }
+}
+
+
+
+mutation ForgotPasswordCode($input: ForgotPasswordInput) {
+    forgotPassword (input: $input) {
+		success
+	}
+}
+
+mutation ForgotPasswordReset($input: ConfirmForgotPasswordInput) {
+    confirmForgotPassword (input: $input) {
+		success
+	}
 }
 
 ######### Auth #########
@@ -67,9 +67,13 @@ mutation Login($input: AuthUserInput) {
   }
 }
 
-mutation VerifyConfirmationCode($input: ConfirmationCodeInput) {
+mutation RegistrationVerifyingCode($input: ConfirmationCodeInput) {
   verifyConfirmationCode(input: $input) {
     success
     error
   }
 }
+
+
+
+

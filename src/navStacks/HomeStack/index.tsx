@@ -9,10 +9,12 @@ import CameraIcon from '../../appIcons/CameraIcon';
 import PileIcon from '../../appIcons/PileIcon';
 import ProfileIcon from '../../appIcons/ProfileIcon';
 import { useAuth } from '../../context/authContext/authContextStore';
-import { useGetUserOutputQuery } from '../../generated/graphql';
+import { useGetUserQuery } from '../../generated/graphql';
 import AlbumPhotos from '../../screens/AlbumPhotos';
 import AlbumScreen from '../../screens/Albums';
 import Camera from '../../screens/Camera';
+import ForgotPassword from '../../screens/ForgotPassword';
+import ForgotPasswordReset from '../../screens/ForgotPasswordReset';
 import Home from '../../screens/Home';
 import Login from '../../screens/Login';
 import ManageChildren from '../../screens/ManageChildren';
@@ -75,13 +77,17 @@ function AuthNavs() {
       <AuthStack.Screen name="LoginScreen" component={Login} />
       <AuthStack.Screen name="Register" component={Register} />
       <AuthStack.Screen name="VerificationCode" component={VerificationCode} />
+      <AuthStack.Screen name="ForgotPasswordReset" component={ForgotPasswordReset} />
+
+      <AuthStack.Screen name="ForgotPassword" component={ForgotPassword} />
+
     </AuthStack.Navigator>
   );
 }
 
 function MainBottomNavScreens() {
   const { colors, fontConfig } = useTheme();
-  const { data: userData } = useGetUserOutputQuery();
+  const { data: userData } = useGetUserQuery();
 
   // TODO: Replace with graphql query for user
   if (!userData?.getUser?.account?.children?.length) {
