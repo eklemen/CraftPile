@@ -145,8 +145,8 @@ const Login: React.FC = () => {
             <Link
               _text={{ fontSize: 'xs', fontWeight: '500', color: 'indigo.500' }}
               alignSelf="flex-end"
-              mt="1" 
-              onPress={handleForgotPassword} 
+              mt="1"
+              onPress={handleForgotPassword}
             >
               Forgot Password
             </Link>

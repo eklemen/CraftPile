@@ -60,10 +60,17 @@ mutation Registration($input: AuthUserInput) {
 
 mutation Login($input: AuthUserInput) {
   login(input: $input) {
-      accessToken
-      idToken
-      expiresIn
-      refreshToken
+    accessToken
+    idToken
+    expiresIn
+    refreshToken
+  }
+}
+
+mutation VerifyConfirmationCode($input: ConfirmationCodeInput) {
+  verifyConfirmationCode(input: $input) {
+    success
+    error
   }
 }
 
