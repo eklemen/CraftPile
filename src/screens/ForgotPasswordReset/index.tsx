@@ -1,5 +1,6 @@
 import { ApolloError } from '@apollo/client';
 import { useNavigation } from '@react-navigation/native';
+
 import {
   Box,
   Heading,
@@ -12,6 +13,7 @@ import {
 } from 'native-base';
 import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { useAuth } from '../../context/authContext/authContextStore';
 
 import {
   ConfirmForgotPasswordInput,
@@ -25,6 +27,7 @@ interface FormProps {
 }
 
 function ForgotPasswordReset() {
+  const {emailContext} = useAuth()
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [successMessage, setSuccessMessage] = useState<string | undefined>('');
 
@@ -55,11 +58,14 @@ function ForgotPasswordReset() {
 
   const onSubmit = async (data: ConfirmForgotPasswordInput) => {
     const { email, password, confirmationCode } = data;
-
+    if (emailContext === null || emailContext === undefined) {
+      console.log("Email is not available");
+      return;
+    }
     await forgotPasswordResetMutation({
       variables: {
         input: {
-          email,
+          email: emailContext,
           password,
           confirmationCode,
         },
@@ -87,7 +93,7 @@ function ForgotPasswordReset() {
             color: 'warmGray.50',
           }}
         >
-          Welcome to CraftPile!
+         Reset Password
         </Heading>
         <Heading
           mt="1"
@@ -98,36 +104,9 @@ function ForgotPasswordReset() {
           fontWeight="medium"
           size="xs"
         >
-          Complete To Reset Password
+          Enter the code that was sent to your email and set your new password.
         </Heading>
         <VStack space={3} mt="5">
-          <FormControl isInvalid={!!errors.email?.message} >
-            <FormControl.Label>Email ID</FormControl.Label>
-            <Controller
-              control={control}
-              name="email"
-              render={({ field: { onChange, onBlur, value } }) => (
-                <Input
-                  autoCapitalize="none"
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  value={value}
-                />
-              )}
-              rules={{
-                required: { value: true, message: 'Email is required' },
-                pattern: {
-                  value: emailPattern,
-                  message: 'Invalid email address',
-                },
-              }}
-            />
-            {errors.email && (
-              <FormControl.ErrorMessage>
-                {errors.email.message}
-              </FormControl.ErrorMessage>
-            )}
-          </FormControl>
           <FormControl isInvalid={!!errors.password?.message}>
             <FormControl.Label>New Password</FormControl.Label>
             <Controller

@@ -10,6 +10,7 @@ import {
 } from 'native-base';
 import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
+import { useAuth } from '../../context/authContext/authContextStore';
 
 import {
   ForgotPasswordInput,
@@ -23,7 +24,7 @@ interface FormProps {
 }
 
 function ForgotPassword() {
-  
+  const { setEmailContext } = useAuth();
 
 const navigation = useNavigation<any>();
   const {
@@ -60,6 +61,7 @@ const navigation = useNavigation<any>();
           },
         },
       });
+      setEmailContext(email)
     };
 
 

@@ -10,9 +10,9 @@ import {
   HStack,
   Text,
 } from 'native-base';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { AuthContext, useAuth } from '../../context/authContext/authContextStore';
+import { useAuth } from '../../context/authContext/authContextStore';
 
 import {
   useRegistrationMutation,
