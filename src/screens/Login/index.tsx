@@ -99,7 +99,7 @@ const Login: React.FC = () => {
         </Heading>
         <VStack space={3} mt="5">
           <FormControl isInvalid={!!errors.email?.message}>
-            <FormControl.Label>Email ID</FormControl.Label>
+            <FormControl.Label>Email</FormControl.Label>
             <Controller
               control={control}
               name="email"
