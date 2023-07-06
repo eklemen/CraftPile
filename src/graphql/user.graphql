@@ -12,6 +12,7 @@ query GetUser {
   }
 }
 
+
 #query GetChildren{
 #  getChildren {
 #    account {
@@ -31,6 +32,20 @@ mutation CreateChild($input: CreateChildInput!) {
     name
     dateOfBirth
   }
+}
+
+
+
+mutation ForgotPasswordCode($input: ForgotPasswordInput) {
+    forgotPassword (input: $input) {
+		success
+	}
+}
+
+mutation ForgotPasswordReset($input: ConfirmForgotPasswordInput) {
+    confirmForgotPassword (input: $input) {
+		success
+	}
 }
 
 ######### Auth #########
@@ -58,3 +73,14 @@ mutation VerifyConfirmationCode($input: ConfirmationCodeInput) {
     error
   }
 }
+
+mutation RegistrationVerifyingCode($input: ConfirmationCodeInput) {
+  verifyConfirmationCode(input: $input) {
+    success
+    error
+  }
+}
+
+
+
+

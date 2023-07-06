@@ -15,6 +15,8 @@ import AlbumScreen from '../../screens/Albums';
 import Camera from '../../screens/Camera';
 import Home from '../../screens/Home';
 import Login from '../../screens/Login';
+import ForgotPassword from '../../screens/ForgotPassword';
+import ForgotPasswordReset from '../../screens/ForgotPasswordReset';
 import ManageChildren from '../../screens/ManageChildren';
 import PileScreen from '../../screens/Pile';
 import ProfileScreen from '../../screens/Profile';
@@ -75,6 +77,8 @@ function AuthNavs() {
       <AuthStack.Screen name="LoginScreen" component={Login} />
       <AuthStack.Screen name="Register" component={Register} />
       <AuthStack.Screen name="VerificationCode" component={VerificationCode} />
+      <AuthStack.Screen name="ForgotPasswordReset" component={ForgotPasswordReset} />
+      <AuthStack.Screen name="ForgotPassword" component={ForgotPassword} />
     </AuthStack.Navigator>
   );
 }

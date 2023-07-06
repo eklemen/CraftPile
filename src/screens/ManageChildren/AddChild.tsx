@@ -1,71 +1,108 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, VStack } from 'native-base';
+import { Button, Input, VStack, FormControl, HStack } from 'native-base';
+import React, { useState, useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { CreateChildInput, useCreateChildMutation } from '../../generated/graphql';
 
-interface AddChildProps {
-  onAddChild: (data: ChildFormData) => void;
-  onCancel: () => void;
-}
 
-interface ChildFormData {
-  name: string;
-  album: {
-    id: number;
+
+ interface ChildData {
+    name: string;
+    dateOfBirth: string;
+  }
+  interface AddChildProps {
+    onSubmitSuccess: () => void;
+  }
+
+const AddChild: React.FC<AddChildProps> = ({ onSubmitSuccess }) => {
+ 
+    const { handleSubmit, control, formState: { errors } } = useForm<ChildData>();
+  
+    const [errorMessage, setErrorMessage] = useState<string>('');
+
+  
+  
+    const [createChildMutation, { data, loading, error }] = useCreateChildMutation({
+      async onCompleted(data) {
+        if (!data?.createChild) {
+          setErrorMessage('Error logging in, check credentials and try again.');
+        } else {
+          setErrorMessage('');
+        }
+      },
+    });
+    
+  
+  
+    const onSubmit = async (data: CreateChildInput) => {
+      await createChildMutation({
+        variables: {
+          input: {
+            dateOfBirth: data.dateOfBirth,
+            name: data.name,
+          }
+        },
+      });
+    };
+    return (
+      <VStack space={3} mt="5">
+        <FormControl>
+          <FormControl.Label>Name</FormControl.Label>
+          <Controller
+            control={control}
+            name="name"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                autoCapitalize="none"
+                onChangeText={onChange}
+                onBlur={onBlur}
+                value={value}
+              />
+            )}
+          />
+          {errors?.name && (
+            <FormControl.ErrorMessage _text={{ fontSize: 'xs' }}>
+              {errors?.name?.message}
+            </FormControl.ErrorMessage>
+          )}
+        </FormControl>
+        <FormControl>
+          <FormControl.Label>Date of Birth</FormControl.Label>
+          <Controller
+            control={control}
+            name="dateOfBirth"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                onChangeText={onChange}
+                onBlur={onBlur}
+                value={value}
+              />
+            )}
+            
+          />
+          {errors?.dateOfBirth && (
+            <FormControl.ErrorMessage>
+              {errors?.dateOfBirth?.message}
+            </FormControl.ErrorMessage>
+          )}
+        </FormControl>
+        {errorMessage ? (
+          <FormControl.ErrorMessage _text={{ fontSize: 'xs' }}>
+            {errorMessage}
+          </FormControl.ErrorMessage>
+        ) : null}
+        
+        <HStack mt="6" justifyContent="center">
+          <Button
+            mt="2"
+            colorScheme="primary"
+            onPress={handleSubmit(onSubmit)}
+          >
+            Add Child
+          </Button>
+        </HStack>
+      </VStack>
+    );
   };
-}
 
-const AddChild: React.FC<AddChildProps> = ({ onAddChild, onCancel }) => {
-  const { control, handleSubmit, formState: { errors }, reset } = useForm<ChildFormData>();
-
-  const onSubmit = (data: ChildFormData) => {
-    console.log('Child Name:', data.name);
-    console.log('Album Object:', data.album);
-    reset();
-  };
-
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Add Child</Text>
-      <Controller
-        control={control}
-        name="name"
-        rules={{ required: 'Name is required' }}
-        defaultValue=""
-        render={({ field: { onChange, onBlur, value } }) => (
-          <>
-            <Text>Name:</Text>
-            <Input
-              onChangeText={onChange}
-              onBlur={onBlur}
-              value={value}
-            />
-            {errors.name && <Text>{errors.name.message}</Text>}
-          </>
-        )}
-      />
-      <Controller
-        control={control}
-        name="album.id"
-        rules={{ required: 'Album ID is required' }}
-        defaultValue=""
-        render={({ field: { onChange, onBlur, value } }) => (
-          <>
-            <Text>Album ID:</Text>
-            <Input
-              onChangeText={onChange}
-              onBlur={onBlur}
-              value={value.toString()}
-              keyboardType="numeric"
-            />
-            {errors.album?.id && <Text>{errors.album.id.message}</Text>}
-          </>
-        )}
-      />
-      <Button onPress={handleSubmit(onSubmit)}>Add</Button>
-      <Button onPress={onCancel}>Cancel</Button>
-    </View>
-  );
-};
 
 export default AddChild;

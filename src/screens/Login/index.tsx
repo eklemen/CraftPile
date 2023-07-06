@@ -73,6 +73,9 @@ const Login: React.FC = () => {
   const handleRegister = () => {
     navigation.navigate('Register');
   };
+  const handleForgotPassword = () => {
+    navigation.navigate('ForgotPassword');
+  };
 
   return (
     <Center flex={1} py="10">
@@ -96,7 +99,7 @@ const Login: React.FC = () => {
         </Heading>
         <VStack space={3} mt="5">
           <FormControl isInvalid={!!errors.email?.message}>
-            <FormControl.Label>Email ID</FormControl.Label>
+            <FormControl.Label>Email</FormControl.Label>
             <Controller
               control={control}
               name="email"
@@ -143,6 +146,7 @@ const Login: React.FC = () => {
               _text={{ fontSize: 'xs', fontWeight: '500', color: 'indigo.500' }}
               alignSelf="flex-end"
               mt="1"
+              onPress={handleForgotPassword}
             >
               Forgot Password
             </Link>

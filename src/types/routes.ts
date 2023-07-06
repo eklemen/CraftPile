@@ -14,6 +14,7 @@ export type RootStackParamList = {
   Home: undefined;
   Register: undefined;
   VerificationCode: undefined;
+
 };
 
 export type AlbumStackParamList = {
